@@ -7,4 +7,5 @@ define('DB_NAME','cloaker');	  // database name
 
 // Application Settings
 define('ADMIN_URL','http://cloaker.dev/admin/'); // full URL to the Admin Panel
+define('STATIC_URL', ADMIN_URL.'static/');  // full URL to static files (css, js etc.)
 ?>

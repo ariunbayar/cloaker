@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Cloaker</title>
-<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL ?>style.css">
 </head>
 <body>
 <div class="main">

@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>Cloaker | Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="<?php echo ADMIN_URL; ?>style.css">
-    <script type="text/javascript" src="<?php echo ADMIN_URL; ?>jquery-1.9.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL; ?>style.css">
+    <script type="text/javascript" src="<?php echo STATIC_URL; ?>jquery-1.9.0.min.js"></script>
     <script type="text/javascript">
     function showTab(reference,id)
     {

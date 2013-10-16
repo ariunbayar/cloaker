@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Cloaker | Dashboard</title>
-	<link rel="stylesheet" type="text/css" href="<?php echo ADMIN_URL; ?>style.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL; ?>style.css">
 </head>
 <body>
 	<h1 class="title">URL Cloaker</h1>
