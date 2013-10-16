@@ -14,11 +14,11 @@ RewriteRule . %1/%2 [R=301,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)/(.*)/(.*)/$ index.php?action=$1&id=$2&page=$3 [NC,L]
+RewriteRule ^(.*)/(.*)/(.*)/$ index.php?action=$1&id=$2&page=$3 [NC,L,QSA]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)/(.*)/$ index.php?action=$1&id=$2 [NC,L]
+RewriteRule ^(.*)/(.*)/$ index.php?action=$1&id=$2 [NC,L,QSA]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

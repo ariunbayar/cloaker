@@ -54,3 +54,11 @@ input.radio{width:auto}
 
 form.date_range input[type="text"]{ width: 90px; }
 form.date_range input[type="submit"]{ width: 40px; }
+#filter_toggle{ cursor: pointer; margin: 0 8px 8px 8px;}
+#filter_form {margin: 0 8px 8px 8px;}
+#filter_form label{ width: 120px; display: inline-block; text-align: right;}
+#filter_form label.radio{ text-align: left; width: 56px; }
+#filter_form input[type="text"]{ width: 120px;}
+#filter_form select{ width: 120px;}
+#filter_form input[type="submit"]{ width: 80px;}
+#filter_form .column{ width: 280px; display: inline-block; vertical-align: top;}

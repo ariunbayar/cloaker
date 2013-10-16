@@ -60,7 +60,7 @@
                             <td>Date Created</td>
                             <td>Last Modified</td>
                             <td>Cloaking</td>
-                            <td class="date_range">
+                            <td>
                                 <form method="get" class="date_range">
                                     # page views for
                                      <input type="text" name="date_from" value="<?php echo $data['filters']['date_from'] ?>"/>

@@ -129,7 +129,7 @@ if (isset($_SESSION['logged_in']))
 				}
 			case 'statistics':
                 require dirname(__FILE__).'/actions/statistics.php';
-                break;
+                exit;
 			case 'delete':
 				if (!$cloaker->deleteCampaign(mysql_real_escape_string($_GET['id'])))
 				{

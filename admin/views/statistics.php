@@ -34,6 +34,7 @@
 			<div class="box">
 				<div class="tl"><div class="tr"></div></div>
 				<h2 class="boxtitle">Campaign Statistics: <?php echo $data['name']; ?></h2>
+                <?php require dirname(__FILE__).'/_statistics_filter.php'; ?>
 				<table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
 					<tbody>
 					<tr class="hd"><td>IP</td><td>Referer</td><td>Host</td><td>Country</td><td>Region</td><td>City</td><td>Page Views</td><td>Cloak</td><td>Cloak Reason</td><td>Access Time</td><td>Access Date</td></tr>
@@ -47,44 +48,44 @@
 		</div>
 		Pages:
 		<?php if ($data['total_pages'] <= 5): ?>
-		<?php for($i = 1;$i <= $data['total_pages'];$i++): ?>
-		<?php if ($i == $data['page']): ?>
-		<a href="javascript:void(0)" class="selected"><?php echo $i; ?></a>
-		<?php else: ?>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/'.$i; ?>/"><?php echo $i; ?></a>
-		<?php endif; ?>
-		<?php endfor; ?>
+        <?php for($i = 1;$i <= $data['total_pages'];$i++): ?>
+        <?php if ($i == $data['page']): ?>
+        <a href="javascript:void(0)" class="selected"><?php echo $i; ?></a>
+        <?php else: ?>
+        <a href="<?php echo sprintf($data['url_format'], $i) ?>"><?php echo $i; ?></a>
+        <?php endif; ?>
+        <?php endfor; ?>
 		<?php elseif ($data['total_pages'] > 5): ?>
 		<?php if ($data['page'] >= 3 && $data['page'] <= $data['total_pages'] - 2): ?>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/1/'; ?>">First</a>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/'.($data['page'] - 1).'/'; ?>">Previous</a>
+		<a href="<?php echo sprintf($data['url_format'], 1) ?>">First</a>
+		<a href="<?php echo sprintf($data['url_format'], $data['page'] - 1) ?>">Previous</a>
 		<?php for($i = $data['page'] - 2;$i <=  $data['page'] + 2;$i++): ?>
 		<?php if ($i == $data['page']): ?>
 		<a href="javascript:void(0)" class="selected"><?php echo $i; ?></a>
 		<?php else: ?>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/'.$i; ?>/"><?php echo $i; ?></a>
+		<a href="<?php echo sprintf($data['url_format'], $i) ?>"><?php echo $i; ?></a>
 		<?php endif; ?>
 		<?php endfor; ?>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/'.($data['page'] + 1).'/'; ?>">Next</a>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/'.$data['total_pages'].'/'; ?>">Last</a>
+		<a href="<?php echo sprintf($data['url_format'], $data['page'] + 1) ?>">Next</a>
+		<a href="<?php echo sprintf($data['url_format'], $data['total_pages']) ?>">Last</a>
 		<?php elseif ($data['page'] < 3): ?>
 		<?php for($i = 1;$i <= 5;$i++): ?>
 		<?php if ($i == $data['page']): ?>
 		<a href="javascript:void(0)" class="selected"><?php echo $i; ?></a>
 		<?php else: ?>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/'.$i; ?>/"><?php echo $i; ?></a>
+		<a href="<?php echo sprintf($data['url_format'], $i) ?>"><?php echo $i; ?></a>
 		<?php endif; ?>
 		<?php endfor; ?>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/'.($data['page'] + 1).'/'; ?>">Next</a>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/'.$data['total_pages'].'/'; ?>">Last</a>
+		<a href="<?php echo sprintf($data['url_format'], $data['page'] + 1) ?>">Next</a>
+		<a href="<?php echo sprintf($data['url_format'], $data['total_pages']) ?>">Last</a>
 		<?php elseif ($data['page'] > $data['total_pages'] - 2): ?>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/1/'; ?>">First</a>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/'.($data['page'] - 1).'/'; ?>">Previous</a>
+		<a href="<?php echo sprintf($data['url_format'], 1) ?>">First</a>
+		<a href="<?php echo sprintf($data['url_format'], $data['page'] - 1) ?>">Previous</a>
 		<?php for($i = $data['total_pages'] - 5;$i <= $data['total_pages'];$i++): ?>
 		<?php if ($i == $data['page']): ?>
 		<a href="javascript:void(0)" class="selected"><?php echo $i; ?></a>
 		<?php else: ?>
-		<a href="<?php echo ADMIN_URL.'statistics/'.$_GET['id'].'/'.$i; ?>/"><?php echo $i; ?></a>
+		<a href="<?php echo sprintf($data['url_format'], $i) ?>"><?php echo $i; ?></a>
 		<?php endif; ?>
 		<?php endfor; ?>								
 		<?php endif; ?>

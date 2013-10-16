@@ -408,18 +408,45 @@ class Cloaker
 	 *
 	 * Returns Statistical details for a Campaign
 	 *
-	 * @param int $id    The ID of the Campaign
-	 * @param int $page  Which page to start from?
-	 * @param int $limit How many records to show per page?
+	 * @param array $values Filter by these values
+	 * @param int $page     Which page to start from?
+	 * @param int $limit    How many records to show per page?
 	 *
 	 * @return Array An array containing the statistics
 	 */
-	function getStatistics($id, $page = 1, $limit = 50)
+	function getStatistics($values = array(), $page = 1, $limit = 50)
 	{
+        $filter_array = array();
+
+        function filter($field, $format, &$filter_array, $values)
+        {
+            if (isset($values[$field]) && $values[$field]){
+                $filter_array[] = sprintf($format, mysql_real_escape_string($values[$field]));
+            }
+        }
+
+        filter('id', "campaign_id = '%s'", $filter_array, $values);
+        filter('ip', "ip LIKE '%%%s%%'", $filter_array, $values);
+        filter('referer', "referral_url LIKE '%%%s%%'", $filter_array, $values);
+        filter('host', "host LIKE '%%%s%%'", $filter_array, $values);
+        filter('country', "country LIKE '%%%s%%'", $filter_array, $values);
+        filter('region', "region LIKE '%%%s%%'", $filter_array, $values);
+        filter('city', "city LIKE '%%%s%%'", $filter_array, $values);
+        filter('cloak', "cloak = '%s'", $filter_array, $values);
+        filter('cloak_reason', "reasonforcloak = '%s'", $filter_array, $values);
+        filter('access_date_from', "ct_dt >= '%s 00:00:00'", $filter_array, $values);
+        filter('access_date_to', "ct_dt <= '%s 23:59:59'", $filter_array, $values);
+
 		$offset = $page * $limit - $limit;
-		$query = mysql_query("SELECT * FROM iptracker WHERE campaign_id = '$id' ORDER BY id DESC LIMIT $offset,$limit");
+        $query = "
+            SELECT * FROM iptracker
+            WHERE %s
+            ORDER BY id DESC
+            LIMIT $offset, $limit
+        ";
+		$resultset = mysql_query(sprintf($query, implode(' AND ', $filter_array)));
 		$data = array();
-		while($row = mysql_fetch_assoc($query))
+		while($row = mysql_fetch_assoc($resultset))
 		{
 			$data[] = $row;
 		}
