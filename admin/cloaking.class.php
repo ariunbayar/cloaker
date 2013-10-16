@@ -69,31 +69,6 @@ class Cloaker
 				$data[$row['id']]['page_views'] = array(0, 0);
 			}
 
-            // get number of clicks for selected range
-            $date_from = date('Y-m-d 00:00:00'); // TODO
-            $date_to = date('Y-m-d 23:59:59'); // TODO
-            $date_from = mysql_real_escape_string($date_from);
-            $date_to = mysql_real_escape_string($date_to);
-            $query = "
-                SELECT
-                    campaign_id,
-                    SUM(IF(cloak='yes', page_views, 0)) as cloaked_page_views,
-                    SUM(IF(cloak='no', page_views, 0)) as non_cloaked_page_views
-                FROM iptracker
-                WHERE
-                    ct_dt >= '%s' AND
-                    ct_dt <= '%s'
-                GROUP BY campaign_id
-            ";
-            $sql = sprintf($query, $date_from, $date_to);
-            $resultset = mysql_query($sql);
-			while ($row = mysql_fetch_assoc($resultset))
-			{
-                $data[$row['campaign_id']]['page_views'] = array(
-                    $row['cloaked_page_views'],
-                    $row['non_cloaked_page_views'],
-                );
-			}
 			return $data;
 		}
 		else
@@ -114,6 +89,42 @@ class Cloaker
 			return array_merge(mysql_fetch_assoc($query), array('iplist' => $iplist), array('iprange' => $iprange));
 		}
 	}
+
+    /**
+     * updateNumPageViewsFor()
+     *
+     * Updates number of page views cloaked and non-cloaked for current filter.
+     * This will update the passed campaigns details. See getCampaignDetails()
+     *
+     * @param array $campaigns Array of campaigns as reference
+     * @param array $filters Array of filter values
+     */
+    function updateNumPageViewsFor(&$campaigns, $filters)
+    {
+        $date_from = mysql_real_escape_string($filters['date_from']);
+        $date_to = mysql_real_escape_string($filters['date_to']);
+        $query = "
+            SELECT
+                campaign_id,
+                SUM(IF(cloak='yes', page_views, 0)) as cloaked_page_views,
+                SUM(IF(cloak='no', page_views, 0)) as non_cloaked_page_views
+            FROM iptracker
+            WHERE
+                ct_dt >= '%s 00:00:00' AND
+                ct_dt <= '%s 23:59:59'
+            GROUP BY campaign_id
+        ";
+        $sql = sprintf($query, $date_from, $date_to);
+        $resultset = mysql_query($sql);
+        while ($row = mysql_fetch_assoc($resultset))
+        {
+            $campaigns[$row['campaign_id']]['page_views'] = array(
+                $row['cloaked_page_views'],
+                $row['non_cloaked_page_views'],
+            );
+        }
+    }
+
 	/**
     * checkGiplist()
     * 

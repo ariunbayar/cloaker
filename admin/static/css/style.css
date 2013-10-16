@@ -51,3 +51,6 @@ input.radio{width:auto}
 .table a:hover{color:#777}
 .table tr:hover td{background-color:#f3f3f3}
 .table .hd td{background-color:#f3f3f3;border-top:1px solid #ccc;border-bottom:1px solid #ccc;border-right:medium none;box-shadow:1px 1px 2px #fff inset;text-shadow:0 -1px 0 #fff}
+
+form.date_range input[type="text"]{ width: 90px; }
+form.date_range input[type="submit"]{ width: 40px; }

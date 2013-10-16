@@ -3,8 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Cloaker | Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL; ?>style.css">
-    <script type="text/javascript" src="<?php echo STATIC_URL; ?>jquery-1.9.0.min.js"></script>
+    <?php require dirname(__FILE__).'/_header_includes.php'; ?>
     <script type="text/javascript">
     function showTab(reference,id)
     {
@@ -61,8 +60,35 @@
                             <td>Date Created</td>
                             <td>Last Modified</td>
                             <td>Cloaking</td>
-                            <td># cloaked / # non-cloaked page views
-                                for <input type="text" name="date_range" style="width: 90px" value="<?php echo date('Y-m-d') ?>"/>
+                            <td class="date_range">
+                                <form method="get" class="date_range">
+                                    # page views for
+                                     <input type="text" name="date_from" value="<?php echo $data['filters']['date_from'] ?>"/>
+                                    to <input type="text" name="date_to" value="<?php echo $data['filters']['date_to'] ?>"/>
+                                    <input type="submit" value="GO">
+                                </form>
+                                <script type="text/javascript">
+                                $(function(){
+                                    $("input[name=date_from]").datepicker({
+                                        defaultDate: "+1w",
+                                        changeMonth: true,
+                                        numberOfMonths: 3,
+                                        dateFormat: "yy-mm-dd",
+                                        onClose: function(selectedDate) {
+                                            $("input[name=date_to]").datepicker("option", "minDate", selectedDate);
+                                        }
+                                    });
+                                    $("input[name=date_to]").datepicker({
+                                        defaultDate: "+1w",
+                                        changeMonth: true,
+                                        numberOfMonths: 3,
+                                        dateFormat: "yy-mm-dd",
+                                        onClose: function( selectedDate ) {
+                                            $("input[name=date_from]").datepicker("option", "maxDate", selectedDate);
+                                        }
+                                    });
+                                });
+                                </script>
                             </td>
                             <td>Options</td>
                         </tr>
@@ -74,7 +100,7 @@
                                 <td><?php echo $campaign['md_dt']; ?></td>
                                 <td><?php echo $campaign['cloak_status']; ?></td>
                                 <td><?php list($cloaked, $non_cloaked) = $campaign['page_views'] ?>
-                                    <?php echo $cloaked." / ".$non_cloaked ?>
+                                    <?php echo $cloaked." cloaked, ".$non_cloaked." non-cloaked" ?>
                                 </td>
                                 <td>
                                     <a href="<?php echo ADMIN_URL; ?>manage/<?php echo $campaign['id']; ?>/">Manage</a>

@@ -162,7 +162,12 @@ if (isset($_SESSION['logged_in']))
 				exit;
 		}
 	}
+    // date range filter values
+    $viewData['filters'] = array('date_from' => $_GET['date_from'],
+                                 'date_to' => $_GET['date_to']);
 	$viewData['campaigns'] = $cloaker->getCampaignDetails();
+	$viewData['aaa'] = 1;
+    $cloaker->updateNumPageViewsFor($viewData['campaigns'], $viewData['filters']);
     if($_SESSION['user_level'] == 'superadmin') {
         $viewData['giplist'] = $cloaker->getGipList();
         View('dashboard_superadmin', $viewData);
