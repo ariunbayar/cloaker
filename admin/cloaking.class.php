@@ -402,7 +402,7 @@ class Cloaker
 		$query = mysql_query("UPDATE destinations SET url = '$url', notes = '$notes' WHERE id = '$id'");
 		return $query;
 	}
-	
+
 	/**
 	 * getStatistics()
 	 *
@@ -438,35 +438,28 @@ class Cloaker
         filter('access_date_to', "ct_dt <= '%s 23:59:59'", $filter_array, $values);
 
 		$offset = $page * $limit - $limit;
+        $filter_str = implode(' AND ', $filter_array);
+
+        // Retrieve data
         $query = "
             SELECT * FROM iptracker
-            WHERE %s
+            WHERE $filter_str
             ORDER BY id DESC
             LIMIT $offset, $limit
         ";
-		$resultset = mysql_query(sprintf($query, implode(' AND ', $filter_array)));
+		$resultset = mysql_query($query);
 		$data = array();
 		while($row = mysql_fetch_assoc($resultset))
 		{
 			$data[] = $row;
 		}
-		return $data;
-	}
-	
-	/**
-	 * countStatistics()
-	 *
-	 * Counts how many statistical records are present for a given Campaign
-	 *
-	 * @param int $id    The ID of the Campaign
-	 * @param int $limit How many records are shown per page?
-	 * @return int
-	 */ 
-	function countStatistics($id, $limit = 50)
-	{
-		$query = mysql_query("SELECT COUNT(id) FROM iptracker WHERE campaign_id = '$id'");
-		list($rows) = mysql_fetch_row($query);
-		return ceil($rows / $limit);
+
+        // Count number of records
+        $count_query = "SELECT COUNT(id) FROM iptracker WHERE $filter_str";
+		list($num_records) = mysql_fetch_row(mysql_query($count_query));
+		$total_pages = ceil($num_records / $limit);
+
+		return array($total_pages, $data);
 	}
 	
 	/**

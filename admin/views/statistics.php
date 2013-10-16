@@ -35,6 +35,7 @@
 				<div class="tl"><div class="tr"></div></div>
 				<h2 class="boxtitle">Campaign Statistics: <?php echo $data['name']; ?></h2>
                 <?php require dirname(__FILE__).'/_statistics_filter.php'; ?>
+                <?php require dirname(__FILE__).'/_statistics_chart.php'; ?>
 				<table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
 					<tbody>
 					<tr class="hd"><td>IP</td><td>Referer</td><td>Host</td><td>Country</td><td>Region</td><td>City</td><td>Page Views</td><td>Cloak</td><td>Cloak Reason</td><td>Access Time</td><td>Access Date</td></tr>
