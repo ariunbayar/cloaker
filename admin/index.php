@@ -128,20 +128,8 @@ if (isset($_SESSION['logged_in']))
 					exit;
 				}
 			case 'statistics':
-				if (empty($_GET['id']))
-				{
-					header('Location: '.ADMIN_URL);
-					exit;
-				}
-				else
-				{
-					$viewData = $cloaker->getCampaignDetails(mysql_real_escape_string($_GET['id']));
-					$viewData['page'] = (empty($_GET['page'])) ? 1 : (int)$_GET['page'];
-					$viewData['statistics'] = $cloaker->getStatistics(mysql_real_escape_string($_GET['id']), $viewData['page']);
-					$viewData['total_pages'] = $cloaker->countStatistics(mysql_real_escape_string($_GET['id']));
-					View('statistics', $viewData);
-					exit;
-				}
+                require dirname(__FILE__).'/actions/statistics.php';
+                break;
 			case 'delete':
 				if (!$cloaker->deleteCampaign(mysql_real_escape_string($_GET['id'])))
 				{
@@ -163,10 +151,12 @@ if (isset($_SESSION['logged_in']))
 		}
 	}
     // date range filter values
-    $viewData['filters'] = array('date_from' => $_GET['date_from'],
-                                 'date_to' => $_GET['date_to']);
+    $today = date('Y-m-d');
+    $viewData['filters'] = array(
+        'date_from' => (isset($_GET['date_from']) ? $_GET['date_from'] : $today),
+        'date_to' => (isset($_GET['date_to']) ? $_GET['date_to'] : $today),
+    );
 	$viewData['campaigns'] = $cloaker->getCampaignDetails();
-	$viewData['aaa'] = 1;
     $cloaker->updateNumPageViewsFor($viewData['campaigns'], $viewData['filters']);
     if($_SESSION['user_level'] == 'superadmin') {
         $viewData['giplist'] = $cloaker->getGipList();
