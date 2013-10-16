@@ -60,11 +60,39 @@ class Cloaker
 	{
 		if ($id == 0)
 		{
+            // get all the campaigns
 			$query = mysql_query("SELECT id, name, ct_dt, md_dt, cloak_status FROM campaigns WHERE owner_id = '$_SESSION[user_id]' ORDER BY id ASC");
 			$data = array();
 			while ($row = mysql_fetch_assoc($query))
 			{
-				$data[] = $row;
+				$data[$row['id']] = $row;
+				$data[$row['id']]['page_views'] = array(0, 0);
+			}
+
+            // get number of clicks for selected range
+            $date_from = date('Y-m-d 00:00:00'); // TODO
+            $date_to = date('Y-m-d 23:59:59'); // TODO
+            $date_from = mysql_real_escape_string($date_from);
+            $date_to = mysql_real_escape_string($date_to);
+            $query = "
+                SELECT
+                    campaign_id,
+                    SUM(IF(cloak='yes', page_views, 0)) as cloaked_page_views,
+                    SUM(IF(cloak='no', page_views, 0)) as non_cloaked_page_views
+                FROM iptracker
+                WHERE
+                    ct_dt >= '%s' AND
+                    ct_dt <= '%s'
+                GROUP BY campaign_id
+            ";
+            $sql = sprintf($query, $date_from, $date_to);
+            $resultset = mysql_query($sql);
+			while ($row = mysql_fetch_assoc($resultset))
+			{
+                $data[$row['campaign_id']]['page_views'] = array(
+                    $row['cloaked_page_views'],
+                    $row['non_cloaked_page_views'],
+                );
 			}
 			return $data;
 		}

@@ -55,9 +55,33 @@
                     <h2 class="boxtitle">Campaigns</h2>
                     <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                         <tbody>
-                        <tr class="hd"><td>ID</td><td>Name</td><td>Date Created</td><td>Last Modified</td><td>Cloaking</td><td>Options</td></tr>
+                        <tr class="hd">
+                            <td>ID</td>
+                            <td>Name</td>
+                            <td>Date Created</td>
+                            <td>Last Modified</td>
+                            <td>Cloaking</td>
+                            <td># cloaked / # non-cloaked page views
+                                for <input type="text" name="date_range" style="width: 90px" value="<?php echo date('Y-m-d') ?>"/>
+                            </td>
+                            <td>Options</td>
+                        </tr>
                         <?php foreach($data['campaigns'] as $campaign): ?>
-                        <tr class="mhov" onclick="window.location.href='<?php echo ADMIN_URL; ?>manage/<?php echo $campaign['id']; ?>/'"><td><?php echo $campaign['id']; ?></td><td><?php echo $campaign['name']; ?></td><td><?php echo $campaign['ct_dt']; ?></td><td><?php echo $campaign['md_dt']; ?></td><td><?php echo $campaign['cloak_status']; ?></td><td><a href="<?php echo ADMIN_URL; ?>manage/<?php echo $campaign['id']; ?>/">Manage</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo ADMIN_URL; ?>delete/<?php echo $campaign['id']; ?>/">Delete</a></td></tr>
+                            <tr class="mhov" onclick="window.location.href='<?php echo ADMIN_URL; ?>manage/<?php echo $campaign['id']; ?>/'">
+                                <td><?php echo $campaign['id']; ?></td>
+                                <td><?php echo $campaign['name']; ?></td>
+                                <td><?php echo $campaign['ct_dt']; ?></td>
+                                <td><?php echo $campaign['md_dt']; ?></td>
+                                <td><?php echo $campaign['cloak_status']; ?></td>
+                                <td><?php list($cloaked, $non_cloaked) = $campaign['page_views'] ?>
+                                    <?php echo $cloaked." / ".$non_cloaked ?>
+                                </td>
+                                <td>
+                                    <a href="<?php echo ADMIN_URL; ?>manage/<?php echo $campaign['id']; ?>/">Manage</a>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <a href="<?php echo ADMIN_URL; ?>delete/<?php echo $campaign['id']; ?>/">Delete</a>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                         </tbody>
                     </table>
