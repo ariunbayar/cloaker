@@ -160,10 +160,8 @@ if (isset($_SESSION['logged_in']))
     $cloaker->updateNumPageViewsFor($viewData['campaigns'], $viewData['filters']);
     if($_SESSION['user_level'] == 'superadmin') {
         $viewData['giplist'] = $cloaker->getGipList();
-        View('dashboard_superadmin', $viewData);
-    } else {
-        View('dashboard', $viewData);
     }
+    View('dashboard', $viewData);
     
 }
 else

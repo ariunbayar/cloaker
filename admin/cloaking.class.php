@@ -61,7 +61,7 @@ class Cloaker
 		if ($id == 0)
 		{
             // get all the campaigns
-			$query = mysql_query("SELECT id, name, ct_dt, md_dt, cloak_status FROM campaigns WHERE owner_id = '$_SESSION[user_id]' ORDER BY id ASC");
+			$query = mysql_query("SELECT id, name, ct_dt, md_dt, cloak_status FROM campaigns WHERE owner_id = '{$_SESSION['user_id']}' ORDER BY id ASC");
 			$data = array();
 			while ($row = mysql_fetch_assoc($query))
 			{
@@ -99,22 +99,22 @@ class Cloaker
      * @param array $campaigns Array of campaigns as reference
      * @param array $filters Array of filter values
      */
-    function updateNumPageViewsFor(&$campaigns, $filters)
+    function updateNumPageViewsFor(&$campaigns, $values)
     {
-        $date_from = mysql_real_escape_string($filters['date_from']);
-        $date_to = mysql_real_escape_string($filters['date_to']);
-        $query = "
+        $filters = array("c.owner_id = ".$_SESSION['user_id']);
+        $this->_add_filter('date_from', "t.ct_dt >= '%s 00:00:00'", $filters, $values);
+        $this->_add_filter('date_to', "t.ct_dt <= '%s 23:59:59'", $filters, $values);
+        $filter_str = implode(' AND ', $filters);
+        $sql = "
             SELECT
-                campaign_id,
-                SUM(IF(cloak='yes', page_views, 0)) as cloaked_page_views,
-                SUM(IF(cloak='no', page_views, 0)) as non_cloaked_page_views
-            FROM iptracker
-            WHERE
-                ct_dt >= '%s 00:00:00' AND
-                ct_dt <= '%s 23:59:59'
-            GROUP BY campaign_id
+                t.campaign_id,
+                SUM(IF(t.cloak='yes', t.page_views, 0)) as cloaked_page_views,
+                SUM(IF(t.cloak='no', t.page_views, 0)) as non_cloaked_page_views
+            FROM iptracker as t
+            LEFT JOIN campaigns as c ON c.id = t.campaign_id
+            WHERE $filter_str
+            GROUP BY t.campaign_id
         ";
-        $sql = sprintf($query, $date_from, $date_to);
         $resultset = mysql_query($sql);
         while ($row = mysql_fetch_assoc($resultset))
         {
