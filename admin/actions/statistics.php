@@ -27,13 +27,13 @@ foreach ($allowed_filters as $field) {
 
 $viewData = $cloaker->getCampaignDetails(mysql_real_escape_string($_GET['id']));
 $viewData['page'] = (empty($_GET['page'])) ? 1 : (int)$_GET['page'];
-list($viewData['total_pages'], $viewData['statistics']) =
-    $cloaker->getStatistics($filters, $viewData['page'], 5); // TODO change limit to default
+$viewData['total_pages'] = $cloaker->countStatistics($filters);
+$viewData['statistics'] = $cloaker->getStatistics($filters, $viewData['page']);
 $query_string = http_build_query($filters);
 $viewData['url_format'] = ADMIN_URL.'statistics/'.$_GET['id'].'/%s/?'.$query_string;
 $viewData['filters'] = &$filters;
 
-// TODO charts
+//$viewData['daily_page_views'] = $cloaker->getDailyPageViews();
 
 
 View('statistics', $viewData);

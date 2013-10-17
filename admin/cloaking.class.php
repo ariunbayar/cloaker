@@ -403,6 +403,31 @@ class Cloaker
 		return $query;
 	}
 
+    function _add_filter($field, $format, &$filter_array, $values)
+    {
+        if (isset($values[$field]) && $values[$field]){
+            $filter_array[] = sprintf($format, mysql_real_escape_string($values[$field]));
+        }
+    }
+
+    function buildFilters($values)
+    {
+        $filter_array = array();
+        $this->_add_filter('id', "campaign_id = '%s'", $filter_array, $values);
+        $this->_add_filter('ip', "ip LIKE '%%%s%%'", $filter_array, $values);
+        $this->_add_filter('referer', "referral_url LIKE '%%%s%%'", $filter_array, $values);
+        $this->_add_filter('host', "host LIKE '%%%s%%'", $filter_array, $values);
+        $this->_add_filter('country', "country LIKE '%%%s%%'", $filter_array, $values);
+        $this->_add_filter('region', "region LIKE '%%%s%%'", $filter_array, $values);
+        $this->_add_filter('city', "city LIKE '%%%s%%'", $filter_array, $values);
+        $this->_add_filter('cloak', "cloak = '%s'", $filter_array, $values);
+        $this->_add_filter('cloak_reason', "reasonforcloak = '%s'", $filter_array, $values);
+        $this->_add_filter('access_date_from', "ct_dt >= '%s 00:00:00'", $filter_array, $values);
+        $this->_add_filter('access_date_to', "ct_dt <= '%s 23:59:59'", $filter_array, $values);
+
+        return implode(' AND ', $filter_array);
+    }
+
 	/**
 	 * getStatistics()
 	 *
@@ -416,31 +441,8 @@ class Cloaker
 	 */
 	function getStatistics($values = array(), $page = 1, $limit = 50)
 	{
-        $filter_array = array();
-
-        function filter($field, $format, &$filter_array, $values)
-        {
-            if (isset($values[$field]) && $values[$field]){
-                $filter_array[] = sprintf($format, mysql_real_escape_string($values[$field]));
-            }
-        }
-
-        filter('id', "campaign_id = '%s'", $filter_array, $values);
-        filter('ip', "ip LIKE '%%%s%%'", $filter_array, $values);
-        filter('referer', "referral_url LIKE '%%%s%%'", $filter_array, $values);
-        filter('host', "host LIKE '%%%s%%'", $filter_array, $values);
-        filter('country', "country LIKE '%%%s%%'", $filter_array, $values);
-        filter('region', "region LIKE '%%%s%%'", $filter_array, $values);
-        filter('city', "city LIKE '%%%s%%'", $filter_array, $values);
-        filter('cloak', "cloak = '%s'", $filter_array, $values);
-        filter('cloak_reason', "reasonforcloak = '%s'", $filter_array, $values);
-        filter('access_date_from', "ct_dt >= '%s 00:00:00'", $filter_array, $values);
-        filter('access_date_to', "ct_dt <= '%s 23:59:59'", $filter_array, $values);
-
+        $filter_str = $this->buildFilters($values);
 		$offset = $page * $limit - $limit;
-        $filter_str = implode(' AND ', $filter_array);
-
-        // Retrieve data
         $query = "
             SELECT * FROM iptracker
             WHERE $filter_str
@@ -454,13 +456,25 @@ class Cloaker
 			$data[] = $row;
 		}
 
-        // Count number of records
+		return $data;
+	}
+
+	/**
+	 * countStatistics()
+	 *
+	 * Counts how many statistical records are present for a given Campaign
+	 *
+	 * @param int $id    The ID of the Campaign
+	 * @param int $limit How many records are shown per page?
+	 * @return int
+	 */
+	function countStatistics($values, $limit = 50)
+	{
+        $filter_str = $this->buildFilters($values);
         $count_query = "SELECT COUNT(id) FROM iptracker WHERE $filter_str";
 		list($num_records) = mysql_fetch_row(mysql_query($count_query));
-		$total_pages = ceil($num_records / $limit);
-
-		return array($total_pages, $data);
-	}
+		return ceil($num_records / $limit);
+    }
 	
 	/**
 	 * getVariables()
