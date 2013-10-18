@@ -9,7 +9,7 @@
 <div class="main">
 	<div class="box" style="margin:8px auto; width:350px;">
 		<div class="tl"><div class="tr"></div></div>
-		<h3 class="boxtitle">Login Requied</h3>
+		<h3 class="boxtitle">Login Required</h3>
 		<div class="pad">
 			<form action="" method="post" enctype="application/x-www-form-urlencoded">
 				<table width="100%" border="0" cellspacing="0" cellpadding="4">

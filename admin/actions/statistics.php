@@ -29,11 +29,10 @@ $viewData = $cloaker->getCampaignDetails(mysql_real_escape_string($_GET['id']));
 $viewData['page'] = (empty($_GET['page'])) ? 1 : (int)$_GET['page'];
 $viewData['total_pages'] = $cloaker->countStatistics($filters);
 $viewData['statistics'] = $cloaker->getStatistics($filters, $viewData['page']);
+$viewData['total_page_views'] = $cloaker->getTotalPageViews($filters);
 $query_string = http_build_query($filters);
 $viewData['url_format'] = ADMIN_URL.'statistics/'.$_GET['id'].'/%s/?'.$query_string;
 $viewData['filters'] = &$filters;
-
-//$viewData['daily_page_views'] = $cloaker->getDailyPageViews();
 
 
 View('statistics', $viewData);

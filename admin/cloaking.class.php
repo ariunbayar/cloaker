@@ -464,7 +464,7 @@ class Cloaker
 	 *
 	 * Counts how many statistical records are present for a given Campaign
 	 *
-	 * @param int $id    The ID of the Campaign
+	 * @param array $values Filter values to count by
 	 * @param int $limit How many records are shown per page?
 	 * @return int
 	 */
@@ -474,6 +474,51 @@ class Cloaker
         $count_query = "SELECT COUNT(id) FROM iptracker WHERE $filter_str";
 		list($num_records) = mysql_fetch_row(mysql_query($count_query));
 		return ceil($num_records / $limit);
+    }
+
+    /**
+     * getTotalPageViews()
+     *
+	 * @param array $values Filter values to count by
+     * @return array Cloaked and Non-cloaked page views per date
+     */
+    function getTotalPageViews($values)
+    {
+        $filter_str = $this->buildFilters($values);
+        $sql = "
+            SELECT
+                DATE(ct_dt) as access_date,
+                SUM(IF(cloak='yes', page_views, 0)) as num_cloaked,
+                SUM(IF(cloak='no', page_views, 0)) as num_non_cloaked
+            FROM iptracker
+            WHERE $filter_str
+            GROUP BY access_date
+            ORDER BY access_date ASC
+        ";
+        $resultset = mysql_query($sql);
+        $one_day = 24 * 60 * 60;
+        $last_date = 0;
+        $data = array('cloaked' => array(0), 'non_cloaked' => array(0));
+        while ($row = mysql_fetch_row($resultset))
+        {
+            list($access_date, $num_cloaked, $num_non_cloaked) = $row;
+            if (!$last_date){
+                list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($access_date) - $one_day));
+                $data['start_date'] = array((int)$year, (int)$month, (int)$day);
+            }
+
+            while ($last_date && $access_date > date('Y-m-d', $last_date + $one_day)){
+                $last_date += $one_day;
+                $data['cloaked'][] = 0;
+                $data['non_cloaked'][] = 0;
+            }
+
+            $last_date = strtotime($access_date);
+            $data['cloaked'][] = (int)$num_cloaked;
+            $data['non_cloaked'][] = (int)$num_non_cloaked;
+        }
+
+        return $data;
     }
 	
 	/**

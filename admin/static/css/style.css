@@ -62,3 +62,6 @@ form.date_range input[type="submit"]{ width: 40px; }
 #filter_form select{ width: 120px;}
 #filter_form input[type="submit"]{ width: 80px;}
 #filter_form .column{ width: 280px; display: inline-block; vertical-align: top;}
+
+.charts{ width: 540px; margin: 0 auto; }
+.chart{ display: inline-block; width: 500px; height: 300px;}

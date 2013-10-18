@@ -1,11 +1,31 @@
 <?php
-// Database Settings
-define('DB_HOST','127.0.0.1'); 	  // host
-define('DB_USER','root'); 	  // username
-define('DB_PASSWORD',''); // password
-define('DB_NAME','cloaker');	  // database name
+// Default config for production environment
+$config = array(
+    'DB_HOST' => '127.0.0.1',
+    'DB_USER' => 'root',
+    'DB_PASSWORD' => 'apmsetup',
+    'DB_NAME' => 'cloaker',
+    'ADMIN_URL' => 'http://local.cloaker.test/admin/',
+);
 
-// Application Settings
-define('ADMIN_URL','http://cloaker.dev/admin/'); // full URL to the Admin Panel
+$dev_environments = array(
+
+    // local config for Ariunbayar
+    'cloaker.dev' => array(
+        'DB_PASSWORD' => '',
+        'ADMIN_URL' => 'http://cloaker.dev/admin/',
+    ),
+
+);
+
+$current_domain = $_SERVER['HTTP_HOST'];
+if (array_key_exists($current_domain, $dev_environments)){
+    $config = array_merge($config, $dev_environments[$current_domain]);
+}
+
+// Defines runtime contstants for the environment
+foreach ($config as $param => $value) {
+    define($param, $value);
+}
 define('STATIC_URL', ADMIN_URL.'static/');  // full URL to static files (css, js etc.)
 ?>
