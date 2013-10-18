@@ -302,10 +302,24 @@ class Cloaker
 			mysql_query("DELETE FROM denied_ips WHERE campaign_id = '$id'");
 			mysql_query("DELETE FROM denied_ip_ranges WHERE campaign_id = '$id'");
 			mysql_query("DELETE FROM destinations WHERE campaign_id = '$id'");
-			mysql_query("DELETE FROM iptracker WHERE campaign_id = '$id'");
+            $this->deleteTrackerRecordsFor($id);
 		}
 		return $query;
 	}
+
+    /**
+     * deleteTrackerRecordsFor()
+     *
+     * Deletes all tracker records for a campaign.
+     * So that data can start all over
+     *
+     * @param int Campaign id
+     */
+    function deleteTrackerRecordsFor($campaign_id)
+    {
+        $campaign_id = mysql_real_escape_string($campaign_id);
+        mysql_query("DELETE FROM iptracker WHERE campaign_id = '$campaign_id'");
+    }
 	
 	/**
 	 * getIdByShortcode($shortcode)
@@ -410,7 +424,17 @@ class Cloaker
         }
     }
 
-    function buildFilters($values)
+    /**
+     * buildFilters()
+     *
+     * Prepares part of the SQL used in WHERE clause according to the given
+     * filter parameters for iptracker
+     *
+	 * @param array $values Filter by these values
+     * @param int $num_days_to_normalize_date_range
+     * @return string Used in WHERE clause of SQL
+     */
+    function buildFilters($values, $num_days_to_normalize_date_range = null)
     {
         $filter_array = array();
         $this->_add_filter('id', "campaign_id = '%s'", $filter_array, $values);
@@ -422,10 +446,29 @@ class Cloaker
         $this->_add_filter('city', "city LIKE '%%%s%%'", $filter_array, $values);
         $this->_add_filter('cloak', "cloak = '%s'", $filter_array, $values);
         $this->_add_filter('cloak_reason', "reasonforcloak = '%s'", $filter_array, $values);
-        $this->_add_filter('access_date_from', "ct_dt >= '%s 00:00:00'", $filter_array, $values);
-        $this->_add_filter('access_date_to', "ct_dt <= '%s 23:59:59'", $filter_array, $values);
+        $this->_add_filter('access_date_to', "ct_dt <= '%s 23:59:59'", $filter_full_date_covered, $values);
 
-        return implode(' AND ', $filter_array);
+        if ($num_days_to_normalize_date_range === null){
+            $this->_add_filter('access_date_from', "ct_dt >= '%s 00:00:00'", $filter_array, $values);
+            return implode(' AND ', $filter_array);
+        }else{
+            // Normalize date range to limited days
+            $filter_full_date_covered = $filter_array;
+            $this->_add_filter('access_date_from', "ct_dt >= '%s 00:00:00'", $filter_full_date_covered, $values);
+            $filter_str = implode(' AND ', $filter_full_date_covered);
+            $max_date_sql = "SELECT MAX(ct_dt) FROM iptracker WHERE $filter_str";
+            $min_date_sql = "SELECT MIN(ct_dt) FROM iptracker WHERE $filter_str";
+            list($max_date) = mysql_fetch_row(mysql_query($max_date_sql));
+            list($min_date) = mysql_fetch_row(mysql_query($min_date_sql));
+            $one_day = 24 * 60 * 60;
+            $num_days_covering = (strtotime($max_date) - strtotime($min_date)) / $one_day;
+            $max_days_reached = $num_days_covering > $num_days_to_normalize_date_range;
+            if ($max_days_reached) {
+                $values['access_date_from'] = date('Y-m-d', strtotime($max_date) - 60 * $one_day);
+                $this->_add_filter('access_date_from', "ct_dt >= '%s 00:00:00'", $filter_array, $values);
+            }
+            return array(implode(' AND ', $filter_array), $max_days_reached);
+        }
     }
 
 	/**
@@ -478,13 +521,16 @@ class Cloaker
 
     /**
      * getTotalPageViews()
+     * 
+     * Get cloaked and non-cloaked page view count from iptracker for chart
      *
 	 * @param array $values Filter values to count by
+	 * @param int $max_days Limit the data to given number of days
      * @return array Cloaked and Non-cloaked page views per date
      */
-    function getTotalPageViews($values)
+    function getTotalPageViews($values, $max_days = 60)
     {
-        $filter_str = $this->buildFilters($values);
+        list($filter_str, $max_days_reached) = $this->buildFilters($values, $max_days);
         $sql = "
             SELECT
                 DATE(ct_dt) as access_date,
@@ -495,8 +541,8 @@ class Cloaker
             GROUP BY access_date
             ORDER BY access_date ASC
         ";
-        $resultset = mysql_query($sql);
         $one_day = 24 * 60 * 60;
+        $resultset = mysql_query($sql);
         $last_date = 0;
         $data = array('cloaked' => array(0), 'non_cloaked' => array(0));
         while ($row = mysql_fetch_row($resultset))
@@ -518,8 +564,71 @@ class Cloaker
             $data['non_cloaked'][] = (int)$num_non_cloaked;
         }
 
-        return $data;
+        return array($data, $max_days_reached);
     }
+
+    /**
+     * getPageViewsByGeolocation()
+     *
+	 * @param string $geolocation_str Geolocation string for the campaign
+	 * @param array $values Filter values to count by
+	 * @param int $max_days Limit the data to given number of days
+     * @return array Page views by geolocation
+     */
+    function getPageViewsByGeolocation($geolocation_str, $values, $max_days = 60)
+    {
+        $data = array();
+        $geolocations = explode(',', $geolocation_str);
+        $geolocation_select_sql = '';
+        foreach ($geolocations as $i => $geolocation) {
+            // TODO exclusion sql
+            $data[$geolocation] = array(0);
+            $val = mysql_real_escape_string($geolocation);
+            $geolocation_select_sql .= ($i ? ',' : '');
+            $sql_like = "country LIKE '%$val%' OR region LIKE '%$val%' OR city LIKE '%$val%'";
+            $geolocation_select_sql .= "SUM(IF($sql_like, page_views, 0))";
+        }
+        if (count($data) == 0){  // No geolocation is specified
+            return array($data, false);
+        }
+
+        list($filter_str, $max_days_reached) = $this->buildFilters($values, $max_days);
+        $sql = "
+            SELECT
+                $geolocation_select_sql,
+                DATE(ct_dt) as access_date
+            FROM iptracker
+            WHERE $filter_str
+            GROUP BY access_date
+            ORDER BY access_date ASC
+        ";
+        $one_day = 24 * 60 * 60;
+        $resultset = mysql_query($sql);
+        $last_date = 0;
+        while ($row = mysql_fetch_row($resultset))
+        {
+            $access_date = array_pop($row);
+            if (!$last_date){
+                list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($access_date) - $one_day));
+                $data['start_date'] = array((int)$year, (int)$month, (int)$day);
+            }
+
+            while ($last_date && $access_date > date('Y-m-d', $last_date + $one_day)){
+                $last_date += $one_day;
+                foreach ($geolocations as $i => $geolocation) {
+                    $data[$geolocation][] = 0;
+                }
+            }
+
+            $last_date = strtotime($access_date);
+            foreach ($geolocations as $i => $geolocation) {
+                $data[$geolocation][] = (int)$row[$i];
+            }
+        }
+
+        return array($data, $max_days_reached);
+    }
+
 	
 	/**
 	 * getVariables()

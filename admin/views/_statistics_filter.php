@@ -21,6 +21,7 @@
         <label>City:</label>
         <input type="text" name="city" value="<?php echo $data['filters']['city'] ?>"/>
 
+        <?php if($_SESSION['user_level'] == 'superadmin') { ?>
         <label>Cloak:</label>
         <select name="cloak">
             <option value="">---</option>
@@ -52,6 +53,7 @@
             </option>
             <?php } ?>
         </select>
+        <?php } ?>
     </div>
 
     <div class="column"/>

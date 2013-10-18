@@ -40,10 +40,7 @@ function chartTotalPageViews(el, data)
             title: { text: null }
         },
         yAxis: {
-            title: { text: 'page views' },
-            labels: {
-                formatter: function() { return this.value; }
-            }
+            title: { text: 'page views' }
         },
         tooltip: { shared: true },
         plotOptions: {
@@ -72,71 +69,53 @@ function chartTotalPageViews(el, data)
 }
 
 
-function chartPageViewByCountry(el)
+function chartPageViewByGeolocation(el, data)
 {
+    var start_date = Date.UTC(data.start_date[0], data.start_date[1]-1, data.start_date[2]);
+    var series = [];
+    $.each(data, function(geolocation, page_view_data){
+        if (geolocation == 'start_date') return;
+        series.push({
+            name: geolocation,
+            pointInterval: 24 * 3600 * 1000,
+            pointStart: start_date,
+            data: page_view_data
+        });
+    });
     $(el).highcharts({
         chart: {
-            type: 'column'
+            type: 'column',
+            zoomType: 'x'
         },
         title: {
-            text: 'Monthly Average Rainfall'
+            text: 'Page views by Geological Location'
         },
         subtitle: {
-            text: 'Source: WorldClimate.com'
+            text: 'Click and drag in the plot area to zoom in'
         },
         xAxis: {
-            categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'
-            ]
+            type: 'datetime',
+            maxZoom: 24 * 3600000,
+            title: { text: null }
         },
         yAxis: {
-            min: 0,
-            title: {
-                text: 'Rainfall (mm)'
-            }
+            title: { text: 'page views' }
         },
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                '<td style="padding:0"><b>{point.y}</b></td></tr>',
             footerFormat: '</table>',
             shared: true,
             useHTML: true
         },
         plotOptions: {
             column: {
-                pointPadding: 0.2,
+                pointPadding: 0,
                 borderWidth: 0
             }
         },
-        series: [{
-            name: 'Tokyo',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
-        }, {
-            name: 'New York',
-            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-
-        }, {
-            name: 'London',
-            data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-
-        }, {
-            name: 'Berlin',
-            data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
-
-        }]
+        series: series
     });
 }
 
