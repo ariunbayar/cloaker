@@ -29,6 +29,9 @@
         <ul>
             <li class="active"><a href="javascript:void(0)" onclick="showTab(this,'manage')">Manage Campaigns<span></span></a></li>
             <li><a href="javascript:void(0)" onclick="showTab(this,'new')">New Campaign<span></span></a></li>
+            <li><a href="javascript:void(0)" onclick="showTab(this,'traffic')">Traffic Source<span></span></a></li>
+            <li><a href="javascript:void(0)" onclick="showTab(this,'a_campaign')">Affiliate Campaign<span></span></a></li>
+            <li><a href="javascript:void(0)" onclick="showTab(this,'new')">Affiliate Network<span></span></a></li>
             <?php if($_SESSION['user_level'] == 'superadmin') { ?>
             <li><a href="javascript:void(0)" onclick="showTab(this,'globalip')">Global IP List<span></span></a></li>
             <?php } ?>
@@ -184,6 +187,70 @@
                 </div>
             </div>
         </section>
+        <section id="traffic" style="display:none;">
+            <div class="scont">
+                <div class="box">
+                    <div class="tl"><div class="tr"></div></div>
+                    <h2 class="boxtitle">Traffic Source</h2>
+                    <form action="<?php echo ADMIN_URL; ?>create_traffic/" method="POST">
+                        <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
+                            <tbody>
+                            <tr>
+                                <td>Name</td><td><input size="38" name="name" type="text">
+                                <input value="Create" type="submit"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <table width="100%" cellspacing="0" cellpadding="4" border="1" class="table">
+                        <tbody>
+                        <tr><td>id</td><td>Name</td></tr>
+                        <?php foreach($data['traffics'] as $traffic): ?>
+                            <tr>
+                                <td><?php echo $traffic['id']; ?></td>
+                                <td><?php echo $traffic['name']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <div class="bl"><div class="br"></div></div>
+                </div>
+            </div>
+        </section>
+        <section id="a_campaign" style="display:none;">
+            <div class="scont">
+                <div class="box">
+                    <div class="tl"><div class="tr"></div></div>
+                    <h2 class="boxtitle">Affiliate Campaign</h2>
+                    <form action="<?php echo ADMIN_URL; ?>create_aff_campaign/" method="POST">
+                        <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
+                            <tbody>
+                            <tr>
+                                <td>Name</td><td><input size="38" name="name" type="text">
+                                <td>Affiliate Network</td><td><input size="38"
+name="affiliate_network" type="text">
+                                <input value="Create" type="submit"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <table width="100%" cellspacing="0" cellpadding="4" border="1" class="table">
+                        <tbody>
+                        <tr><td>id</td><td>Name</td><td>Affiliate Network</td></tr>
+                        <?php foreach($data['aff_campaigns'] as $aff_campaign): ?>
+                            <tr>
+                                <td><?php echo $aff_campaign['id']; ?></td>
+                                <td><?php echo $aff_campaign['name']; ?></td>
+                                <td><?php echo $aff_campaign['name']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <div class="bl"><div class="br"></div></div>
+                </div>
+            </div>
+        </section>
+
         <?php if($_SESSION['user_level'] == 'superadmin') { ?>
         <section id="globalip" style="display: none;">
             <div class="scont">

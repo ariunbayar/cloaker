@@ -91,6 +91,41 @@ class Cloaker
 	}
 
     /**
+	 * getTrafficSources()
+	 *
+	 * @return Array
+	 */
+	function getTrafficSources()
+	{
+        // get all the traffic source
+        $query = mysql_query("SELECT * FROM traffic_source ORDER BY id ASC");
+        $data = array();
+        while ($row = mysql_fetch_assoc($query))
+        {
+            $data[$row['id']] = $row;
+        }
+
+        return $data;
+	}
+
+    /**
+	 * getTrafficSources()
+	 *
+	 * @return Array
+	 */
+	function getAffiliateCampaigns()
+	{
+        // get all the affiliate campaign source
+        $query = mysql_query("SELECT * FROM affiliate_campaign ORDER BY id ASC");
+        $data = array();
+        while ($row = mysql_fetch_assoc($query))
+        {
+            $data[$row['id']] = $row;
+        }
+
+        return $data;
+	}
+    /**
      * updateNumPageViewsFor()
      *
      * Updates number of page views cloaked and non-cloaked for current filter.
@@ -900,6 +935,39 @@ class Cloaker
 	private function reasonForCloak($reasonMessage)
 	{
 		mysql_query("UPDATE `iptracker` SET `cloak` = 'yes', `reasonforcloak` = '".$reasonMessage."' WHERE `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");	
+	}
+
+    /**
+	 * insertTraffic()
+	 *
+	 * Inserts a new traffic source record into the database.
+	 *
+	 * @param Array $values An array containing the values that need to be inserted
+	 * 
+	 * @return Boolean TRUE upon success, FALSE upon failure
+	 */
+	function insertTraffic($values)
+	{
+        $sql = "INSERT INTO `traffic_source` (`id`, `name`) VALUES (NULL, '$values[name]')";
+		$query = mysql_query($sql);
+		return $query;
+	}
+
+    /**
+	 * insertAffiliateCampaign()
+	 *
+	 * Inserts a new Affiliate campaign source record into the database.
+	 *
+	 * @param Array $values An array containing the values that need to be inserted
+	 * 
+	 * @return Boolean TRUE upon success, FALSE upon failure
+	 */
+	function insertAffiliateCampaign($values)
+	{
+        $sql = "INSERT INTO `affiliate_campaign` (`id`, `name`,
+            `affiliate_campaign`) VALUES (NULL, '$values[name]', '$values[affiliate_network]')";
+		$query = mysql_query($sql);
+		return $query;
 	}
 	
 	/**

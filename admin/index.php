@@ -38,6 +38,44 @@ if (isset($_SESSION['logged_in']))
 					}
 				}
 				break;
+            case 'create_traffic':
+				if (empty($_POST))
+				{
+					header('Location: '.ADMIN_URL);
+					exit;
+				}
+				else
+				{
+					foreach($_POST as $key => $value)
+					{
+						$values[$key] = mysql_real_escape_string($value);
+					}
+					if (!$cloaker->insertTraffic($values))
+					{
+						$viewData['errors'][] = 'Traffic source could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+					}
+
+				}
+				break;
+            case 'create_aff_campaign':
+				if (empty($_POST))
+				{
+					header('Location: '.ADMIN_URL);
+					exit;
+				}
+				else
+				{
+					foreach($_POST as $key => $value)
+					{
+						$values[$key] = mysql_real_escape_string($value);
+					}
+					if (!$cloaker->insertAffiliateCampaign($values))
+					{
+						$viewData['errors'][] = 'Traffic source could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+					}
+
+				}
+				break;
 			case 'manage':
 				if (empty($_GET['id']))
 				{
@@ -157,6 +195,7 @@ if (isset($_SESSION['logged_in']))
         'date_to' => (isset($_GET['date_to']) ? $_GET['date_to'] : $today),
     );
 	$viewData['campaigns'] = $cloaker->getCampaignDetails();
+    $viewData['traffics'] = $cloaker->getTrafficSources();
     $cloaker->updateNumPageViewsFor($viewData['campaigns'], $viewData['filters']);
     if($_SESSION['user_level'] == 'superadmin') {
         $viewData['giplist'] = $cloaker->getGipList();

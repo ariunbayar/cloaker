@@ -14,7 +14,6 @@ include('admin/config.php');
 include('admin/cloaking.class.php');
 
 $cloaker = new Cloaker();
-
 if (!empty($_GET['shortcode']) && !$cloaker->checkGiplist())
 {
     $shortcode = mysql_real_escape_string($_GET['shortcode']);
