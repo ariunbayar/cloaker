@@ -5,21 +5,6 @@
     <title>Cloaker | Dashboard</title>
     <?php require dirname(__FILE__).'/_header_includes.php'; ?>
     <script type="text/javascript">
-    function showTab(reference,id)
-    {
-        $('.menu li').removeClass('active');
-        $('section').each(function(){
-            if ($(this).css('display') == 'block')
-            {
-                if ($(this).attr('id') != 'textEditor')
-                {
-                    $(this).slideUp(400);
-                }
-            }
-        });
-        $('#'+id).slideDown(400);
-        $(reference.parentNode).addClass('active');
-    }
     </script>
 </head>
 <body>
@@ -27,13 +12,16 @@
     <div class="menu">
         <div></div>
         <ul>
-            <li class="active"><a href="javascript:void(0)" onclick="showTab(this,'manage')">Manage Campaigns<span></span></a></li>
-            <li><a href="javascript:void(0)" onclick="showTab(this,'new')">New Campaign<span></span></a></li>
-            <li><a href="javascript:void(0)" onclick="showTab(this,'traffic')">Traffic Source<span></span></a></li>
+            <li class="active"><a href="" data-id="manage">Manage Campaigns<span></span></a></li>
+            <li><a href="" data-id="new">New Campaign<span></span></a></li>
+            <li><a href="" data-id="traffic_sources">Traffic Sources<span></span></a></li>
+            <!-- TODO
             <li><a href="javascript:void(0)" onclick="showTab(this,'a_campaign')">Affiliate Campaign<span></span></a></li>
             <li><a href="javascript:void(0)" onclick="showTab(this,'new')">Affiliate Network<span></span></a></li>
+            -->
+
             <?php if($_SESSION['user_level'] == 'superadmin') { ?>
-            <li><a href="javascript:void(0)" onclick="showTab(this,'globalip')">Global IP List<span></span></a></li>
+            <li><a href="" data-id="globalip">Global IP List<span></span></a></li>
             <?php } ?>
             <li><a href="<?php echo ADMIN_URL ?>logout/">Logout<span></span></a></li>
         </ul>
@@ -187,35 +175,8 @@
                 </div>
             </div>
         </section>
-        <section id="traffic" style="display:none;">
-            <div class="scont">
-                <div class="box">
-                    <div class="tl"><div class="tr"></div></div>
-                    <h2 class="boxtitle">Traffic Source</h2>
-                    <form action="<?php echo ADMIN_URL; ?>create_traffic/" method="POST">
-                        <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
-                            <tbody>
-                            <tr>
-                                <td>Name</td><td><input size="38" name="name" type="text">
-                                <input value="Create" type="submit"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </form>
-                    <table width="100%" cellspacing="0" cellpadding="4" border="1" class="table">
-                        <tbody>
-                        <tr><td>id</td><td>Name</td></tr>
-                        <?php foreach($data['traffics'] as $traffic): ?>
-                            <tr>
-                                <td><?php echo $traffic['id']; ?></td>
-                                <td><?php echo $traffic['name']; ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    <div class="bl"><div class="br"></div></div>
-                </div>
-            </div>
+        <section id="traffic_sources" style="display:none;">
+        <?php require dirname(__FILE__).'/_dashboard_traffic_sources.php'; ?>
         </section>
         <section id="a_campaign" style="display:none;">
             <div class="scont">

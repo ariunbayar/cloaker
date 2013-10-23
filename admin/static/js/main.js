@@ -120,6 +120,35 @@ function chartPageViewByGeolocation(el, data)
 }
 
 
+function showTab(el)
+{
+    var id = $(el).attr('data-id');
+    $('.menu li').removeClass('active');
+    $('section').each(function(){
+        if ($(this).css('display') == 'block')
+        {
+            if ($(this).attr('id') != 'textEditor')
+            {
+                $(this).slideUp(400);
+            }
+        }
+    });
+    $('#'+id).slideDown(400);
+    $(el).parent().addClass('active');
+
+    url = window.location.href.split('#')[0];
+    window.location.href = url + "#" + id;
+}
+
+
 $(function(){
     toDateRange("input[name=date_from]", "input[name=date_to]");
+    $('.menu li a').click(function(e){
+        showTab(this);
+        e.preventDefault();
+    });
+    if (window.location.hash){
+        var id = window.location.hash.substr(1);
+        showTab($('.menu li a[data-id='+id+']'));
+    }
 });
