@@ -14,7 +14,7 @@
         <ul>
             <li class="active"><a href="" data-id="manage">Manage Campaigns<span></span></a></li>
             <li><a href="" data-id="new">New Campaign<span></span></a></li>
-            <li><a href="" data-id="traffic_sources">Traffic Sources<span></span></a></li>
+            <li><a href="" data-id="traffic_source">Traffic Sources<span></span></a></li>
             <!-- TODO
             <li><a href="javascript:void(0)" onclick="showTab(this,'a_campaign')">Affiliate Campaign<span></span></a></li>
             <li><a href="javascript:void(0)" onclick="showTab(this,'new')">Affiliate Network<span></span></a></li>
@@ -85,6 +85,9 @@
                     <div class="bl"><div class="br"></div></div>
                 </div>
             </div>
+        </section>
+        <section id="traffic_source" style="display:none;">
+        <?php require dirname(__FILE__).'/_dashboard_traffic_sources.php'; ?>
         </section>
         <section id="new" style="display:none;">
             <div class="scont">
@@ -175,10 +178,7 @@
                 </div>
             </div>
         </section>
-        <section id="traffic_sources" style="display:none;">
-        <?php require dirname(__FILE__).'/_dashboard_traffic_sources.php'; ?>
-        </section>
-        <section id="a_campaign" style="display:none;">
+                <section id="a_campaign" style="display:none;">
             <div class="scont">
                 <div class="box">
                     <div class="tl"><div class="tr"></div></div>

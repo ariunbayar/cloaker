@@ -38,45 +38,7 @@ if (isset($_SESSION['logged_in']))
 					}
 				}
 				break;
-            case 'create_traffic':
-				if (empty($_POST))
-				{
-					header('Location: '.ADMIN_URL);
-					exit;
-				}
-				else
-				{
-					foreach($_POST as $key => $value)
-					{
-						$values[$key] = mysql_real_escape_string($value);
-					}
-					if (!$cloaker->insertTraffic($values))
-					{
-						$viewData['errors'][] = 'Traffic source could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
-					}
-
-				}
-				break;
-            case 'create_aff_campaign':
-				if (empty($_POST))
-				{
-					header('Location: '.ADMIN_URL);
-					exit;
-				}
-				else
-				{
-					foreach($_POST as $key => $value)
-					{
-						$values[$key] = mysql_real_escape_string($value);
-					}
-					if (!$cloaker->insertAffiliateCampaign($values))
-					{
-						$viewData['errors'][] = 'Traffic source could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
-					}
-
-				}
-				break;
-			case 'manage':
+            case 'manage':
 				if (empty($_GET['id']))
 				{
 					header('Location: '.ADMIN_URL);
@@ -165,6 +127,43 @@ if (isset($_SESSION['logged_in']))
 					View('destinations', $viewData);
 					exit;
 				}
+            case 'traffic_source':
+                //$viewData = $cloaker->getTrafficSource();
+                if (!empty($_POST))
+                {
+                    switch($_POST['action'])
+                    {
+                        case 'add':
+                            if (!$cloaker->addTrafficSource(mysql_real_escape_string($_POST['name'])))
+                            {
+                                $viewData['errors'][] = 'Traffic source could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+                            }
+                            break;
+                        case 'delete':
+                            if (!$cloaker->deleteTrafficSource(mysql_real_escape_string($_POST['id'])))
+                            {
+                                $viewData['errors'][] = 'Traffic source could not be deleted, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+                            }
+                            break;
+                        case 'edit':
+                            $viewData['id'] = $cloaker->getTrafficSource(mysql_real_escape_string($_POST['id']));
+                            break;
+                        case 'update':
+                            if (!$cloaker->updateTrafficSource(mysql_real_escape_string($_POST['id']), mysql_real_escape_string($_POST['url'])))
+                            {
+                                $viewData['errors'][] = 'Traffic source could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+                            }
+                            else
+                            {
+                                $viewData['success'][] = 'Traffic source has been updated successfully';
+                            }
+                            break;
+                    }
+                }
+                $viewData['traffic_sources'] = $cloaker->getTrafficSources();
+                
+                View('traffic_source', $viewData);
+                exit;
 			case 'statistics':
                 require dirname(__FILE__).'/actions/statistics.php';
                 exit;
@@ -174,6 +173,12 @@ if (isset($_SESSION['logged_in']))
 					$viewData['errors'][] = 'Campaign could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
 				}
 				break;
+            case 'deleteTrafficSource':
+                if (!$cloaker->deleteTrafficSource(mysql_real_escape_string($_GET['id'])))
+                {
+                    $viewData['errors'][] = 'Traffic source could not be deleted, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+                }
+            break;
             case 'giplist' :
                 $giplist = $_POST['giplist'];
                 if (!$cloaker->saveGiplist($giplist))

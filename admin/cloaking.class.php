@@ -95,18 +95,23 @@ class Cloaker
 	 *
 	 * @return Array
 	 */
-	function getTrafficSources()
+	function getTrafficSources($id = 0)
 	{
         // get all the traffic source
-        $query = mysql_query("SELECT * FROM traffic_source ORDER BY id ASC");
         $data = array();
+        $query = mysql_query("SELECT * FROM traffic_source ORDER BY id ASC");
         while ($row = mysql_fetch_assoc($query))
         {
             $data[$row['id']] = $row;
         }
-
         return $data;
 	}
+
+    function getTrafficSource($id)
+	{
+        $query = mysql_query("SELECT * FROM traffic_source WHERE id ='$id'");
+        return mysql_fetch_row($query);
+    }
 
     /**
 	 * getTrafficSources()
@@ -339,6 +344,19 @@ class Cloaker
 			mysql_query("DELETE FROM destinations WHERE campaign_id = '$id'");
             $this->deleteTrackerRecordsFor($id);
 		}
+		return $query;
+	}
+
+    /**
+	 * deleteTrafficSource()
+	 *
+	 * Deletes a traffic source by ID
+	 *
+	 * @return Boolean TRUE upon success, FALSE upon failure
+	 */
+	function deleteTrafficSource($id)
+	{
+		$query = mysql_query("DELETE FROM traffic_source WHERE id = '$id'");
 		return $query;
 	}
 
@@ -953,6 +971,15 @@ class Cloaker
 		return $query;
 	}
 
+    /** TODO
+     * insertTraffic or addTraffic
+     */
+    function addTrafficSource($name)
+	{
+        $sql = "INSERT INTO `traffic_source` (`id`, `name`) VALUES (NULL, '$name')";
+		$query = mysql_query($sql);
+		return $query;
+	}
     /**
 	 * insertAffiliateCampaign()
 	 *
