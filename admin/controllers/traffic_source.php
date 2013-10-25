@@ -21,10 +21,12 @@ function traffic_source_controller()
                 }
                 break;
             case 'edit':
-                $viewData['id'] = $cloaker->getTrafficSource(mysql_real_escape_string($_POST['id']));
+                list($viewData['id'],$viewData['name']) = $cloaker->getTrafficSource(mysql_real_escape_string($_POST['id']));
                 break;
             case 'update':
-                if (!$cloaker->updateTrafficSource(mysql_real_escape_string($_POST['id']), mysql_real_escape_string($_POST['url'])))
+                if
+                    (!$cloaker->updateTrafficSource(mysql_real_escape_string($_POST['id']),
+                        mysql_real_escape_string($_POST['name'])))
                 {
                     $viewData['errors'][] = 'Traffic source could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error();
                 }

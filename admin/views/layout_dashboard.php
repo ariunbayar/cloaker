@@ -12,7 +12,9 @@
             <a href="<?php echo ADMIN_URL ?>add_campaign/">New Campaign<span></span></a>
         </li>
 
-        <li><a href="" data-id="traffic_source">Traffic Sources<span></span></a></li>
+        <li <?php echo $data['current_page']=='traffic_source'?'class="active"':'' ?>>
+            <a href="<?php echo ADMIN_URL ?>traffic_source/">Traffic Sources<span></span></a>
+        </li>
 
         <li><a href="javascript:void(0)" onclick="showTab(this,'a_campaign')">Affiliate Campaign<span></span></a></li>
         <li><a href="javascript:void(0)" onclick="showTab(this,'new')">Affiliate Network<span></span></a></li>
