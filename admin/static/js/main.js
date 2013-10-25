@@ -120,6 +120,7 @@ function chartPageViewByGeolocation(el, data)
 }
 
 
+/* TODO tabs are changed to links
 function showTab(el)
 {
     var id = $(el).attr('data-id');
@@ -139,10 +140,12 @@ function showTab(el)
     url = window.location.href.split('#')[0];
     window.location.href = url + "#" + id;
 }
+*/
 
 
 $(function(){
     toDateRange("input[name=date_from]", "input[name=date_to]");
+    /* TODO tabs are changed to links
     $('.menu li a').click(function(e){
         showTab(this);
         e.preventDefault();
@@ -151,4 +154,5 @@ $(function(){
         var id = window.location.hash.substr(1);
         showTab($('.menu li a[data-id='+id+']'));
     }
+    */
 });
