@@ -27,8 +27,8 @@
     <div class="scont">
         <div class="box">
             <div class="tl"><div class="tr"></div></div>
-            <h2 class="boxtitle">Manage Traffic Source</h2>
-            <form action="<?php echo ADMIN_URL; ?>traffic_source/" method="POST">
+            <h2 class="boxtitle">Manage Affiliate Network</h2>
+            <form action="<?php echo ADMIN_URL; ?>affiliate_network/" method="POST">
                 <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                     <tbody>
                     <tr>
@@ -56,17 +56,17 @@
     <div class="scont">
         <div class="box">
             <div class="tl"><div class="tr"></div></div>
-            <h2 class="boxtitle">Existing Traffic Sources</h2>
+            <h2 class="boxtitle">Existing Affiliate Network</h2>
             <table width="100%" cellspacing="0" cellpadding="4" border="1" class="table">
                 <tbody>
                 <tr class="hd"><td>ID</td><td>Name</td><td>Options</td></tr>
 
-                <?php foreach($data['traffic_sources'] as $traffic): ?>
-                    <tr class="mhov" onclick="editTrafficSource('<?php echo $traffic['id']; ?>')">
-                        <td><?php echo $traffic['id'] ?></td>
-                        <td><?php echo $traffic['name'] ?></td>
-                        <td><a href="javascript:void(0)" onclick="editTrafficSource('<?php echo $traffic['id']; ?>')">Edit</a>&nbsp;&nbsp;&nbsp;
-                            <a href="javascript:void(0)" onclick="deleteTrafficSource('<?php echo $traffic['id']; ?>')">Delete</a></td>
+                <?php foreach($data['affiliate_networks'] as $affiliate_network): ?>
+                    <tr class="mhov" onclick="editAffiliateNetwork('<?php echo $affiliate_network['id']; ?>')">
+                        <td><?php echo $affiliate_network['id'] ?></td>
+                        <td><?php echo $affiliate_network['name'] ?></td>
+                        <td><a href="javascript:void(0)" onclick="editAffiliateNetwork('<?php echo $affiliate_network['id']; ?>')">Edit</a>&nbsp;&nbsp;&nbsp;
+                            <a href="javascript:void(0)" onclick="deleteAffiliateNetwork('<?php echo $affiliate_network['id']; ?>')">Delete</a></td>
                     </tr>
                 <?php endforeach; ?>
 
@@ -76,13 +76,13 @@
         </div>
     </div>
     <script type="text/javascript">
-	function editTrafficSource(id)
+	function editAffiliateNetwork(id)
 	{
 		$('#formAction').val('edit');
 		$('#formID').val(id);
 		document.forms[0].submit();
 	}
-	function deleteTrafficSource(id)
+	function deleteAffiliateNetwork(id)
 	{
 		$('#formAction').val('delete');
 		$('#formID').val(id);
