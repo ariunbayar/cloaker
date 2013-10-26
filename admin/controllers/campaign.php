@@ -81,6 +81,7 @@ function delete_campaign_controller()
     {
         $viewData['errors'][] = 'Campaign could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
     }
+    manage_campaign_controller();
 }
 ?>
 <?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 : #} ?>
