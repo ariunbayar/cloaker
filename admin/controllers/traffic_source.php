@@ -21,10 +21,12 @@ function traffic_source_controller()
                 }
                 break;
             case 'edit':
-                $viewData['id'] = $cloaker->getTrafficSource(mysql_real_escape_string($_POST['id']));
+                list($viewData['id'],$viewData['name']) = $cloaker->getTrafficSource(mysql_real_escape_string($_POST['id']));
                 break;
             case 'update':
-                if (!$cloaker->updateTrafficSource(mysql_real_escape_string($_POST['id']), mysql_real_escape_string($_POST['url'])))
+                if
+                    (!$cloaker->updateTrafficSource(mysql_real_escape_string($_POST['id']),
+                        mysql_real_escape_string($_POST['name'])))
                 {
                     $viewData['errors'][] = 'Traffic source could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error();
                 }
@@ -37,19 +39,10 @@ function traffic_source_controller()
     }
     $viewData['traffic_sources'] = $cloaker->getTrafficSources();
     
+    $viewData['current_page'] = 'traffic_source';
     View('traffic_source', $viewData);
     exit;
 }
 
-
-function delete_traffic_source_controller()
-{
-    global $cloaker;
-
-    if (!$cloaker->deleteTrafficSource(mysql_real_escape_string($_GET['id'])))
-    {
-        $viewData['errors'][] = 'Traffic source could not be deleted, because the following MySQL Error occurred: <br> <br>'.mysql_error();
-    }
-}
 ?>
 <?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 : #} ?>

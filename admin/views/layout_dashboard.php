@@ -7,15 +7,18 @@
         <li <?php echo $data['current_page']=='dashboard'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL ?>">Manage Campaigns<span></span></a>
         </li>
-
         <li <?php echo $data['current_page']=='add_campaign'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL ?>add_campaign/">New Campaign<span></span></a>
         </li>
-
-        <li><a href="" data-id="traffic_source">Traffic Sources<span></span></a></li>
-
-        <li><a href="javascript:void(0)" onclick="showTab(this,'a_campaign')">Affiliate Campaign<span></span></a></li>
-        <li><a href="javascript:void(0)" onclick="showTab(this,'new')">Affiliate Network<span></span></a></li>
+        <li <?php echo $data['current_page']=='traffic_source'?'class="active"':'' ?>>
+            <a href="<?php echo ADMIN_URL ?>traffic_source/">Traffic Sources<span></span></a>
+        </li>
+        <li <?php echo $data['current_page']=='affiliate_campaign'?'class="active"':'' ?>>
+            <a href="<?php echo ADMIN_URL ?>affiliate_campaign/">Affiliate Campaign<span></span></a>
+        </li>
+        <li <?php echo $data['current_page']=='affiliate_network'?'class="active"':'' ?>>
+            <a href="<?php echo ADMIN_URL ?>affiliate_network/">Affiliate Network<span></span></a>
+        </li>
 
         <?php if($_SESSION['user_level'] == 'superadmin') { ?>
         <li><a href="" data-id="globalip">Global IP List<span></span></a></li>
@@ -39,24 +42,8 @@
     </div>
     <?php endif; ?>
 
-    
     <?php echo $main_content ?>
 
-
-
-
-
-
-
-
-
-    <section id="traffic_source" style="display:none;">
-    <?php require dirname(__FILE__).'/_dashboard_traffic_sources.php'; ?>
-    </section>
-
-    <section id="a_campaign" style="display:none;">
-    <?php require dirname(__FILE__).'/_dashboard_affiliate_campaign.php'; ?>
-    </section>
 
     <?php if($_SESSION['user_level'] == 'superadmin') { ?>
     <section id="globalip" style="display: none;">

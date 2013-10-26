@@ -114,22 +114,53 @@ class Cloaker
     }
 
     /**
-	 * getTrafficSources()
-	 *
-	 * @return Array
+	 * getAffiliateNetworks()
 	 */
-	function getAffiliateCampaigns()
+	function getAffiliateNetworks()
 	{
-        // get all the affiliate campaign source
-        $query = mysql_query("SELECT * FROM affiliate_campaign ORDER BY id ASC");
+        // get all the affiliate network
+        $query = mysql_query("SELECT * FROM affiliate_network ORDER BY id ASC");
         $data = array();
         while ($row = mysql_fetch_assoc($query))
         {
             $data[$row['id']] = $row;
         }
-
         return $data;
 	}
+
+    /**
+	 * getAffiliateNetwork()
+	 */
+	function getAffiliateNetwork($id)
+	{
+        $query = mysql_query("SELECT * FROM affiliate_network WHERE id ='$id'");
+        return mysql_fetch_row($query);
+	}
+
+    /**
+	 * getAffiliateCampaign()
+	 */
+	function getAffiliateCampaigns()
+	{
+        // get all the affiliate campaign
+        $query = mysql_query("SELECT a1.id, a1.name, a2.name as affiliate_network_name FROM `affiliate_campaign` as a1 LEFT JOIN affiliate_network as a2 ON a1.affiliate_network_id = a2.id ORDER BY id ASC");
+        $data = array();
+        while ($row = mysql_fetch_assoc($query))
+        {
+            $data[$row['id']] = $row;
+        }
+        return $data;
+	}
+
+    /**
+	 * getAffiliateCampaign()
+	 */
+	function getAffiliateCampaign($id)
+	{
+        $query = mysql_query("SELECT * FROM affiliate_campaign WHERE id ='$id'");
+        return mysql_fetch_row($query);
+	}
+
     /**
      * updateNumPageViewsFor()
      *
@@ -167,32 +198,32 @@ class Cloaker
 
 	/**
     * checkGiplist()
-    * 
+    *
     * @param
     * @return if IP is included in Global denied IPs, return true
     * not included, return false
     */
-    function checkGiplist() 
+    function checkGiplist()
     {
         if (in_array($this->ip, $this->getGipList())) {
             return true;
-        } 
-        else 
+        }
+        else
         {
             return false;
         }
     }
-    
-    
+
+
     /**
     * getGipList()
-    * 
+    *
     * Returns all global denied IPs
-    * 
-    * @param 
+    *
+    * @param
     * @return Array
     */
-    function getGipList() 
+    function getGipList()
     {
         $query = mysql_query('SELECT ip FROM denied_gips');
         $giplist = array();
@@ -201,12 +232,12 @@ class Cloaker
         }
         return $giplist;
     }
-    
+
     /**
     * saveGiplist($giplist)
-    * 
+    *
     * Save Global denied IPs
-    * 
+    *
     * @param mixed $giplist
     * @return Number of saved Global IPs
     */
@@ -214,12 +245,12 @@ class Cloaker
     {
         mysql_query("TRUNCATE TABLE denied_gips");
         $i = 0;
-        if (!empty($giplist)) 
+        if (!empty($giplist))
         {
             $giparray = explode(PHP_EOL, $giplist);
-            foreach($giparray as $gip) 
+            foreach($giparray as $gip)
             {
-                if ($gip != null && $gip != '') 
+                if ($gip != null && $gip != '')
                 {
                     mysql_query("INSERT INTO denied_gips (ip, ct) VALUES ('$gip', NOW())");
                     $i++;
@@ -228,7 +259,7 @@ class Cloaker
         }
         return $i;
     }
-    
+
 	/**
 	 * getDestinations()
 	 *
@@ -254,7 +285,7 @@ class Cloaker
 	 * Inserts a new campaign record into the database.
 	 *
 	 * @param Array $values An array containing the values that need to be inserted
-	 * 
+	 *
 	 * @return Boolean TRUE upon success, FALSE upon failure
 	 */
 	function insertCampaign($values)
@@ -297,7 +328,7 @@ class Cloaker
 	 * Updates a campaign record already present in the database.
 	 *
 	 * @param Array $values An array containing the values that need to be updated
-	 * 
+	 *
 	 * @return Boolean TRUE upon success, FALSE upon failure
 	 */
 	function updateCampaign($values)
@@ -357,6 +388,12 @@ class Cloaker
 	function deleteTrafficSource($id)
 	{
 		$query = mysql_query("DELETE FROM traffic_source WHERE id = '$id'");
+		return $query;
+	}
+
+    function updateTrafficSource($id, $name)
+	{
+		$query = mysql_query("UPDATE traffic_source SET name = '$name' WHERE id = '$id'");
 		return $query;
 	}
 
@@ -574,7 +611,7 @@ class Cloaker
 
     /**
      * getTotalPageViews()
-     * 
+     *
      * Get cloaked and non-cloaked page view count from iptracker for chart
      *
 	 * @param array $values Filter values to count by
@@ -713,10 +750,10 @@ class Cloaker
 		$ipApiUrl = "http://www.ipaddressapi.com/l/4e6c100ddeef1338ae6f91af2f61413aa2ffad38de58?h=".$this->ip; // URL to the Geolocation API provided by ipaddressapi.com
 		$apiResponse = @file_get_contents($ipApiUrl, 0, $context); // store the API response into a variable
 		
-		// A typical ipaddressapi.com API response contains: 
+		// A typical ipaddressapi.com API response contains:
 		//
 		// - Host Name or IP Address queried,
-		// - Resolved IP Address (if a Host Name was queried), 
+		// - Resolved IP Address (if a Host Name was queried),
 		// - Country Code (ISO-3166-1 alpha-2)
 		// - Country Name
 		// - Region Code (ISO-3166-2 for US and CA, FIPS 10-4 for other countries)
@@ -850,9 +887,9 @@ class Cloaker
 			$rdns = explode(',',$campaignDetails['rdns']);	
 			for($i=0;$i<count($rdns);$i++)
 			{
-				if (strpos(trim($hostname),$rdns[$i]) !== false) 
+				if (strpos(trim($hostname),$rdns[$i]) !== false)
 				{
-					$this->match = 1; 
+					$this->match = 1;
 					$this->reasonForCloak('Reverse DNS Matched');
 					return true;
 				}
@@ -955,24 +992,9 @@ class Cloaker
 		mysql_query("UPDATE `iptracker` SET `cloak` = 'yes', `reasonforcloak` = '".$reasonMessage."' WHERE `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");	
 	}
 
-    /**
-	 * insertTraffic()
-	 *
-	 * Inserts a new traffic source record into the database.
-	 *
-	 * @param Array $values An array containing the values that need to be inserted
-	 * 
-	 * @return Boolean TRUE upon success, FALSE upon failure
-	 */
-	function insertTraffic($values)
-	{
-        $sql = "INSERT INTO `traffic_source` (`id`, `name`) VALUES (NULL, '$values[name]')";
-		$query = mysql_query($sql);
-		return $query;
-	}
 
-    /** TODO
-     * insertTraffic or addTraffic
+    /**
+     * addTrafficSource()
      */
     function addTrafficSource($name)
 	{
@@ -980,30 +1002,85 @@ class Cloaker
 		$query = mysql_query($sql);
 		return $query;
 	}
+
     /**
-	 * insertAffiliateCampaign()
+	 * addAffiliateNetwork()
 	 *
-	 * Inserts a new Affiliate campaign source record into the database.
+	 * Inserts a new Affiliate network source record into the database.
 	 *
 	 * @param Array $values An array containing the values that need to be inserted
-	 * 
+	 *
 	 * @return Boolean TRUE upon success, FALSE upon failure
 	 */
-	function insertAffiliateCampaign($values)
+	function addAffiliateNetwork($name)
 	{
-        $sql = "INSERT INTO `affiliate_campaign` (`id`, `name`,
-            `affiliate_campaign`) VALUES (NULL, '$values[name]', '$values[affiliate_network]')";
+        $sql = "INSERT INTO `affiliate_network` (`id`, `name`) VALUES (NULL, '$name')";
 		$query = mysql_query($sql);
 		return $query;
 	}
+
+    /**
+	 * addAffiliateCampaign()
+	 *
+	 * Inserts a new Affiliate network source record into the database.
+	 *
+	 * @param Array $values An array containing the values that need to be inserted
+	 *
+	 * @return Boolean TRUE upon success, FALSE upon failure
+	 */
+	function addAffiliateCampaign($name, $affiliate_network_id)
+	{
+        $sql = "INSERT INTO `affiliate_campaign` (`id`, `name`, `affiliate_network_id`)
+            VALUES (NULL, '$name', '$affiliate_network_id')";
+		$query = mysql_query($sql);
+		return $query;
+	}
+
+    /**
+	 * deleteAffiliateNetwork()
+	 *
+	 * Deletes a affiliate network by ID
+	 *
+	 * @return Boolean TRUE upon success, FALSE upon failure
+	 */
+	function deleteAffiliateNetwork($id)
+	{
+		$query = mysql_query("DELETE FROM affiliate_network WHERE id = '$id'");
+		return $query;
+	}
+
+    /**
+	 * deleteAffiliateCampaign()
+	 *
+	 * Deletes a affiliate campaign by ID
+	 *
+	 * @return Boolean TRUE upon success, FALSE upon failure
+	 */
+	function deleteAffiliateCampaign($id)
+	{
+		$query = mysql_query("DELETE FROM affiliate_campaign WHERE id = '$id'");
+		return $query;
+	}
+
+    function updateAffiliateNetwork($id, $name)
+	{
+		$query = mysql_query("UPDATE affiliate_network SET name = '$name' WHERE id = '$id'");
+		return $query;
+	}
 	
+    function updateAffiliateCampaign($id, $name, $affiliate_network_id)
+	{
+		$query = mysql_query("UPDATE affiliate_campaign SET name = '$name', affiliate_network_id = '$affiliate_network_id' WHERE id = '$id'");
+		return $query;
+	}
+
 	/**
 	 * getDestinationUrl()
 	 *
 	 * Returns the Destination URL (aka Cloaked URL) corresponding to a given Campaign
 	 *
 	 * @param int $id The URL ID as recorded in the "destinations" table
-	 * @return String 
+	 * @return String
 	 */
 	function getDestinationUrl($id)
 	{

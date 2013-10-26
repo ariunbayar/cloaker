@@ -27,14 +27,24 @@
     <div class="scont">
         <div class="box">
             <div class="tl"><div class="tr"></div></div>
-            <h2 class="boxtitle">Manage Traffic Source</h2>
-            <form action="<?php echo ADMIN_URL; ?>traffic_source/" method="POST">
+            <h2 class="boxtitle">Manage Affiliate Campaign</h2>
+            <form action="<?php echo ADMIN_URL; ?>affiliate_campaign/" method="POST">
                 <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                     <tbody>
                     <tr>
                         <td>Name</td>
                         <td>
                             <input size="38" name="name" type="text" value="<?php if (!empty($data['id'])) echo $data['name'];?>">
+
+                            <select name="affiliate_network_id">
+                            <?php foreach($data['affiliate_networks'] as $affiliate_network): ?>
+                                <option value="<?php echo $affiliate_network['id'] ?>"
+                                <?php if ($data['affiliate_network_id'] == $affiliate_network['id']) echo "selected"; ?> >
+                                    <?php echo $affiliate_network['name']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                            </select>
+
                         <?php if ((!empty($_POST['action'])) && ($_POST['action'] == 'edit')): ?>
                             <input id="formAction" type="hidden" name="action" value="update">
                             <input id="formID" type="hidden" name="id" value="<?php echo $_POST['id']; ?>">
@@ -56,17 +66,18 @@
     <div class="scont">
         <div class="box">
             <div class="tl"><div class="tr"></div></div>
-            <h2 class="boxtitle">Existing Traffic Sources</h2>
+            <h2 class="boxtitle">Existing Affiliate Campaign</h2>
             <table width="100%" cellspacing="0" cellpadding="4" border="1" class="table">
                 <tbody>
-                <tr class="hd"><td>ID</td><td>Name</td><td>Options</td></tr>
+                <tr class="hd"><td>ID</td><td>Name</td><td>Affiliate Network</td><td>Options</td></tr>
 
-                <?php foreach($data['traffic_sources'] as $traffic): ?>
-                    <tr class="mhov" onclick="editTrafficSource('<?php echo $traffic['id']; ?>')">
-                        <td><?php echo $traffic['id'] ?></td>
-                        <td><?php echo $traffic['name'] ?></td>
-                        <td><a href="javascript:void(0)" onclick="editTrafficSource('<?php echo $traffic['id']; ?>')">Edit</a>&nbsp;&nbsp;&nbsp;
-                            <a href="javascript:void(0)" onclick="deleteTrafficSource('<?php echo $traffic['id']; ?>')">Delete</a></td>
+                <?php foreach($data['affiliate_campaigns'] as $affiliate_campaign): ?>
+                    <tr class="mhov" onclick="editAffiliateCampaign('<?php echo $affiliate_campaign['id']; ?>')">
+                        <td><?php echo $affiliate_campaign['id'] ?></td>
+                        <td><?php echo $affiliate_campaign['name'] ?></td>
+                        <td><?php echo $affiliate_campaign['affiliate_network_name'] ?></td>
+                        <td><a href="javascript:void(0)" onclick="editAffiliateCampaign('<?php echo $affiliate_campaign['id']; ?>')">Edit</a>&nbsp;&nbsp;&nbsp;
+                            <a href="javascript:void(0)" onclick="deleteAffiliateCampaign('<?php echo $affiliate_campaign['id']; ?>')">Delete</a></td>
                     </tr>
                 <?php endforeach; ?>
 
@@ -76,13 +87,13 @@
         </div>
     </div>
     <script type="text/javascript">
-	function editTrafficSource(id)
+	function editAffiliateCampaign(id)
 	{
 		$('#formAction').val('edit');
 		$('#formID').val(id);
 		document.forms[0].submit();
 	}
-	function deleteTrafficSource(id)
+	function deleteAffiliateCampaign(id)
 	{
 		$('#formAction').val('delete');
 		$('#formID').val(id);
