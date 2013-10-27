@@ -21,7 +21,9 @@
         </li>
 
         <?php if($_SESSION['user_level'] == 'superadmin') { ?>
-        <li><a href="" data-id="globalip">Global IP List<span></span></a></li>
+        <li <?php echo $data['current_page']=='global_ip'?'class="active"':'' ?>>
+            <a href="<?php echo ADMIN_URL ?>giplist/">Global IP List<span></span></a>
+        </li>
         <?php } ?>
         <li><a href="<?php echo ADMIN_URL ?>logout/">Logout<span></span></a></li>
     </ul>
@@ -44,12 +46,6 @@
 
     <?php echo $main_content ?>
 
-
-    <?php if($_SESSION['user_level'] == 'superadmin') { ?>
-    <section id="globalip" style="display: none;">
-    <?php require dirname(__FILE__).'/_dashboard_globalip.php'; ?>
-    </section>
-    <?php } ?>
 </div>
 
 <?php $main_content = ob_get_clean() ?>

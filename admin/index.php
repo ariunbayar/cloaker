@@ -28,7 +28,8 @@ $cloaker = new Cloaker();
 
 if (isset($_SESSION['logged_in']))
 {
-    switch($_GET['action'])
+    $action = (isset($_GET['action']) ? $_GET['action'] : '');
+    switch($action)
     {
         case 'add_campaign':
             add_campaign_controller();

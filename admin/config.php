@@ -21,6 +21,9 @@ $dev_environments = array(
 $current_domain = $_SERVER['HTTP_HOST'];
 if (array_key_exists($current_domain, $dev_environments)){
     $config = array_merge($config, $dev_environments[$current_domain]);
+    // show errors in development environment
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
 }
 
 // Defines runtime contstants for the environment

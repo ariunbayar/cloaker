@@ -12,9 +12,6 @@ function dashboard_controller()
     $viewData['campaigns'] = $cloaker->getCampaignDetails();
     $viewData['traffics'] = $cloaker->getTrafficSources();
     $cloaker->updateNumPageViewsFor($viewData['campaigns'], $viewData['filters']);
-    if($_SESSION['user_level'] == 'superadmin') {
-        $viewData['giplist'] = $cloaker->getGipList();
-    }
 
     $viewData['current_page'] = 'dashboard';
     View('dashboard', $viewData);
