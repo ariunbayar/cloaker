@@ -10,7 +10,8 @@ function traffic_source_controller()
             case 'add':
                 if (!$cloaker->addTrafficSource(mysql_real_escape_string($_POST['name'])))
                 {
-                    $viewData['errors'][] = 'Traffic source could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+                    $viewData['errors'][] = 'Traffic source could not be added, '.
+                        'because the following MySQL Error occurred: <br> <br>'.mysql_error();
                 }
                 break;
                case 'edit':
@@ -21,7 +22,8 @@ function traffic_source_controller()
                     (!$cloaker->updateTrafficSource(mysql_real_escape_string($_POST['id']),
                         mysql_real_escape_string($_POST['name'])))
                 {
-                    $viewData['errors'][] = 'Traffic source could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+                    $viewData['errors'][] = 'Traffic source could not be updated, '.
+                        'because the following MySQL Error occurred: <br> <br>'.mysql_error();
                 }
                 else
                 {

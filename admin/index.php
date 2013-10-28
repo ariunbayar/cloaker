@@ -35,18 +35,26 @@ if (isset($_SESSION['logged_in']))
             add_campaign_controller();
             break;
 
+        case 'add_traffic_source':
+            add_traffic_source_controller();
+            break;
+
         case 'delete_campaign':
             delete_campaign_controller();
             break;
+
         case 'delete_traffic_source':
             delete_traffic_source_controller();
             break;
+
         case 'delete_affiliate_campaign':
             delete_affiliate_campaign_controller();
             break;
+
         case 'delete_affiliate_network':
             delete_affiliate_network_controller();
             break;
+
         case 'manage':
             manage_campaign_controller();
             break;

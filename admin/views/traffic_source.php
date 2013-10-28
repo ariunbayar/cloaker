@@ -34,7 +34,8 @@
                 <tr>
                     <td>Name</td>
                     <td>
-                        <input size="38" name="name" type="text" value="<?php if (!empty($data['id'])) echo $data['name'];?>">
+                        <input size="38" name="name" type="text" value="<?php
+                            if (!empty($data['id'])) echo $data['name'];?>"/>
                     <?php if ((!empty($_POST['action'])) && ($_POST['action'] == 'edit')): ?>
                         <input id="formAction" type="hidden" name="action" value="update">
                         <input id="formID" type="hidden" name="id" value="<?php echo $_POST['id']; ?>">
@@ -60,20 +61,19 @@
         <table width="100%" cellspacing="0" cellpadding="4" border="1" class="table">
             <tbody>
             <tr class="hd"><td>ID</td><td>Name</td><td>Options</td></tr>
-
             <?php foreach($data['traffic_sources'] as $traffic): ?>
                 <tr class="mhov" onclick="editTrafficSource('<?php echo $traffic['id']; ?>')">
                     <td><?php echo $traffic['id'] ?></td>
                     <td><?php echo $traffic['name'] ?></td>
                     <td>
                         <a href="javascript:void(0)" onclick="editTrafficSource('<?php echo $traffic['id']; ?>')">Edit</a>&nbsp;&nbsp;&nbsp;
-                        <a href="<?php echo ADMIN_URL; ?>delete_traffic_source/<?php echo $traffic['id']; ?>/" onclick="return confirm('Are you sure to delete this traffic source?');">
+                        <a href="<?php echo ADMIN_URL; ?>delete_traffic_source/<?php echo $traffic['id']; ?>/"
+                            onclick="return confirm('Are you sure to delete this traffic source?');">
                             Delete
                         </a>
                     </td>
                 </tr>
             <?php endforeach; ?>
-
             </tbody>
         </table>
         <div class="bl"><div class="br"></div></div>
