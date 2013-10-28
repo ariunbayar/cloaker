@@ -99,7 +99,8 @@ class Cloaker
 	{
         // get all the traffic source
         $data = array();
-        $query = mysql_query("SELECT * FROM traffic_source ORDER BY id ASC");
+        $user_id = $_SESSION['user_id'];
+        $query = mysql_query("SELECT * FROM traffic_source WHERE user_id = '$user_id' ORDER BY id ASC");
         while ($row = mysql_fetch_assoc($query))
         {
             $data[$row['id']] = $row;
@@ -119,7 +120,8 @@ class Cloaker
 	function getAffiliateNetworks()
 	{
         // get all the affiliate network
-        $query = mysql_query("SELECT * FROM affiliate_network ORDER BY id ASC");
+        $user_id = $_SESSION['user_id'];
+        $query = mysql_query("SELECT * FROM affiliate_network WHERE user_id ='$user_id' ORDER BY id ASC");
         $data = array();
         while ($row = mysql_fetch_assoc($query))
         {
@@ -143,7 +145,11 @@ class Cloaker
 	function getAffiliateCampaigns()
 	{
         // get all the affiliate campaign
-        $query = mysql_query("SELECT a1.id, a1.name, a2.name as affiliate_network_name FROM `affiliate_campaign` as a1 LEFT JOIN affiliate_network as a2 ON a1.affiliate_network_id = a2.id ORDER BY id ASC");
+        $user_id = $_SESSION['user_id'];
+        $query = mysql_query("SELECT a1.id, a1.name, a2.name as
+            affiliate_network_name FROM `affiliate_campaign` as a1 LEFT JOIN
+            affiliate_network as a2 ON a1.affiliate_network_id = a2.id WHERE
+            a1.user_id = '$user_id' ORDER BY id ASC");
         $data = array();
         while ($row = mysql_fetch_assoc($query))
         {
@@ -999,7 +1005,8 @@ class Cloaker
      */
     function addTrafficSource($name)
 	{
-        $sql = "INSERT INTO `traffic_source` (`id`, `name`) VALUES (NULL, '$name')";
+        $user_id = $_SESSION['user_id'];
+        $sql = "INSERT INTO `traffic_source` (`id`, `name`, `user_id`) VALUES (NULL, '$name', '$user_id')";
 		$query = mysql_query($sql);
 		return $query;
 	}
@@ -1015,7 +1022,9 @@ class Cloaker
 	 */
 	function addAffiliateNetwork($name)
 	{
-        $sql = "INSERT INTO `affiliate_network` (`id`, `name`) VALUES (NULL, '$name')";
+        $user_id = $_SESSION['user_id'];
+        $sql = "INSERT INTO `affiliate_network` (`id`, `name`, `user_id`)".
+           " VALUES (NULL, '$name', '$user_id')";
 		$query = mysql_query($sql);
 		return $query;
 	}
@@ -1031,8 +1040,9 @@ class Cloaker
 	 */
 	function addAffiliateCampaign($name, $affiliate_network_id)
 	{
-        $sql = "INSERT INTO `affiliate_campaign` (`id`, `name`, `affiliate_network_id`)
-            VALUES (NULL, '$name', '$affiliate_network_id')";
+        $user_id = $_SESSION['user_id'];
+        $sql = "INSERT INTO `affiliate_campaign` (`id`, `name`, `affiliate_network_id`, `user_id`)".
+            " VALUES (NULL, '$name', '$affiliate_network_id', '$user_id')";
 		$query = mysql_query($sql);
 		return $query;
 	}
