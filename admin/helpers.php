@@ -28,6 +28,35 @@ class Flash
 
 
 /**
+ * Globals
+ */
+class G{
+    static public $values = array();
+
+    static public function get($key, $is_array=false)
+    {
+        $rval = ($is_array ? array() : null);
+
+        if (isset(self::$values[$key])){
+            $rval = self::$values[$key];
+        }
+        return $rval;
+    }
+
+    static public function set($key, $value, $is_array=false)
+    {
+        if ($is_array){
+            if (!isset(self::$values[$key]))
+                self::$values[$key] = array();
+            self::$values[$key][] = $value;
+        }else{
+            self::$values[$key] = $value;
+        }
+    }
+}
+
+
+/**
  * View() - Loads a view
  *
  * @param String $name Name of the view file

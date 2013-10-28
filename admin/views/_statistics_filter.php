@@ -66,32 +66,6 @@
     </div>
 </form>
 
-<script type="text/javascript">
-$(function(){
-    $('#filter_toggle').click(function(){
-        if ($('#indicator').html() == '+'){
-            $('#filter_form').show();
-            $('#indicator').html('-');
-        }else{
-            $('#filter_form').hide();
-            $('#indicator').html('+');
-        }
-    });
-    $("input[name=access_date_from]").datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        dateFormat: "yy-mm-dd",
-        onClose: function(selectedDate) {
-            $("input[name=access_date_to]").datepicker("option", "minDate", selectedDate);
-        }
-    });
-    $("input[name=access_date_to]").datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        dateFormat: "yy-mm-dd",
-        onClose: function( selectedDate ) {
-            $("input[name=access_date_from]").datepicker("option", "maxDate", selectedDate);
-        }
-    });
-});
-</script>
+<?php ob_start() ?>
+statisticsFilter();
+<?php G::set('main_js', ob_get_clean(), True) ?>

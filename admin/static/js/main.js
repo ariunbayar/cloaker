@@ -120,6 +120,35 @@ function chartPageViewByGeolocation(el, data)
 }
 
 
+function statisticsFilter() {
+    $('#filter_toggle').click(function(){
+        if ($('#indicator').html() == '+'){
+            $('#filter_form').show();
+            $('#indicator').html('-');
+        }else{
+            $('#filter_form').hide();
+            $('#indicator').html('+');
+        }
+    });
+    $("input[name=access_date_from]").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: "yy-mm-dd",
+        onClose: function(selectedDate) {
+            $("input[name=access_date_to]").datepicker("option", "minDate", selectedDate);
+        }
+    });
+    $("input[name=access_date_to]").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: "yy-mm-dd",
+        onClose: function( selectedDate ) {
+            $("input[name=access_date_from]").datepicker("option", "maxDate", selectedDate);
+        }
+    });
+}
+
+
 /* TODO tabs are changed to links
 function showTab(el)
 {
@@ -149,6 +178,24 @@ function clickableRowsForCampaignList(table) {
         window.location.href = $(this).parent().attr('data-url');
         e.preventDefault();
     });
+}
+
+
+// TODO Can be done just by anchor tag
+function editDestination(id)
+{
+    $('#formAction').val('edit');
+    $('#formID').val(id);
+    document.forms[0].submit();
+}
+
+
+// TODO Can be done just by anchor tag
+function deleteDestination(id)
+{
+    $('#formAction').val('delete');
+    $('#formID').val(id);
+    document.forms[0].submit();
 }
 
 

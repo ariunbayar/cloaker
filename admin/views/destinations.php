@@ -42,21 +42,6 @@
     </div>
 </div>			
 
-<script type="text/javascript">
-function editDestination(id)
-{
-    $('#formAction').val('edit');
-    $('#formID').val(id);
-    document.forms[0].submit();
-}
-function deleteDestination(id)
-{
-    $('#formAction').val('delete');
-    $('#formID').val(id);
-    document.forms[0].submit();
-}
-</script>
-
 <?php $main_content = ob_get_clean() ?>
 <?php require dirname(__FILE__).'/layout_manage.php'; ?>
 <?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 : #} ?>

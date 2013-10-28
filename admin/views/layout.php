@@ -15,5 +15,13 @@
     <script type="text/javascript" src="<?php echo STATIC_URL; ?>js/jquery-ui-1.10.3.custom.min.js"></script>
     <script type="text/javascript" src="<?php echo STATIC_URL; ?>js/highcharts/highcharts.js"></script>
     <script type="text/javascript" src="<?php echo STATIC_URL; ?>js/main.js"></script>
+    <script type="text/javascript">
+        <?php $main_js_array = G::get('main_js', True) ?>
+        $(function(){
+        <?php foreach ($main_js_array as $main_js){ ?>
+            <?php echo (isset($main_js) ? $main_js : '') ?>;
+        <?php } ?>
+        });
+    </script>
 </body>
 </html>
