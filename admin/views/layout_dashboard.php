@@ -44,6 +44,19 @@
     </div>
     <?php endif; ?>
 
+    <?php if (Flash::exists()): ?>
+    <div class="scont">
+        <div class="box">
+            <div class="tl"><div class="tr"></div></div>
+            <h2 class="boxtitle">Error</h2>
+            <p><?php echo Flash::get() ?></p>
+            <div class="bl"><div class="br"></div></div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+
+
     <?php echo $main_content ?>
 
 </div>

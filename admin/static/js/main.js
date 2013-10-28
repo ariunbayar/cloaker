@@ -143,8 +143,19 @@ function showTab(el)
 */
 
 
+function clickableRowsForCampaignList(table) {
+    var el = $(table);
+    el.find('tbody tr td:nth-child(-n+6)').click(function(e){
+        window.location.href = $(this).parent().attr('data-url');
+        e.preventDefault();
+    });
+}
+
+
 $(function(){
     toDateRange("input[name=date_from]", "input[name=date_to]");
+    clickableRowsForCampaignList('#campaign_list');
+
     /* TODO tabs are changed to links
     $('.menu li a').click(function(e){
         showTab(this);

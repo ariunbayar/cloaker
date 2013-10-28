@@ -4,15 +4,22 @@
  */
 class Flash
 {
-    public function set($message)
+    static public function set($message)
     {
         $_SESSION['flash_message'] = $message;
     }
 
-    public function get()
+    static public function exists()
     {
-        if (isset($_SESSION['flash_message'])){
-            return $_SESSION['flash_message'];
+        return isset($_SESSION['flash_message']);
+    }
+
+    static public function get()
+    {
+        if (self::exists()){
+            $msg = $_SESSION['flash_message'];
+            unset($_SESSION['flash_message']);
+            return $msg;
         }else{
             return '';
         }

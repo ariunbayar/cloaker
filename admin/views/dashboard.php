@@ -4,8 +4,8 @@
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
         <h2 class="boxtitle">Campaigns</h2>
-        <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
-            <tbody>
+        <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table" id="campaign_list">
+            <thead>
             <tr class="hd">
                 <td>ID</td>
                 <td>Name</td>
@@ -22,9 +22,11 @@
                 </td>
                 <td>Options</td>
             </tr>
+            </thead>
 
+            <tbody>
             <?php foreach($data['campaigns'] as $campaign): ?>
-            <tr class="mhov" onclick="window.location.href='<?php echo ADMIN_URL; ?>manage/<?php echo $campaign['id']; ?>/'">
+            <tr class="mhov" data-url="<?php echo ADMIN_URL; ?>manage/<?php echo $campaign['id']; ?>/">
                 <td><?php echo $campaign['id']; ?></td>
                 <td><?php echo $campaign['name']; ?></td>
                 <td><?php echo $campaign['ct_dt']; ?></td>
@@ -36,7 +38,8 @@
                 <td>
                     <a href="<?php echo ADMIN_URL; ?>manage/<?php echo $campaign['id']; ?>/">Manage</a>
                     &nbsp;&nbsp;&nbsp;
-                    <a href="<?php echo ADMIN_URL; ?>delete_campaign/<?php echo $campaign['id']; ?>/">Delete</a>
+                    <a href="<?php echo ADMIN_URL; ?>delete_campaign/<?php echo $campaign['id']; ?>/"
+                       onclick="return confirm('Are you sure to delete this campaign?');">Delete</a>
                 </td>
             </tr>
             <?php endforeach; ?>

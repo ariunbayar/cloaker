@@ -77,11 +77,13 @@ function delete_campaign_controller()
 {
     global $cloaker;
 
-    if (!$cloaker->deleteCampaign(mysql_real_escape_string($_GET['id'])))
+    if ($cloaker->deleteCampaign(mysql_real_escape_string($_GET['id'])))
     {
-        $viewData['errors'][] = 'Campaign could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+        Flash::set('Campaign could not be added, because the following '.
+                   'MySQL Error occurred: <br> <br>'.mysql_error());
     }
-    manage_campaign_controller();
+    header('Location: '.ADMIN_URL);
+    exit;
 }
 ?>
 <?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 : #} ?>
