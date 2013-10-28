@@ -15,6 +15,7 @@ function login_controller()
         }
     }
     View('login');
+    exit;
 }
 
 

@@ -1,3 +1,4 @@
+<?php $main_title = 'Dashboard' ?>
 <?php ob_start() ?>
 
 <h1 class="title">URL Cloaker</h1>
@@ -54,8 +55,6 @@
         </div>
     </div>
     <?php endif; ?>
-
-
 
     <?php echo $main_content ?>
 

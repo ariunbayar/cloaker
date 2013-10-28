@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Cloaker</title>
-    <?php require dirname(__FILE__).'/_header_includes.php'; ?>
-</head>
-<body>
+<?php ob_start() ?>
+
 <div class="main">
 	<div class="box" style="margin:8px auto; width:350px;">
 		<div class="tl"><div class="tr"></div></div>
@@ -28,5 +22,7 @@
 		<div class="bl"><div class="br"></div></div>
 	</div>
 </div>
-</body>
-</html>
+
+<?php $main_content = ob_get_clean() ?>
+<?php require dirname(__FILE__).'/layout.php'; ?>
+<?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 : #} ?>

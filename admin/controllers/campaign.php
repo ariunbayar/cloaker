@@ -67,6 +67,7 @@ function manage_campaign_controller()
             }
         }
         $viewData['destinations'] = $cloaker->getDestinations($campaignID);
+        $viewData['current_page'] = 'manage';
         View('manage', $viewData);
         exit;
     }
@@ -77,7 +78,7 @@ function delete_campaign_controller()
 {
     global $cloaker;
 
-    if ($cloaker->deleteCampaign(mysql_real_escape_string($_GET['id'])))
+    if (!$cloaker->deleteCampaign(mysql_real_escape_string($_GET['id'])))
     {
         Flash::set('Campaign could not be added, because the following '.
                    'MySQL Error occurred: <br> <br>'.mysql_error());

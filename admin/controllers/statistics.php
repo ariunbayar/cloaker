@@ -64,7 +64,7 @@ function statistics_controller()
     $query_string = http_build_query($filters);
     $viewData['url_format'] = ADMIN_URL.'statistics/'.$_GET['id'].'/%s/?'.$query_string;
     $viewData['filters'] = &$filters;
-
+    $viewData['current_page'] = 'statistics';
 
     View('statistics', $viewData);
     exit;

@@ -44,6 +44,7 @@ function manage_destination_controller()
             }
         }
         $viewData['destinations'] = $cloaker->getDestinations($campaignID);
+        $viewData['current_page'] = 'destinations';
         View('destinations', $viewData);
         exit;
     }
