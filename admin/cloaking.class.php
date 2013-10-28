@@ -1001,18 +1001,23 @@ class Cloaker
 
 
     /**
-     * addTrafficSource()
+     * saveTrafficSource()
      */
-    function addTrafficSource($name)
+    function saveTrafficSource($name, $id = null)
 	{
         $user_id = $_SESSION['user_id'];
-        $sql = "INSERT INTO `traffic_source` (`id`, `name`, `user_id`) VALUES (NULL, '$name', '$user_id')";
+        if ($id == null){
+            $sql = "INSERT INTO `traffic_source` (`id`, `name`, `user_id`)
+                VALUES (null, '$name', '$user_id')";
+        } else {
+            $sql = "UPDATE `traffic_source` SET `name` = '$name' WHERE `id` = '$id'";
+        }
 		$query = mysql_query($sql);
 		return $query;
 	}
 
     /**
-	 * addAffiliateNetwork()
+	 * saveAffiliateNetwork()
 	 *
 	 * Inserts a new Affiliate network source record into the database.
 	 *
@@ -1020,11 +1025,15 @@ class Cloaker
 	 *
 	 * @return Boolean TRUE upon success, FALSE upon failure
 	 */
-	function addAffiliateNetwork($name)
+	function saveAffiliateNetwork($name, $id = null)
 	{
         $user_id = $_SESSION['user_id'];
-        $sql = "INSERT INTO `affiliate_network` (`id`, `name`, `user_id`)".
-           " VALUES (NULL, '$name', '$user_id')";
+        if ($id == null){
+            $sql = "INSERT INTO `affiliate_network` (`id`, `name`, `user_id`)".
+               " VALUES (NULL, '$name', '$user_id')";
+        } else {
+            $sql = "UPDATE `affiliate_network` SET `name` = '$name' WHERE `id` = '$id'";
+        }
 		$query = mysql_query($sql);
 		return $query;
 	}
@@ -1038,11 +1047,16 @@ class Cloaker
 	 *
 	 * @return Boolean TRUE upon success, FALSE upon failure
 	 */
-	function addAffiliateCampaign($name, $affiliate_network_id)
+	function saveAffiliateCampaign($name, $affiliate_network_id, $id)
 	{
         $user_id = $_SESSION['user_id'];
-        $sql = "INSERT INTO `affiliate_campaign` (`id`, `name`, `affiliate_network_id`, `user_id`)".
-            " VALUES (NULL, '$name', '$affiliate_network_id', '$user_id')";
+        if ($id == null){
+            $sql = "INSERT INTO `affiliate_campaign` (`id`, `name`, `affiliate_network_id`, `user_id`)".
+                " VALUES (NULL, '$name', '$affiliate_network_id', '$user_id')";
+        } else {
+            $sql = "UPDATE `affiliate_campaign` SET `name` = '$name',
+                `affiliate_network_id` = '$affiliate_network_id' WHERE `id` = '$id'";
+        }
 		$query = mysql_query($sql);
 		return $query;
 	}

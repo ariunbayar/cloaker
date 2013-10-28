@@ -35,8 +35,8 @@ if (isset($_SESSION['logged_in']))
             add_campaign_controller();
             break;
 
-        case 'add_traffic_source':
-            add_traffic_source_controller();
+        case 'save_traffic_source':
+            save_traffic_source_controller();
             break;
 
         case 'delete_campaign':
@@ -59,6 +59,10 @@ if (isset($_SESSION['logged_in']))
             manage_campaign_controller();
             break;
 
+        case 'edit_traffic_source':
+            edit_traffic_source_controller();
+            break;
+
         case 'destinations':
             manage_destination_controller();
             break;
@@ -71,8 +75,24 @@ if (isset($_SESSION['logged_in']))
             affiliate_network_controller();
             break;
 
+        case 'save_affiliate_network':
+            save_affiliate_network_controller();
+            break;
+
+        case 'edit_affiliate_network':
+            edit_affiliate_network_controller();
+            break;
+
         case 'affiliate_campaign':
             affiliate_campaign_controller();
+            break;
+
+        case 'save_affiliate_campaign':
+            save_affiliate_campaign_controller();
+            break;
+
+        case 'edit_affiliate_campaign':
+            edit_affiliate_campaign_controller();
             break;
 
         case 'statistics':
