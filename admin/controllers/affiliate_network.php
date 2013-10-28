@@ -37,7 +37,6 @@ function affiliate_network_controller()
         }
     }
     $viewData['affiliate_networks'] = $cloaker->getAffiliateNetworks();
-    
     $viewData['current_page'] = 'affiliate_network';
     View('affiliate_network', $viewData);
     exit;

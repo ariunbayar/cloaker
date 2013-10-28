@@ -38,7 +38,6 @@ function traffic_source_controller()
         }
     }
     $viewData['traffic_sources'] = $cloaker->getTrafficSources();
-    
     $viewData['current_page'] = 'traffic_source';
     View('traffic_source', $viewData);
     exit;

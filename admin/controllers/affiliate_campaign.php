@@ -40,7 +40,6 @@ function affiliate_campaign_controller()
     }
     $viewData['affiliate_campaigns'] = $cloaker->getAffiliateCampaigns();
     $viewData['affiliate_networks'] = $cloaker->getAffiliateNetworks();
-    
     $viewData['current_page'] = 'affiliate_campaign';
     View('affiliate_campaign', $viewData);
     exit;

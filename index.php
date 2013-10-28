@@ -28,7 +28,7 @@ if (!empty($_GET['shortcode']) && !$cloaker->checkGiplist())
 				header('Location: '.$cloaker->getDestinationUrl($campaignDetails['cloaked_url']));
 				exit;
 			}
-			else // if cloaking is enabled and a reason for cloaking is detected -> display fake landing page 
+			else // if cloaking is enabled and a reason for cloaking is detected -> display fake landing page
 			{
 				header('Location: '.$cloaker->getDestinationUrl($campaignDetails['cloaking_url']));
 				exit;
