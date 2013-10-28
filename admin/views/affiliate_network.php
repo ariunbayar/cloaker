@@ -65,8 +65,13 @@
                 <tr class="mhov" onclick="editAffiliateNetwork('<?php echo $affiliate_network['id']; ?>')">
                     <td><?php echo $affiliate_network['id'] ?></td>
                     <td><?php echo $affiliate_network['name'] ?></td>
-                    <td><a href="javascript:void(0)" onclick="editAffiliateNetwork('<?php echo $affiliate_network['id']; ?>')">Edit</a>&nbsp;&nbsp;&nbsp;
-                        <a href="javascript:void(0)" onclick="deleteAffiliateNetwork('<?php echo $affiliate_network['id']; ?>')">Delete</a></td>
+                    <td>
+                        <a href="javascript:void(0)" onclick="editAffiliateNetwork('<?php echo $affiliate_network['id']; ?>')">Edit</a>&nbsp;&nbsp;&nbsp;
+                        <a href="<?php echo ADMIN_URL; ?>delete_affiliate_network/<?php echo $affiliate_network['id']; ?>/" 
+                        onclick="return confirm('Are you sure to delete this affiliate network?');">
+                            Delete
+                        </a>
+                     </td>
                 </tr>
             <?php endforeach; ?>
 
@@ -79,12 +84,6 @@
 function editAffiliateNetwork(id)
 {
     $('#formAction').val('edit');
-    $('#formID').val(id);
-    document.forms[0].submit();
-}
-function deleteAffiliateNetwork(id)
-{
-    $('#formAction').val('delete');
     $('#formID').val(id);
     document.forms[0].submit();
 }

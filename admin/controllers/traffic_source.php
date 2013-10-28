@@ -2,7 +2,6 @@
 function traffic_source_controller()
 {
     global $cloaker;
-
     //$viewData = $cloaker->getTrafficSource();
     if (!empty($_POST))
     {
@@ -14,13 +13,7 @@ function traffic_source_controller()
                     $viewData['errors'][] = 'Traffic source could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
                 }
                 break;
-            case 'delete':
-                if (!$cloaker->deleteTrafficSource(mysql_real_escape_string($_POST['id'])))
-                {
-                    $viewData['errors'][] = 'Traffic source could not be deleted, because the following MySQL Error occurred: <br> <br>'.mysql_error();
-                }
-                break;
-            case 'edit':
+               case 'edit':
                 list($viewData['id'],$viewData['name']) = $cloaker->getTrafficSource(mysql_real_escape_string($_POST['id']));
                 break;
             case 'update':
@@ -43,5 +36,23 @@ function traffic_source_controller()
     exit;
 }
 
+
+function delete_traffic_source_controller()
+{
+    global $cloaker;
+
+    if (!$cloaker->deleteTrafficSource(mysql_real_escape_string($_GET['id'])))
+    {
+        Flash::set('Traffic source could not be deleted, because the '.
+            'following MySQL Error occurred: <br> <br>'.mysql_error());
+    }
+    
+    $viewData['traffic_sources'] = $cloaker->getTrafficSources();
+    $viewData['current_page'] = 'traffic_source';
+    View('traffic_source', $viewData);
+    exit;
+}
 ?>
+
+
 <?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 : #} ?>

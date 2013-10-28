@@ -76,8 +76,12 @@
                     <td><?php echo $affiliate_campaign['id'] ?></td>
                     <td><?php echo $affiliate_campaign['name'] ?></td>
                     <td><?php echo $affiliate_campaign['affiliate_network_name'] ?></td>
-                    <td><a href="javascript:void(0)" onclick="editAffiliateCampaign('<?php echo $affiliate_campaign['id']; ?>')">Edit</a>&nbsp;&nbsp;&nbsp;
-                        <a href="javascript:void(0)" onclick="deleteAffiliateCampaign('<?php echo $affiliate_campaign['id']; ?>')">Delete</a></td>
+                    <td>
+                        <a href="javascript:void(0)" onclick="editAffiliateCampaign('<?php echo $affiliate_campaign['id']; ?>')">Edit</a>&nbsp;&nbsp;&nbsp;
+                        <a href="<?php echo ADMIN_URL; ?>delete_affiliate_campaign/<?php echo $affiliate_campaign['id']; ?>/" onclick="return confirm('Are you sure to delete this affiliate campaign?');">
+                            Delete
+                        </a>
+                    </td>
                 </tr>
             <?php endforeach; ?>
 
@@ -93,12 +97,7 @@ function editAffiliateCampaign(id)
     $('#formID').val(id);
     document.forms[0].submit();
 }
-function deleteAffiliateCampaign(id)
-{
-    $('#formAction').val('delete');
-    $('#formID').val(id);
-    document.forms[0].submit();
-}
+
 </script>
 
 <?php $main_content = ob_get_clean() ?>

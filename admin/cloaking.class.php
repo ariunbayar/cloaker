@@ -387,6 +387,7 @@ class Cloaker
 	 */
 	function deleteTrafficSource($id)
 	{
+
 		$query = mysql_query("DELETE FROM traffic_source WHERE id = '$id'");
 		return $query;
 	}

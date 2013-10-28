@@ -14,12 +14,6 @@ function affiliate_campaign_controller()
                     $viewData['errors'][] = 'Affiliate campaign could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
                 }
                 break;
-            case 'delete':
-                if (!$cloaker->deleteAffiliateCampaign(mysql_real_escape_string($_POST['id'])))
-                {
-                    $viewData['errors'][] = 'Affiliate campaign could not be deleted, because the following MySQL Error occurred: <br> <br>'.mysql_error();
-                }
-                break;
             case 'edit':
                 list($viewData['id'],$viewData['name'],$viewData['affiliate_network_id']) = $cloaker->getAffiliateCampaign(mysql_real_escape_string($_POST['id']));
                 break;
@@ -45,5 +39,20 @@ function affiliate_campaign_controller()
     exit;
 }
 
+function delete_affiliate_campaign_controller()
+{
+    global $cloaker;
+    if (!$cloaker->deleteAffiliateCampaign(mysql_real_escape_string($_GET['id'])))
+    {
+        Flash::set('Affiliate campaign could not be deleted, because'.
+            ' the following MySQL Error occurred: <br> <br>'.mysql_error());
+    }
+
+    $viewData['affiliate_campaigns'] = $cloaker->getAffiliateCampaigns();
+    $viewData['affiliate_networks'] = $cloaker->getAffiliateNetworks();
+    $viewData['current_page'] = 'affiliate_campaign';
+    View('affiliate_campaign', $viewData);
+    exit;
+}
 ?>
 <?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 : #} ?>

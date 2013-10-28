@@ -67,7 +67,9 @@
                     <td><?php echo $traffic['name'] ?></td>
                     <td>
                         <a href="javascript:void(0)" onclick="editTrafficSource('<?php echo $traffic['id']; ?>')">Edit</a>&nbsp;&nbsp;&nbsp;
-                        <a href="delete?id='<?php echo $traffic['id']; ?>'">Delete</a>
+                        <a href="<?php echo ADMIN_URL; ?>delete_traffic_source/<?php echo $traffic['id']; ?>/" onclick="return confirm('Are you sure to delete this traffic source?');">
+                            Delete
+                        </a>
                     </td>
                 </tr>
             <?php endforeach; ?>
