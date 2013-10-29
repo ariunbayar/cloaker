@@ -198,7 +198,6 @@ function deleteDestination(id)
     document.forms[0].submit();
 }
 
-
 $(function(){
     toDateRange("input[name=date_from]", "input[name=date_to]");
     clickableRowsForCampaignList('#campaign_list');

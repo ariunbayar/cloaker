@@ -1087,6 +1087,19 @@ class Cloaker
 		return $query;
 	}
 
+    /**
+	 * deleteAffiliateCampaignsByNetId()
+	 *
+	 * Deletes a affiliate campaign by Affiliate network ID
+	 *
+	 * @return Boolean TRUE upon success, FALSE upon failure
+	 */
+	function deleteAffiliateCampaignsByNetId($id)
+	{
+		$query = mysql_query("DELETE FROM affiliate_campaign WHERE affiliate_network_id = '$id'");
+		return $query;
+	}
+
     function updateAffiliateNetwork($id, $name)
 	{
 		$query = mysql_query("UPDATE affiliate_network SET name = '$name' WHERE id = '$id'");

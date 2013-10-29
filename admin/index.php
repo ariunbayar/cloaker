@@ -21,7 +21,6 @@ require dirname(__FILE__).'/controllers/global_ip.php';
 require dirname(__FILE__).'/controllers/login.php';
 require dirname(__FILE__).'/controllers/statistics.php';
 require dirname(__FILE__).'/controllers/traffic_source.php';
-require dirname(__FILE__).'/controllers/affiliate_network.php';
 require dirname(__FILE__).'/controllers/affiliate_campaign.php';
 
 $cloaker = new Cloaker();
