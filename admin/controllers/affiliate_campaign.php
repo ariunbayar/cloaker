@@ -79,7 +79,9 @@ function edit_affiliate_network_controller()
 function save_affiliate_network_controller()
 {
     global $cloaker;
-    if (!$cloaker->saveAffiliateNetwork(mysql_real_escape_string($_POST['name']), $_POST['id']))
+    if
+        (!$cloaker->saveAffiliateNetwork(mysql_real_escape_string($_POST['name']),
+            mysql_real_escape_string($_POST['id'])))
     {
         $viewData['errors'][] = 'Affiliate network could not be added, because '.
             'the following MySQL Error occurred: <br> <br>'.mysql_error();
