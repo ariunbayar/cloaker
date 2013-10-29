@@ -67,5 +67,4 @@ function View($name, $data = '')
 {
     include dirname(__FILE__).'/views/'.$name.'.php';
 }
-
 ?>
