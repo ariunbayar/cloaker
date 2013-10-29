@@ -1,1 +1,5 @@
 *.swp
+*~
+/lib/vendor
+/lib/composer.phar
+/lib/composer.lock
