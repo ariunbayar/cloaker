@@ -26,7 +26,7 @@ if (array_key_exists($current_domain, $dev_environments)){
     error_reporting(E_ALL);
 }
 
-// Defines runtime contstants for the environment
+// Defines runtime constants for the environment
 foreach ($config as $param => $value) {
     define($param, $value);
 }
