@@ -28,7 +28,7 @@
 <div class="scont">
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
-        <h2 class="boxtitle">Manage Affiliate Campaign</h2>
+        <h2 class="boxtitle">Manage Affiliate Network & Campaign</h2>
         <form action="<?php echo ADMIN_URL; ?>save_affiliate_campaign/" method="POST">
             <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                 <tbody>
