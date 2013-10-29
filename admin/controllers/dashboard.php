@@ -10,10 +10,10 @@ function dashboard_controller()
         'date_to' => (isset($_GET['date_to']) ? $_GET['date_to'] : $today),
     );
     $viewData['campaigns'] = $cloaker->getCampaignDetails();
-    $viewData['traffics'] = $cloaker->getTrafficSources();
     $cloaker->updateNumPageViewsFor($viewData['campaigns'], $viewData['filters']);
 
     $viewData['current_page'] = 'dashboard';
     View('dashboard', $viewData);
+    exit;
 }
 ?>

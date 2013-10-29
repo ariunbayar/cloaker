@@ -7,6 +7,7 @@ function affiliate_campaign_controller()
     $viewData['affiliate_campaigns'] = $cloaker->getAffiliateCampaigns();
     $viewData['affiliate_networks'] = $cloaker->getAffiliateNetworks();
     $viewData['current_page'] = 'affiliate_campaign';
+    $viewData['id'] = $viewData['name'] = $viewData['affiliate_network_id'] = null;
     View('affiliate_campaign', $viewData);
     exit;
 }
@@ -28,13 +29,12 @@ function save_affiliate_campaign_controller()
 {
     global $cloaker;
 
-    if
-        (!$cloaker->saveAffiliateCampaign(mysql_real_escape_string($_POST['name']),
+    if (!$cloaker->saveAffiliateCampaign(mysql_real_escape_string($_POST['name']),
             $_POST['affiliate_network_id'], $_POST['id']))
-        {
-            $viewData['errors'][] = 'Affiliate campaign could not be added, because '.
-                'the following MySQL Error occurred: <br> <br>'.mysql_error();
-        }
+    {
+        $viewData['errors'][] = 'Affiliate campaign could not be added, because '.
+            'the following MySQL Error occurred: <br> <br>'.mysql_error();
+    }
 
     header('Location: '.ADMIN_URL.'/affiliate_campaign/');
     exit;

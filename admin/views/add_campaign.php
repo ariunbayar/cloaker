@@ -78,6 +78,11 @@
                 <tr><td>User Agent strings (comma-separated)</td><td><input size="38" name="ua_strings" type="text"></td></tr>
                 <tr><td>Cloak based on User Agent?</td><td><input name="ua_status" value="on" type="radio" class="radio"> On <input name="ua_status" value="off" type="radio" class="radio" checked> Off</td></tr>
                 <tr>
+                    <td>Traffic source</td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
                     <td>&nbsp;</td>
                     <td><input value="Create" type="submit"></td>
                 </tr>

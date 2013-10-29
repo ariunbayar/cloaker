@@ -17,6 +17,7 @@ function add_campaign_controller()
             $viewData['errors'][] = 'Campaign could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
         }
     }
+    $viewData['traffic_sources'] = $cloaker->getTrafficSources();
     $viewData['current_page'] = 'add_campaign';
     View('add_campaign', $viewData);
     exit;

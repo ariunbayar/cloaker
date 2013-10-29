@@ -24,6 +24,7 @@
         </div>
     </div>
 <?php endif; ?>
+
 <div class="scont">
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
@@ -34,9 +35,12 @@
                 <tr>
                     <td>Name</td>
                     <td>
-                        <input size="38" name="name" type="text" value="<?php 
-                            if (!empty($data['id'])) echo $data['name'];?>">
-
+                        <input size="38" name="name" type="text" value="<?php echo $data['name'] ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Affiliate Network</td>
+                    <td>
                         <select name="affiliate_network_id">
                         <?php foreach($data['affiliate_networks'] as $affiliate_network): ?>
                             <option value="<?php echo $affiliate_network['id'] ?>"
@@ -46,12 +50,13 @@
                         <?php endforeach; ?>
                         </select>
 
-                        <?php if(!empty($data['id'])){ ?>
-                            <input id="formID" type="hidden" name="id" value="<?php echo $data['id']; ?>">
-                            <button type="submit">Update</button>
-                        <?php } else { ?>
-                            <button type="submit">Add</button>
-                        <?php } ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="hidden" name="id" value="<?php echo $data['id'] ?>">
+                        <input type="submit" value="Save"/>
                     </td>
                 </tr>
                 </tbody>
@@ -60,6 +65,7 @@
         <div class="bl"><div class="br"></div></div>
     </div>
 </div>
+
 <div class="scont">
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
@@ -89,15 +95,6 @@
         <div class="bl"><div class="br"></div></div>
     </div>
 </div>
-<script type="text/javascript">
-function editAffiliateCampaign(id)
-{
-    $('#formAction').val('edit');
-    $('#formID').val(id);
-    document.forms[0].submit();
-}
-
-</script>
 
 <?php $main_content = ob_get_clean() ?>
 <?php require dirname(__FILE__).'/layout_dashboard.php'; ?>
