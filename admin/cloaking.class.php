@@ -1003,19 +1003,6 @@ class Cloaker
 		return $query;
 	}
 
-    /**
-	 * deleteNetwork()
-	 *
-	 * Deletes a network by ID
-	 *
-	 * @return Boolean TRUE upon success, FALSE upon failure
-	 */
-	function deleteNetwork($id)
-	{
-		$query = mysql_query("DELETE FROM network WHERE id = '$id'");
-		return $query;
-	}
-
     function updateNetwork($id, $name)
 	{
 		$query = mysql_query("UPDATE network SET name = '$name' WHERE id = '$id'");

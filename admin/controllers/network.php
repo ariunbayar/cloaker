@@ -36,9 +36,7 @@ function save_network_controller()
 
 function delete_network_controller()
 {
-    global $cloaker;
-
-    if (!$cloaker->deleteNetwork(mysql_real_escape_string($_GET['id'])))
+    if (!Network::deleteById($_GET['id']))
     {
         $viewData['errors'][] = 'Network could not be deleted, because '. 
             'the following MySQL Error occurred: <br> <br>'.mysql_error();
