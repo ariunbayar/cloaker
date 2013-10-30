@@ -34,9 +34,12 @@
                 <tr>
                     <td>Name</td>
                     <td>
-                        <input size="38" name="name" type="text" value="<?php if (!empty($data['id'])) echo $data['name'] ?>"/>
-                            <?php if (!empty($data['id'])) { ?>
-                                <input id="formID" type="hidden" name="id" value="<?php echo $data['id']; ?>">
+                        <input size="38" name="name" type="text" value="<?php
+if (!empty($data['one_traffic_source']->id)) echo
+$data['one_traffic_source']->name ?>"/>
+                            <?php if (!empty($data['one_traffic_source']->id)) { ?>
+                                <input id="formID" type="hidden" name="id"
+value="<?php echo $data['one_traffic_source']->id; ?>">
                                 <button type="submit">Update</button>
                             <?php } else { ?>
                             <button type="submit">Add</button>

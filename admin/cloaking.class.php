@@ -91,12 +91,6 @@ class Cloaker
 		}
 	}
 
-    function getTrafficSource($id)
-	{
-        $query = mysql_query("SELECT * FROM traffic_source WHERE id ='$id'");
-        return mysql_fetch_row($query);
-    }
-
     /**
 	 * getNetworks()
 	 */

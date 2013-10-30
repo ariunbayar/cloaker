@@ -41,8 +41,6 @@ class TrafficSource
      */
     static public function getByUserId($user_id)
     {
-        // TODO remove Cloaker->getTrafficSources
-
         $user_id = mysql_real_escape_string($user_id);
 
         $query = "SELECT * FROM traffic_source WHERE user_id = '%s' ORDER BY id ASC";
@@ -56,6 +54,19 @@ class TrafficSource
         }
 
         return $entities;
+    }
+
+    static public function getById($id)
+    {
+        $id = mysql_real_escape_string($id);
+
+        $query = "SELECT * FROM traffic_source WHERE id = '%s'";
+        $sql = sprintf($query, $id);
+        $rs = mysql_query($sql);
+
+        $obj = mysql_fetch_object($rs, get_class());
+
+        return $obj;
     }
 
     /**
