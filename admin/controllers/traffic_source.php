@@ -2,9 +2,8 @@
 
 function traffic_source_controller()
 {
-    global $cloaker;
+    $viewData['traffic_sources'] = TrafficSource::getByUserId($_SESSION['user_id']);
 
-    $viewData['traffic_sources'] = $cloaker->getTrafficSources();
     $viewData['current_page'] = 'traffic_source';
     View('traffic_source', $viewData);
     exit;
@@ -15,7 +14,8 @@ function edit_traffic_source_controller()
     global $cloaker;
 
     list($viewData['id'],$viewData['name']) = $cloaker->getTrafficSource(mysql_real_escape_string($_GET['id']));
-    $viewData['traffic_sources'] = $cloaker->getTrafficSources();
+
+    $viewData['traffic_sources'] = TrafficSource::getByUserId($_SESSION['user_id']);
     $viewData['current_page'] = 'traffic_source';
     View('traffic_source', $viewData);
     exit;

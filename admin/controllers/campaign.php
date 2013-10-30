@@ -26,11 +26,6 @@ function add_campaign_controller()
         return $options;
     };
 
-    // Traffic source options
-    //$options = $to_options(TrafficSource::getByUserId($_SESSION['user_id']));
-    //$viewData['traffic_source_options'] = $options;
-
-    // Affiliate network options
     $options = $to_options(Network::getByUserId($_SESSION['user_id']));
     $viewData['network_options'] = $options;
 

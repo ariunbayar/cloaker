@@ -83,8 +83,8 @@ class TrafficSource
         {
             $entities[] = $obj;
         }
-        return $entities;
 
+        return $entities;
     }
 
     /**
