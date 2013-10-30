@@ -490,7 +490,7 @@ class Cloaker
 	 */
 	function getIdByShortcode($shortcode)
 	{
-		$query = mysql_query("SELECT id FROM campaigns WHERE shortcode = '$shortcode'");
+		$query = mysql_query("SELECT campaign_id FROM tracker WHERE shortcode = '$shortcode'");
 		if (mysql_num_rows($query) == 0)
 		{
 			return false;
