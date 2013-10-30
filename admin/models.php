@@ -6,8 +6,69 @@ class Model
     public function __construct()
     {
         foreach ($this->_fields as $field) {
-            $this->_values[$field] = null;
+            if (!array_key_exists($field, $this->_values)){
+                $this->_values[$field] = null;
+            }
         }
+    }
+
+    public function __get($name)
+    {
+        if (in_array($name, $this->_fields)){
+            return $this->_values[$name];
+        }
+        return null;
+    }
+
+    public function __set($name, $value)
+    {
+        if (in_array($name, $this->_fields)){
+            $this->_values[$name] = $value;
+        }
+    }
+
+    public function save()
+    {
+        $is_editing = is_numeric($this->id);
+
+        if ($is_editing){
+            $fields = '';
+            // Example:
+            // $this->_values= array('name' => 'bold', 'created_at' => '2013-09-11 00:00:00');
+            foreach ($this->_values as $field => $value){
+                $fields .= sprintf($field."='%s', ", $value);
+                $value = mysql_escape_string($value);
+            }
+            $fields = rtrim($fields, ", ");
+            // Example:
+            // $fields = "name='bold', created_at='2013-09-11 00:00:00'";
+
+            $id = mysql_real_escape_string($this->id);
+            $query = "UPDATE %s SET %s WHERE id=$id";
+            $sql = sprintf($query, $this::$_table, $fields);
+        } else {
+            $field_names = '';
+            $field_values = '';
+            // Example:
+            // $this->_values= array('name' => 'bold', 'created_at' => NULL);
+            foreach ($this->_values as $field => $value) {
+                if ($field == 'created_date'){
+                    $value = date("Y-m-d H:i:s");
+                }
+                $field_names .= $field.', ';
+                $value = mysql_escape_string($value);
+                $field_values .= sprintf("'%s', ", $value);
+            }
+            $field_values = rtrim($field_values, ", ");
+            $field_names = rtrim($field_names, ", ");
+            // Example:
+            // $field_names = "name, created_at";
+            // $field_values = "'bold', '2013-09-11 00:00:00'";
+            $query = "INSERT INTO %s (%s) VALUES (%s)";
+            $sql = sprintf($query, $this::$_table, $field_names, $field_values);
+        }
+        $rs = mysql_query($sql);
+        return $rs;
     }
 
     /**
@@ -16,14 +77,28 @@ class Model
      */
     static public function getById($id)
     {
+        $class = get_called_class();
         $id = mysql_real_escape_string($id);
 
-        $query = "SELECT * FROM tracker WHERE id = '%s' LIMIT 1";
-        $sql = sprintf($query, $id);
+        $query = "SELECT * FROM %s WHERE id = '%s' LIMIT 1";
+        $sql = sprintf($query, $class::$_table, $id);
         $rs = mysql_query($sql);
 
         $entity = mysql_fetch_object($rs, get_called_class());
         return $entity;
+    }
+
+    static public function hydrate($sql)
+    {
+        $class = get_called_class();
+        $rs = mysql_query($sql);
+
+        $entities = array();
+        while ($obj = mysql_fetch_object($rs, $class))
+        {
+            $entities[] = $obj;
+        }
+        return $entities;
     }
 }
 
@@ -120,23 +195,18 @@ class TrafficSource
 		$result = mysql_query($sql);
 		return $result;
 	}
-
 }
 
 
 class Tracker extends Model
 {
+    static public $_table = 'tracker';
     protected $_fields = array(
         'id',
         'campaign_id',
         'traffic_source_id',
         'shortcode',
     );
-
-    public $id;
-    public $campaign_id;
-    public $traffic_source_id;
-    public $shortcode;
 
     /**
      * @param int Campaign id to look up
@@ -146,16 +216,9 @@ class Tracker extends Model
     {
         $campaign_id = mysql_real_escape_string($campaign_id);
 
-        $query = "SELECT * FROM tracker WHERE campaign_id = '%s'";
-        $sql = sprintf($query, $campaign_id);
-        $rs = mysql_query($sql);
-
-        $entities = array();
-        while ($obj = mysql_fetch_object($rs, get_class()))
-        {
-            $entities[] = $obj;
-        }
-        return $entities;
+        $query = "SELECT * FROM %s WHERE campaign_id = '%s'";
+        $sql = sprintf($query, self::$_table, $campaign_id);
+        return self::hydrate($sql);
     }
 
     /**
@@ -165,11 +228,8 @@ class Tracker extends Model
      */
     public function changeShortcode()
     {
-        $shortcode = substr(md5(time()), 0, 7);
-        $id = mysql_real_escape_string($this->id);
-        $query = "UPDATE tracker SET shortcode='%s' WHERE id = '%s'";
-        $rs = mysql_query(sprintf($query, $shortcode, $id));
-        return $rs;
+        $this->shortcode = substr(md5(time()), 0, 7);
+        return $this->save();
     }
 }
 
