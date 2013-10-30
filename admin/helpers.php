@@ -67,4 +67,45 @@ function View($name, $data = '')
 {
     include dirname(__FILE__).'/views/'.$name.'.php';
 }
+
+
+function select_tag($name, $options, $selected = '', $empty_value = false,
+                    $attrs = array())
+{
+    $attributes = '';
+    foreach ($attrs as $key => $value) {
+        $attributes .= sprintf('%s="%s" ', $key, $value);
+    }
+    ob_start();
+    ?>
+    <select name="<?php echo $name ?>" id="<?php echo $name ?>"
+            <?php echo $attributes ?>>
+        <?php if ($empty_value) {?>
+            <option value=''><?php echo $empty_value ?></option>
+        <?php } ?>
+        <?php foreach ($options as $key => $value){ ?>
+            <?php if (is_array($value)) {?>
+                <?php list($label, $_options) = $value ?>
+                <optgroup label="<?php echo $label ?>">
+                    <?php foreach ($_options as $_key => $_value){ ?>
+                        <?php $is_selected = (!is_null($selected) && $_key == $selected) ?>
+                        <option value="<?php echo htmlspecialchars($_key) ?>" <?php if ($is_selected) echo 'selected="selected"' ?>>
+                            <?php echo htmlspecialchars($_value)?>
+                        </option>
+                    <?php } ?>
+                </optgroup>
+            <?php }else{ ?>
+                <?php $is_selected = (!is_null($selected) && $key == $selected) ?>
+                <option value="<?php echo htmlspecialchars($key) ?>" <?php if ($is_selected) echo 'selected="selected"' ?>>
+                    <?php echo htmlspecialchars($value)?>
+                </option>
+            <?php } ?>
+        <?php } ?>
+    </select>
+    <?php
+    $html = ob_get_clean();
+    return $html;
+}
+
+
 ?>

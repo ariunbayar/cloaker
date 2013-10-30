@@ -80,8 +80,16 @@
                 <tr>
                     <td>Traffic source</td>
                     <td>
+                        <?php echo select_tag('traffic_source_id', $data['traffic_source_options'], '', '[optional]') ?>
                     </td>
                 </tr>
+                <tr>
+                    <td>Affiliate Campaign</td>
+                    <td>
+                        <?php echo select_tag('affiliate_campaign_id', $data['affiliate_campaign_options'], '', '[optional]') ?>
+                    </td>
+                </tr>
+
                 <tr>
                     <td>&nbsp;</td>
                     <td><input value="Create" type="submit"></td>
@@ -95,4 +103,4 @@
 
 <?php $main_content = ob_get_clean() ?>
 <?php require dirname(__FILE__).'/layout_dashboard.php'; ?>
-<?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 : #} ?>
+<?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 tw=140 : #} ?>

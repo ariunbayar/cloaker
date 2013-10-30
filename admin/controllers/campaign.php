@@ -17,7 +17,23 @@ function add_campaign_controller()
             $viewData['errors'][] = 'Campaign could not be added, because the following MySQL Error occurred: <br> <br>'.mysql_error();
         }
     }
-    $viewData['traffic_sources'] = $cloaker->getTrafficSources();
+
+    $to_options = function ($entities){
+        $options = array();
+        foreach ($entities as $entity) {
+            $options[$entity->id] = $entity->name;
+        }
+        return $options;
+    };
+
+    // Traffic source options
+    $options = $to_options(TrafficSource::getByUserId($_SESSION['user_id']));
+    $viewData['traffic_source_options'] = $options;
+
+    // Affiliate campaign options
+    $options = $to_options(TrafficSource::getByUserId($_SESSION['user_id']));
+    $viewData['affiliate_campaign_options'] = $options;
+
     $viewData['current_page'] = 'add_campaign';
     View('add_campaign', $viewData);
     exit;

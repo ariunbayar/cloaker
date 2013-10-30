@@ -12,6 +12,7 @@ session_start();
 require dirname(__FILE__).'/config.php';
 require dirname(__FILE__).'/cloaking.class.php';
 require dirname(__FILE__).'/helpers.php';
+require dirname(__FILE__).'/models.php';
 
 // include controller functions
 require dirname(__FILE__).'/controllers/campaign.php';
