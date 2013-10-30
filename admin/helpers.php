@@ -108,4 +108,19 @@ function select_tag($name, $options, $selected = '', $empty_value = false,
 }
 
 
+function anchor_tag($url, $text=null, $new_window=false)
+{
+    $url = htmlspecialchars($url);
+    $text = ($text ? htmlspecialchars($text) : $url);
+
+    if ($new_window) {
+        $format = '<a href="%s" target="_blank">%s</a>';
+    }else{
+        $format = '<a href="%s">%s</a>';
+    }
+
+    $html = sprintf($format, $url, $text);
+    return $html;
+}
+
 ?>
