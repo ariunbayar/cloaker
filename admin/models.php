@@ -54,8 +54,8 @@ class TrafficSource
         {
             $entities[] = $obj;
         }
-        return $entities;
 
+        return $entities;
     }
 
     /**
@@ -93,6 +93,7 @@ class TrafficSource
 	}
 
 }
+
 
 class Tracker
 {

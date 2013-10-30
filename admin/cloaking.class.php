@@ -91,25 +91,6 @@ class Cloaker
 		}
 	}
 
-    /**
-	 * getTrafficSources()
-	 *
-	 * @return Array
-	 */
-
-    function getTrafficSources($id = 0)
-	{
-        // get all the traffic source
-        $data = array();
-        $user_id = $_SESSION['user_id'];
-        $query = mysql_query("SELECT * FROM traffic_source WHERE user_id = '$user_id' ORDER BY id ASC");
-        while ($row = mysql_fetch_assoc($query))
-        {
-            $data[$row['id']] = $row;
-        }
-        return $data;
-	}
-
     function getTrafficSource($id)
 	{
         $query = mysql_query("SELECT * FROM traffic_source WHERE id ='$id'");
