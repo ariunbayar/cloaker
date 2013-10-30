@@ -48,10 +48,6 @@ if (isset($_SESSION['logged_in']))
             delete_traffic_source_controller();
             break;
 
-        case 'delete_affiliate_campaign':
-            delete_affiliate_campaign_controller();
-            break;
-
         case 'delete_network':
             delete_network_controller();
             break;
@@ -82,18 +78,6 @@ if (isset($_SESSION['logged_in']))
 
         case 'edit_network':
             edit_network_controller();
-            break;
-
-        case 'affiliate_campaign':
-            affiliate_campaign_controller();
-            break;
-
-        case 'save_affiliate_campaign':
-            save_affiliate_campaign_controller();
-            break;
-
-        case 'edit_affiliate_campaign':
-            edit_affiliate_campaign_controller();
             break;
 
         case 'statistics':

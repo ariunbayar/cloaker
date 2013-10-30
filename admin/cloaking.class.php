@@ -141,34 +141,6 @@ class Cloaker
 	}
 
     /**
-	 * getAffiliateCampaign()
-	 */
-	function getAffiliateCampaigns()
-	{
-        // get all the affiliate campaign
-        $user_id = $_SESSION['user_id'];
-        $query = mysql_query("SELECT a1.id, a1.name, a2.name as
-            affiliate_network_name FROM `affiliate_campaign` as a1 LEFT JOIN
-            affiliate_network as a2 ON a1.affiliate_network_id = a2.id WHERE
-            a1.user_id = '$user_id' ORDER BY id ASC");
-        $data = array();
-        while ($row = mysql_fetch_assoc($query))
-        {
-            $data[$row['id']] = $row;
-        }
-        return $data;
-	}
-
-    /**
-	 * getAffiliateCampaign()
-	 */
-	function getAffiliateCampaign($id)
-	{
-        $query = mysql_query("SELECT * FROM affiliate_campaign WHERE id ='$id'");
-        return mysql_fetch_row($query);
-	}
-
-    /**
      * updateNumPageViewsFor()
      *
      * Updates number of page views cloaked and non-cloaked for current filter.
@@ -1102,30 +1074,7 @@ class Cloaker
 	}
 
     /**
-	 * addAffiliateCampaign()
-	 *
-	 * Inserts a new Affiliate network source record into the database.
-	 *
-	 * @param Array $values An array containing the values that need to be inserted
-	 *
-	 * @return Boolean TRUE upon success, FALSE upon failure
-	 */
-	function saveAffiliateCampaign($name, $affiliate_network_id, $id)
-	{
-        $user_id = $_SESSION['user_id'];
-        if ($id == null){
-            $sql = "INSERT INTO `affiliate_campaign` (`id`, `name`, `affiliate_network_id`, `user_id`)".
-                " VALUES (NULL, '$name', '$affiliate_network_id', '$user_id')";
-        } else {
-            $sql = "UPDATE `affiliate_campaign` SET `name` = '$name',
-                `affiliate_network_id` = '$affiliate_network_id' WHERE `id` = '$id'";
-        }
-		$query = mysql_query($sql);
-		return $query;
-	}
-
-    /**
-	 * deleteAffiliateNetwork()
+	 * deleteNetwork()
 	 *
 	 * Deletes a network by ID
 	 *
@@ -1137,44 +1086,12 @@ class Cloaker
 		return $query;
 	}
 
-    /**
-	 * deleteAffiliateCampaign()
-	 *
-	 * Deletes a affiliate campaign by ID
-	 *
-	 * @return Boolean TRUE upon success, FALSE upon failure
-	 */
-	function deleteAffiliateCampaign($id)
-	{
-		$query = mysql_query("DELETE FROM affiliate_campaign WHERE id = '$id'");
-		return $query;
-	}
-
-    /**
-	 * deleteAffiliateCampaignsByNetId()
-	 *
-	 * Deletes a affiliate campaign by Affiliate network ID
-	 *
-	 * @return Boolean TRUE upon success, FALSE upon failure
-	 */
-	function deleteAffiliateCampaignsByNetId($id)
-	{
-		$query = mysql_query("DELETE FROM affiliate_campaign WHERE affiliate_network_id = '$id'");
-		return $query;
-	}
-
     function updateNetwork($id, $name)
 	{
 		$query = mysql_query("UPDATE network SET name = '$name' WHERE id = '$id'");
 		return $query;
 	}
 	
-    function updateAffiliateCampaign($id, $name, $affiliate_network_id)
-	{
-		$query = mysql_query("UPDATE affiliate_campaign SET name = '$name', affiliate_network_id = '$affiliate_network_id' WHERE id = '$id'");
-		return $query;
-	}
-
 	/**
 	 * getDestinationUrl()
 	 *
