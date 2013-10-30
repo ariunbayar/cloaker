@@ -30,7 +30,7 @@ function add_campaign_controller()
     //$options = $to_options(TrafficSource::getByUserId($_SESSION['user_id']));
     //$viewData['traffic_source_options'] = $options;
 
-    // Affiliate campaign options
+    // Affiliate network options
     $options = $to_options(Network::getByUserId($_SESSION['user_id']));
     $viewData['network_options'] = $options;
 
