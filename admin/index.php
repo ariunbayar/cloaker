@@ -23,6 +23,7 @@ require dirname(__FILE__).'/controllers/login.php';
 require dirname(__FILE__).'/controllers/statistics.php';
 require dirname(__FILE__).'/controllers/traffic_source.php';
 require dirname(__FILE__).'/controllers/affiliate_network.php';
+require dirname(__FILE__).'/controllers/generate_links.php';
 
 $cloaker = new Cloaker();
 
@@ -97,6 +98,10 @@ if (isset($_SESSION['logged_in']))
 
         case 'statistics':
             statistics_controller();
+            break;
+
+        case 'generate_links':
+            generate_links();
             break;
 
         case 'giplist' :
