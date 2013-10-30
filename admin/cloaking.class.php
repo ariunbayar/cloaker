@@ -473,22 +473,7 @@ class Cloaker
 			return $id;
 		}
 	}
-	
-	/**
-	 * changeShortcode()
-	 *
-	 * Changes the shortcode for a campaign
-	 *
-	 * @param int $id The id of the campaign to change the shortcode for
-	 * @return Boolean
-	 */
-	function changeShortcode($id)
-	{
-		$shortcode = md5(time());
-		$query = mysql_query("UPDATE campaigns SET shortcode = '$shortcode' WHERE id = '$id'");
-		return $query;
-	}
-	
+
 	/**
 	 * deleteDestination()
 	 *

@@ -65,3 +65,16 @@ form.date_range input[type="submit"]{ width: 40px; }
 
 .charts{ width: 1040px; margin: 0 auto; }
 .chart{ display: inline-block; width: 500px; height: 300px;}
+
+a.btn{
+    background: url("images/ibg2.png") repeat-x scroll left top #f2f2f2;
+    color: #333;
+    text-shadow: 0 -1px 0 #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 2px #ddd;
+    font-size: 12px;
+    margin: 2px;
+    padding: 2px 11px;
+    text-decoration: none;
+}

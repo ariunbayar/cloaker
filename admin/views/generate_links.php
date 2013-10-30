@@ -25,6 +25,7 @@
                     <td>
                         <?php $url = substr(ADMIN_URL, 0, -6).$tracker->shortcode.'/' ?>
                         <?php echo anchor_tag($url) ?>
+                        <a href="<?php echo ADMIN_URL.'regenerate_url/'.$tracker->id.'/' ?>" class="btn">Regenerate URL</a>
                     </td>
                     <td>edit delete</td>
                 </tr>

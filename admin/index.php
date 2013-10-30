@@ -88,6 +88,10 @@ if (isset($_SESSION['logged_in']))
             generate_links();
             break;
 
+        case 'regenerate_url':
+            regenerateUrl();
+            break;
+
         case 'giplist' :
             global_ip_controller();
             break;

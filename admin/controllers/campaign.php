@@ -55,32 +55,19 @@ function manage_campaign_controller()
         $viewData = $cloaker->getCampaignDetails($campaignID);
         if (!empty($_POST)) // the update form has been submitted
         {
-            if (isset($_POST['change'])) // a "change shortcode" request has been sent
+
+            foreach($_POST as $key => $value)
             {
-                if (!$cloaker->changeShortcode($_POST['id']))
-                {
-                    $viewData['errors'][] = 'Campaign URL could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error();
-                }
-                else
-                {
-                    $viewData = $cloaker->getCampaignDetails($campaignID);
-                }
+                $values[$key] = mysql_real_escape_string($value);
             }
-            else // a regular update request has been sent
+            if (!$cloaker->updateCampaign($values))
             {
-                foreach($_POST as $key => $value)
-                {
-                    $values[$key] = mysql_real_escape_string($value);
-                }
-                if (!$cloaker->updateCampaign($values))
-                {
-                    $viewData['errors'][] = 'Campaign could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error();
-                }
-                else
-                {
-                    $viewData = $cloaker->getCampaignDetails($campaignID);
-                    $viewData['success'][] = 'Campaign was updated successfully!';
-                }
+                $viewData['errors'][] = 'Campaign could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+            }
+            else
+            {
+                $viewData = $cloaker->getCampaignDetails($campaignID);
+                $viewData['success'][] = 'Campaign was updated successfully!';
             }
         }
 

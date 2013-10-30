@@ -56,6 +56,36 @@ class Tracker
         }
         return $entities;
     }
+
+    /**
+     * @param int Id of the entity to get
+     * @return Tracker
+     */
+    static public function getById($id)
+    {
+        $id = mysql_real_escape_string($id);
+
+        $query = "SELECT * FROM tracker WHERE id = '%s' LIMIT 1";
+        $sql = sprintf($query, $id);
+        $rs = mysql_query($sql);
+
+        $entity = mysql_fetch_object($rs, get_class());
+        return $entity;
+    }
+
+    /**
+     * Changes the shortcode for a generated link
+     *
+     * @return Boolean Indicates if it succeeded
+     */
+    public function changeShortcode()
+    {
+        $shortcode = substr(md5(time()), 0, 7);
+        $id = mysql_real_escape_string($this->id);
+        $query = "UPDATE tracker SET shortcode='%s' WHERE id = '%s'";
+        $rs = mysql_query(sprintf($query, $shortcode, $id));
+        return $rs;
+    }
 }
 
 
