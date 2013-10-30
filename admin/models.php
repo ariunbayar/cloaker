@@ -1,4 +1,33 @@
 <?php
+class Model
+{
+    protected $_values = array();
+
+    public function __construct()
+    {
+        foreach ($this->_fields as $field) {
+            $this->_values[$field] = null;
+        }
+    }
+
+    /**
+     * @param int Id of the entity to get
+     * @return mixed Instance of the object or null
+     */
+    static public function getById($id)
+    {
+        $id = mysql_real_escape_string($id);
+
+        $query = "SELECT * FROM tracker WHERE id = '%s' LIMIT 1";
+        $sql = sprintf($query, $id);
+        $rs = mysql_query($sql);
+
+        $entity = mysql_fetch_object($rs, get_called_class());
+        return $entity;
+    }
+}
+
+
 class TrafficSource
 {
     public $id;
@@ -95,8 +124,15 @@ class TrafficSource
 }
 
 
-class Tracker
+class Tracker extends Model
 {
+    protected $_fields = array(
+        'id',
+        'campaign_id',
+        'traffic_source_id',
+        'shortcode',
+    );
+
     public $id;
     public $campaign_id;
     public $traffic_source_id;
@@ -120,22 +156,6 @@ class Tracker
             $entities[] = $obj;
         }
         return $entities;
-    }
-
-    /**
-     * @param int Id of the entity to get
-     * @return Tracker
-     */
-    static public function getById($id)
-    {
-        $id = mysql_real_escape_string($id);
-
-        $query = "SELECT * FROM tracker WHERE id = '%s' LIMIT 1";
-        $sql = sprintf($query, $id);
-        $rs = mysql_query($sql);
-
-        $entity = mysql_fetch_object($rs, get_class());
-        return $entity;
     }
 
     /**
