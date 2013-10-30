@@ -210,5 +210,14 @@ class Network extends Model
         $sql = sprintf($query, self::$_table, $user_id);
         return self::hydrate($sql);
     }
+
+    static public function deleteById($id)
+    {
+        $id = mysql_real_escape_string($id); 
+
+		$query = "DELETE FROM network WHERE id = '$id'";
+        $sql = sprintf($query, self::$_table, $id);
+        return mysql_query($sql);
+    }
 }
 ?>

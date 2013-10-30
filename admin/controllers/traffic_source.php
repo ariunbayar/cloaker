@@ -24,9 +24,9 @@ function edit_traffic_source_controller()
 function save_traffic_source_controller()
 {
     $traffic_source = new TrafficSource;
-    $traffic_source->setName($_POST['name']);
-    $traffic_source->setUserId($_SESSION['user_id']);
-    $traffic_source->setId($_POST['id']);
+    $traffic_source->name = $_POST['name'];
+    $traffic_source->user_id = $_SESSION['user_id'];
+    $traffic_source->id = $_POST['id'];
     $traffic_source->save();
 
     header('Location: '.ADMIN_URL.'/traffic_source/');
