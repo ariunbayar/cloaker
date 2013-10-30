@@ -25,7 +25,7 @@ function save_traffic_source_controller()
 {
     global $cloaker;
 
-    if (!$cloaker->saveTrafficSource(mysql_real_escape_string($_POST['name']), $_POST['id']))
+    if (!$cloaker->saveTrafficSource(mysql_real_escape_string($_POST['name']), mysql_real_escape_string($_POST['id'])))
     {
         $viewData['errors'][] = 'Traffic source could not be save, '.
             'because the following MySQL Error occurred: <br> <br>'.mysql_error();

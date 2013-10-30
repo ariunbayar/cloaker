@@ -28,14 +28,14 @@
 <div class="scont">
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
-        <h2 class="boxtitle">Manage Affiliate Campaign</h2>
-        <form action="<?php echo ADMIN_URL; ?>save_affiliate_campaign/" method="POST">
+        <h2 class="boxtitle">Manage Affiliate Network & Campaign</h2>
+        <form action="<?php echo ADMIN_URL; ?>save_affiliate_campaign/" onsubmit="return checkValues()" method="POST">
             <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                 <tbody>
                 <tr>
                     <td>Name</td>
                     <td>
-                        <input size="38" name="name" type="text" value="<?php echo $data['name'] ?>">
+                        <input size="38" name="name" id="aff_camp_name" type="text" value="<?php echo $data['name'] ?>">
                     </td>
                 </tr>
                 <tr>
@@ -61,7 +61,7 @@
                     <td></td>
                     <td>
                         <input type="hidden" name="id" value="<?php echo $data['id'] ?>">
-                        <input id="save_aff_camp"type="submit" value="Save"/>
+                        <input id="save_aff_camp" type="submit" value="Save"/>
                     </td>
                 </tr>
                 </tbody>
@@ -151,6 +151,15 @@ function editAffNetwork(){
         text = $.trim(text);
         $("#aff_network").val(text);
         $("#network_id").val(id);
+    }
+}
+
+function checkValues(){
+    var name = ($("#aff_camp_name").val().length > 0);
+    var network = isNaN($("#affnetwork option:selected").val());
+    if(!name && network){
+        alert("Affiliate campaign name must filled out and Affiliate network is must selected");    
+        return false;
     }
 }
 </script>
