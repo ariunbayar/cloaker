@@ -100,6 +100,21 @@ class Model
         }
         return $entities;
     }
+
+    /**
+     * Deletes an entity by ID
+     * @return Boolean TRUE upon success, FALSE upon failure
+     */
+    static public function deleteById($id)
+    {
+        $class = get_called_class();
+        $id = mysql_real_escape_string($id);
+        $query = "DELETE FROM %s WHERE id = '%s'";
+        $sql = sprintf($query, $class::$_table, $id);
+        $result = mysql_query($sql);
+        return $result;
+    }
+
 }
 
 
@@ -137,19 +152,6 @@ class TrafficSource extends Model
         }
         return null;
     }
-
-    /**
-	 * Deletes a traffic source by ID
-	 * @return Boolean TRUE upon success, FALSE upon failure
-	 */
-	static public function deleteById($id)
-	{
-        $id = mysql_real_escape_string($id);
-		$query = "DELETE FROM %s WHERE id = '%s'";
-        $sql = sprintf($query, self::$_table, $id);
-        $result = mysql_query($sql);
-		return $result;
-	}
 }
 
 
@@ -209,15 +211,6 @@ class Network extends Model
         $query = "SELECT * FROM %s WHERE user_id = '%s' ORDER BY id ASC";
         $sql = sprintf($query, self::$_table, $user_id);
         return self::hydrate($sql);
-    }
-
-    static public function deleteById($id)
-    {
-        $id = mysql_real_escape_string($id); 
-
-		$query = "DELETE FROM network WHERE id = '$id'";
-        $sql = sprintf($query, self::$_table, $id);
-        return mysql_query($sql);
     }
 }
 ?>

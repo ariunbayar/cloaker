@@ -289,7 +289,6 @@ class Cloaker
                     '$values[ua_status]',
                     '$values[network_id]'
                 )";
-        //TODO '$values[network_id]'
 		$query = mysql_query($sql);
 		$campaignID = mysql_insert_id();
 		if (!empty($campaignID))
@@ -351,7 +350,7 @@ class Cloaker
                     geoloc_mismatch_status = '$values[geoloc_mismatch_status]',
                     ua_strings = '$values[ua_strings]',
                     ua_status = '$values[ua_status]',
-                    network_id = '$values[network_id]'
+                    network_id = '{$values['network_id']}'
 				WHERE id = '$values[id]'";
 		$query = mysql_query($sql);
 		mysql_query("DELETE FROM denied_ips WHERE campaign_id = '$values[id]'");

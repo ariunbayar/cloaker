@@ -34,14 +34,12 @@
                 <tr>
                     <td>Name</td>
                     <td>
-                        <input size="38" name="name" type="text" value="<?php
-if (!empty($data['one_traffic_source']->id)) echo
-$data['one_traffic_source']->name ?>"/>
-                            <?php if (!empty($data['one_traffic_source']->id)) { ?>
-                                <input id="formID" type="hidden" name="id"
-value="<?php echo $data['one_traffic_source']->id; ?>">
-                                <button type="submit">Update</button>
-                            <?php } else { ?>
+                        <?php $ts = (isset($data['one_traffic_source']) ? $data['one_traffic_source'] : null) ?> 
+                        <input size="38" name="name" type="text" value="<?php if ($ts) echo $ts->name ?>"/>
+                        <?php if ($ts) { ?>
+                            <input id="formID" type="hidden" name="id" value="<?php echo $ts->id ?>">
+                            <button type="submit">Update</button>
+                        <?php } else { ?>
                             <button type="submit">Add</button>
                         <?php } ?>
                     </td>
@@ -82,4 +80,4 @@ value="<?php echo $data['one_traffic_source']->id; ?>">
 
 <?php $main_content = ob_get_clean() ?>
 <?php require dirname(__FILE__).'/layout_dashboard.php'; ?>
-<?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 : #} ?>
+<?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 tw=140 : #} ?>
