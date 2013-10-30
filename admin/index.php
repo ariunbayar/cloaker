@@ -22,7 +22,7 @@ require dirname(__FILE__).'/controllers/global_ip.php';
 require dirname(__FILE__).'/controllers/login.php';
 require dirname(__FILE__).'/controllers/statistics.php';
 require dirname(__FILE__).'/controllers/traffic_source.php';
-require dirname(__FILE__).'/controllers/affiliate_network.php';
+require dirname(__FILE__).'/controllers/network.php';
 require dirname(__FILE__).'/controllers/generate_links.php';
 
 $cloaker = new Cloaker();
@@ -52,8 +52,8 @@ if (isset($_SESSION['logged_in']))
             delete_affiliate_campaign_controller();
             break;
 
-        case 'delete_affiliate_network':
-            delete_affiliate_network_controller();
+        case 'delete_network':
+            delete_network_controller();
             break;
 
         case 'manage':
@@ -72,16 +72,16 @@ if (isset($_SESSION['logged_in']))
             traffic_source_controller();
             break;
 
-        case 'affiliate_network':
-            affiliate_network_controller();
+        case 'network':
+            network_controller();
             break;
 
-        case 'save_affiliate_network':
-            save_affiliate_network_controller();
+        case 'save_network':
+            save_network_controller();
             break;
 
-        case 'edit_affiliate_network':
-            edit_affiliate_network_controller();
+        case 'edit_network':
+            edit_network_controller();
             break;
 
         case 'affiliate_campaign':

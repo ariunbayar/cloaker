@@ -118,9 +118,9 @@ class Cloaker
     /**
 	 * getAffiliateNetworks()
 	 */
-	function getAffiliateNetworks()
+	function getNetworks()
 	{
-        // get all the affiliate network
+        // get all the network
         $user_id = $_SESSION['user_id'];
         $query = mysql_query("SELECT * FROM network WHERE user_id ='$user_id' ORDER BY id ASC");
         $data = array();
@@ -132,9 +132,9 @@ class Cloaker
 	}
 
     /**
-	 * getAffiliateNetwork()
+	 * getNetwork()
 	 */
-	function getAffiliateNetwork($id)
+	function getNetwork($id)
 	{
         $query = mysql_query("SELECT * FROM network WHERE id ='$id'");
         return mysql_fetch_row($query);
@@ -402,9 +402,9 @@ class Cloaker
                     geoloc_status = '$values[geoloc_status]', 
                     geoloc_mismatch_status = '$values[geoloc_mismatch_status]', 
                     ua_strings = '$values[ua_strings]', 
-                    ua_status = '$values[ua_status]'
+                    ua_status = '$values[ua_status]',
+                    network_id = '$values[network_id]'
 				WHERE id = '$values[id]'";
-        //TODO affiliate_network_id add sql. $values[]
 		$query = mysql_query($sql);
 		mysql_query("DELETE FROM denied_ips WHERE campaign_id = '$values[id]'");
 		if (!empty($values['iplist']))
@@ -1080,7 +1080,7 @@ class Cloaker
 	}
 
     /**
-	 * saveAffiliateNetwork()
+	 * saveNetwork()
 	 *
 	 * Inserts a new Affiliate network source record into the database.
 	 *
@@ -1088,7 +1088,7 @@ class Cloaker
 	 *
 	 * @return Boolean TRUE upon success, FALSE upon failure
 	 */
-	function saveAffiliateNetwork($name, $id = null)
+	function saveNetwork($name, $id = null)
 	{
         $user_id = $_SESSION['user_id'];
         if ($id == null){
@@ -1127,13 +1127,13 @@ class Cloaker
     /**
 	 * deleteAffiliateNetwork()
 	 *
-	 * Deletes a affiliate network by ID
+	 * Deletes a network by ID
 	 *
 	 * @return Boolean TRUE upon success, FALSE upon failure
 	 */
-	function deleteAffiliateNetwork($id)
+	function deleteNetwork($id)
 	{
-		$query = mysql_query("DELETE FROM affiliate_network WHERE id = '$id'");
+		$query = mysql_query("DELETE FROM network WHERE id = '$id'");
 		return $query;
 	}
 
@@ -1163,9 +1163,9 @@ class Cloaker
 		return $query;
 	}
 
-    function updateAffiliateNetwork($id, $name)
+    function updateNetwork($id, $name)
 	{
-		$query = mysql_query("UPDATE affiliate_network SET name = '$name' WHERE id = '$id'");
+		$query = mysql_query("UPDATE network SET name = '$name' WHERE id = '$id'");
 		return $query;
 	}
 	

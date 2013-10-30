@@ -28,7 +28,7 @@
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
         <h2 class="boxtitle">Manage Affiliate Network</h2>
-        <form action="<?php echo ADMIN_URL; ?>save_affiliate_network/" method="POST">
+        <form action="<?php echo ADMIN_URL; ?>save_network/" method="POST">
             <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                 <tbody>
                 <tr>
@@ -58,16 +58,16 @@
             <tbody>
             <tr class="hd"><td>ID</td><td>Name</td><td>Options</td></tr>
 
-            <?php foreach($data['affiliate_networks'] as $affiliate_network): ?>
+            <?php foreach($data['networks'] as $network): ?>
                 <tr>
-                    <td><?php echo $affiliate_network['id'] ?></td>
-                    <td><?php echo $affiliate_network['name'] ?></td>
+                    <td><?php echo $network['id'] ?></td>
+                    <td><?php echo $network['name'] ?></td>
                     <td>
-                         <a href="<?php echo ADMIN_URL; ?>edit_affiliate_network/<?php echo $affiliate_network['id']; ?>/">
+                         <a href="<?php echo ADMIN_URL; ?>edit_network/<?php echo $network['id']; ?>/">
                             Edit
                         </a>&nbsp;&nbsp;&nbsp; 
-                        <a href="<?php echo ADMIN_URL; ?>delete_affiliate_network/<?php echo $affiliate_network['id']; ?>/" 
-                        onclick="return confirm('Are you sure to delete this affiliate network?');">
+                        <a href="<?php echo ADMIN_URL; ?>delete_network/<?php echo $network['id']; ?>/" 
+                        onclick="return confirm('Are you sure to delete this network?');">
                             Delete
                         </a>
                      </td>
