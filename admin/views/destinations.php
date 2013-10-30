@@ -8,7 +8,13 @@
         <form action="<?php echo ADMIN_URL; ?>destinations/<?php echo $data['id']; ?>/" method="POST">
             <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                 <tbody>
-                    <tr><td>Destination URL</td><td><input type="text" name="url" size="40" value="<?php if (!empty($data['url'])) echo $data['url'];?>"></td></tr>	
+                    <tr>
+                        <td>Destination URL</td>
+                        <td>
+                            <input type="text" name="url" size="40" value="<?php if (!empty($data['url'])) echo $data['url'];?>">
+                            You can include [[subid]] in your url. Example: http://ad.com/?s=[[subid]]&amp;t=yes
+                        </td>
+                    </tr>	
                     <tr><td>Notes</td><td><textarea name="notes" cols="80" rows="8"><?php if (!empty($data['notes'])) echo $data['notes'];?></textarea></td></tr>
                     <?php if ((!empty($_POST['action'])) && ($_POST['action'] == 'edit')): ?>
                     <input id="formAction" type="hidden" name="action" value="update">

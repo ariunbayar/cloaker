@@ -12,6 +12,7 @@
         <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
             <tbody>
             <tr class="hd">
+                <td>subid</td>
                 <td>IP</td>
                 <td>Referer</td>
                 <td>Host</td>
@@ -29,6 +30,7 @@
             </tr>
             <?php foreach($data['statistics'] as $stats): ?>
             <tr class="mhov">
+                <td><?php echo $stats['id']; ?></td>
                 <td><?php echo $stats['ip']; ?></td>
                 <td><?php echo $stats['referral_url']; ?></td>
                 <td><?php echo $stats['host']; ?></td>

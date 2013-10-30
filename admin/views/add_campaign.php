@@ -17,8 +17,20 @@
                 </tr>
 
 
-                <tr><td>Cloaked URL (aka Bad URL)</td><td><input size="38" name="cloaked_url" type="text"></td></tr>
-                <tr><td>Cloaking URL (aka Good URL)</td><td><input size="38" name="cloaking_url" type="text"></td></tr>
+                <tr>
+                    <td>Cloaked URL (aka Bad URL)</td>
+                    <td>
+                        <input size="38" name="cloaked_url" type="text">
+                        You can include [[subid]] in your url. Example: http://ad.com/?s=[[subid]]
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cloaking URL (aka Good URL)</td>
+                    <td>
+                        <input size="38" name="cloaking_url" type="text">
+                        You can include [[subid]] in your url. Example: http://ad.com/?s=[[subid]]
+                    </td>
+                </tr>
                 <tr>
                     <td>Cloak based on non empty referal url:</td><td><input name="ref_status" value="on" checked="" type="radio" class="radio"> On
                     <input name="ref_status" value="off" type="radio" class="radio"> Off
