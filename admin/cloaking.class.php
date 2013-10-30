@@ -96,7 +96,8 @@ class Cloaker
 	 *
 	 * @return Array
 	 */
-	function getTrafficSources($id = 0)
+
+    function getTrafficSources($id = 0)
 	{
         // get all the traffic source
         $data = array();
@@ -116,7 +117,7 @@ class Cloaker
     }
 
     /**
-	 * getAffiliateNetworks()
+	 * getNetworks()
 	 */
 	function getNetworks()
 	{
@@ -355,25 +356,25 @@ class Cloaker
 	 */
 	function updateCampaign($values)
 	{
-        $sql = "UPDATE campaigns SET 
-                    name = '$values[name]', 
-                    md_dt = NOW(), 
-                    cloak_status = '$values[cloak_status]', 
-                    cloaking_url = '$values[cloaking_url]', 
-                    cloaked_url = '$values[cloaked_url]', 
-                    ref_status = '$values[ref_status]', 
-                    googleurl = '$values[googleurl]', 
+        $sql = "UPDATE campaigns SET
+                    name = '$values[name]',
+                    md_dt = NOW(),
+                    cloak_status = '$values[cloak_status]',
+                    cloaking_url = '$values[cloaking_url]',
+                    cloaked_url = '$values[cloaked_url]',
+                    ref_status = '$values[ref_status]',
+                    googleurl = '$values[googleurl]',
                     ad_status = '$values[ad_status]',
-                    deniedip_status = '$values[deniedip_status]', 
-                    denyiprange_status = '$values[denyiprange_status]', 
-                    visit_count = '$values[visit_count]', 
-                    visitcount_status = '$values[visitcount_status]', 
-                    rdns = '$values[rdns]', 
-                    rdns_status = '$values[rdns_status]', 
-                    geolocation = '$values[geolocation]', 
-                    geoloc_status = '$values[geoloc_status]', 
-                    geoloc_mismatch_status = '$values[geoloc_mismatch_status]', 
-                    ua_strings = '$values[ua_strings]', 
+                    deniedip_status = '$values[deniedip_status]',
+                    denyiprange_status = '$values[denyiprange_status]',
+                    visit_count = '$values[visit_count]',
+                    visitcount_status = '$values[visitcount_status]',
+                    rdns = '$values[rdns]',
+                    rdns_status = '$values[rdns_status]',
+                    geolocation = '$values[geolocation]',
+                    geoloc_status = '$values[geoloc_status]',
+                    geoloc_mismatch_status = '$values[geoloc_mismatch_status]',
+                    ua_strings = '$values[ua_strings]',
                     ua_status = '$values[ua_status]',
                     network_id = '$values[network_id]'
 				WHERE id = '$values[id]'";
@@ -416,20 +417,6 @@ class Cloaker
 			mysql_query("DELETE FROM destinations WHERE campaign_id = '$id'");
             $this->deleteTrackerRecordsFor($id);
 		}
-		return $query;
-	}
-
-    /**
-	 * deleteTrafficSource()
-	 *
-	 * Deletes a traffic source by ID
-	 *
-	 * @return Boolean TRUE upon success, FALSE upon failure
-	 */
-	function deleteTrafficSource($id)
-	{
-
-		$query = mysql_query("DELETE FROM traffic_source WHERE id = '$id'");
 		return $query;
 	}
 
@@ -1034,27 +1021,10 @@ class Cloaker
 		mysql_query("UPDATE `iptracker` SET `cloak` = 'yes', `reasonforcloak` = '".$reasonMessage."' WHERE `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");	
 	}
 
-
-    /**
-     * saveTrafficSource()
-     */
-    function saveTrafficSource($name, $id = null)
-	{
-        $user_id = $_SESSION['user_id'];
-        if ($id == null){
-            $sql = "INSERT INTO `traffic_source` (`id`, `name`, `user_id`)
-                VALUES (null, '$name', '$user_id')";
-        } else {
-            $sql = "UPDATE `traffic_source` SET `name` = '$name' WHERE `id` = '$id'";
-        }
-		$query = mysql_query($sql);
-		return $query;
-	}
-
     /**
 	 * saveNetwork()
 	 *
-	 * Inserts a new Affiliate network source record into the database.
+	 * Inserts a new network source record into the database.
 	 *
 	 * @param Array $values An array containing the values that need to be inserted
 	 *

@@ -31,7 +31,7 @@ function add_campaign_controller()
     //$viewData['traffic_source_options'] = $options;
 
     // Affiliate campaign options
-    $options = $to_options(AffiliateNetwork::getByUserId($_SESSION['user_id']));
+    $options = $to_options(Network::getByUserId($_SESSION['user_id']));
     $viewData['network_options'] = $options;
 
     $viewData['current_page'] = 'add_campaign';
@@ -92,12 +92,7 @@ function manage_campaign_controller()
             return $options;
         };
 
-        // Traffic source options
-        //$options = $to_options(TrafficSource::getByUserId($_SESSION['user_id']));
-        //$viewData['traffic_source_options'] = $options;
-
-        // Affiliate campaign options
-        $options = $to_options(AffiliateNetwork::getByUserId($_SESSION['user_id']));
+        $options = $to_options(Network::getByUserId($_SESSION['user_id']));
         $viewData['network_options'] = $options;
 
         $viewData['destinations'] = $cloaker->getDestinations($campaignID);
