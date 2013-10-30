@@ -23,6 +23,7 @@
                     <td>Cloak</td>
                     <td>Cloak Reason</td>
                 <?php } ?>
+                <td>Traffic source</td>
                 <td>Access Time</td>
                 <td>Access Date</td>
             </tr>
@@ -39,6 +40,13 @@
                     <td><?php echo $stats['cloak']; ?></td>
                     <td><?php echo $stats['reasonforcloak']; ?></td>
                 <?php } ?>
+                <td>
+                    <?php if ($stats['traffic_source_id']){ ?>
+                        <?php echo TrafficSource::getById($stats['traffic_source_id'])->name ?>
+                    <?php }else{ ?>
+                        [not specified]
+                    <?php } ?>
+                </td>
                 <td><?php echo $stats['access_time']; ?></td>
                 <td><?php echo $stats['ct_dt']; ?></td>
             </tr>

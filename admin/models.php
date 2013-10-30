@@ -52,7 +52,7 @@ class Model
             // Example:
             // $this->_values= array('name' => 'bold', 'created_at' => NULL);
             foreach ($this->_values as $field => $value) {
-                if ($field == 'created_date'){
+                if ($field == 'created_at'){
                     $value = date("Y-m-d H:i:s");
                 }
                 $field_names .= $field.', ';
@@ -163,6 +163,8 @@ class Tracker extends Model
         'campaign_id',
         'traffic_source_id',
         'shortcode',
+        'is_landing_page',
+        'created_at',
     );
 
     /**
@@ -173,20 +175,34 @@ class Tracker extends Model
     {
         $campaign_id = mysql_real_escape_string($campaign_id);
 
-        $query = "SELECT * FROM %s WHERE campaign_id = '%s'";
+        $query = "SELECT * FROM %s WHERE campaign_id='%s'
+                  ORDER BY created_at DESC";
         $sql = sprintf($query, self::$_table, $campaign_id);
         return self::hydrate($sql);
     }
 
     /**
-     * Changes the shortcode for a generated link
-     *
-     * @return Boolean Indicates if it succeeded
+     * @param int Shortcode to look up
+     * @return Tracker
      */
-    public function changeShortcode()
+    static public function getByShortcode($shortcode)
     {
-        $this->shortcode = substr(md5(time()), 0, 7);
-        return $this->save();
+        $shortcode = mysql_real_escape_string($shortcode);
+
+        $query = "SELECT * FROM %s WHERE shortcode='%s' LIMIT 1";
+        $sql = sprintf($query, self::$_table, $shortcode);
+        $objs = self::hydrate($sql);
+        if ($objs){
+            return $objs[0];
+        }
+        return null;
+    }
+
+
+
+    public function getTrafficSource()
+    {
+        return TrafficSource::getById($this->traffic_source_id);
     }
 }
 
@@ -209,6 +225,27 @@ class Network extends Model
         $user_id = mysql_real_escape_string($user_id);
 
         $query = "SELECT * FROM %s WHERE user_id = '%s' ORDER BY id ASC";
+        $sql = sprintf($query, self::$_table, $user_id);
+        return self::hydrate($sql);
+    }
+}
+
+
+class Campaign extends Model
+{
+    static public $_table = 'campaigns';
+    protected $_fields = array(
+        'id',
+        'name',
+        'owner_id',
+        'network_id',
+    );
+
+    static public function getByUserId($user_id)
+    {
+        $user_id = mysql_real_escape_string($user_id);
+
+        $query = "SELECT * FROM %s WHERE owner_id = '%s' ORDER BY id ASC";
         $sql = sprintf($query, self::$_table, $user_id);
         return self::hydrate($sql);
     }

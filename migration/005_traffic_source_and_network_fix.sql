@@ -34,3 +34,12 @@ INSERT INTO tracker (campaign_id, shortcode)
 
 -- Drop campaigns.shortcode
 ALTER TABLE campaigns DROP shortcode;
+
+-- user_id, tracker_type and created_at for "tracker"
+ALTER TABLE tracker
+    ADD is_landing_page TINYINT(1) NOT NULL,
+    ADD created_at VARCHAR(250) NULL DEFAULT NULL;
+UPDATE tracker SET created_at = NOW();
+ALTER TABLE tracker CHANGE created_at created_at DATETIME NOT NULL;
+ALTER TABLE tracker ADD INDEX (is_landing_page);
+ALTER TABLE tracker ADD INDEX (created_at);

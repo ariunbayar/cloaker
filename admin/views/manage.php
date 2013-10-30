@@ -15,7 +15,7 @@
                             <?php echo select_tag('network_id',
                                 $data['network_options'], 
                                 $data['network_id'], 
-                                '[optional]') ?>
+                                '-- not specified --') ?>
                         </td>
                     </tr>
                     <?php if ($data['cloak_status'] == 'on'): ?>

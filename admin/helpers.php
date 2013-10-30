@@ -123,4 +123,13 @@ function anchor_tag($url, $text=null, $new_window=false)
     return $html;
 }
 
+
+function to_select_options($entities, $key_field='id', $value_field='name')
+{
+    $options = array();
+    foreach ($entities as $entity) {
+        $options[$entity->{$key_field}] = $entity->{$value_field};
+    }
+    return $options;
+}
 ?>

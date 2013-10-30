@@ -18,15 +18,7 @@ function add_campaign_controller()
         }
     }
 
-    $to_options = function ($entities){
-        $options = array();
-        foreach ($entities as $entity) {
-            $options[$entity->id] = $entity->name;
-        }
-        return $options;
-    };
-
-    $options = $to_options(Network::getByUserId($_SESSION['user_id']));
+    $options = to_select_options(Network::getByUserId($_SESSION['user_id']));
     $viewData['network_options'] = $options;
 
     $viewData['current_page'] = 'add_campaign';
@@ -66,15 +58,7 @@ function manage_campaign_controller()
             }
         }
 
-        $to_options = function ($entities){
-            $options = array();
-            foreach ($entities as $entity) {
-                $options[$entity->id] = $entity->name;
-            }
-            return $options;
-        };
-
-        $options = $to_options(Network::getByUserId($_SESSION['user_id']));
+        $options = to_select_options(Network::getByUserId($_SESSION['user_id']));
         $viewData['network_options'] = $options;
 
         $viewData['destinations'] = $cloaker->getDestinations($campaignID);

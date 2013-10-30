@@ -92,6 +92,10 @@ if (isset($_SESSION['logged_in']))
             regenerateUrl();
             break;
 
+        case 'delete_tracker':
+            deleteTracker();
+            break;
+
         case 'giplist' :
             global_ip_controller();
             break;

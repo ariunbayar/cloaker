@@ -12,7 +12,7 @@
                 <tr>
                     <td>Affiliate Network</td>
                     <td>
-                        <?php echo select_tag('network_id', $data['network_options'], '', '[optional]') ?>
+                        <?php echo select_tag('network_id', $data['network_options'], '', '-- not specified --') ?>
                     </td>
                 </tr>
 

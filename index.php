@@ -12,15 +12,16 @@ session_start();
 
 include('admin/config.php');
 include('admin/cloaking.class.php');
+include('admin/models.php');
 
 $cloaker = new Cloaker();
 if (!empty($_GET['shortcode']) && !$cloaker->checkGiplist())
 {
     $shortcode = mysql_real_escape_string($_GET['shortcode']);
-	$campaignID = $cloaker->getIdByShortcode($shortcode);
-	if ($campaignID !== false) // shortcode exists and successfully resolves to a campaign ID
+    $tracker = Tracker::getByShortcode($shortcode);
+	if ($tracker) // shortcode exists and successfully resolves a tracking setup
 	{
-		$campaignDetails = $cloaker->getVariables($campaignID);
+		$campaignDetails = $cloaker->getVariables($tracker);
 		if ($campaignDetails['cloak_status'] == 'on') // If cloaking is enabled for the current Campaign...
 		{
 			if ((!$cloaker->shouldCloak($campaignDetails)) && ($campaignDetails['cloak_status']=="on")) // if cloaking is enabled, but no reason for cloaking is detected -> redirect to the cloaked URL

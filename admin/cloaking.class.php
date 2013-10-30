@@ -415,27 +415,6 @@ class Cloaker
     }
 	
 	/**
-	 * getIdByShortcode($shortcode)
-	 *
-	 * Returns the campaign ID corresponding to the provided shortcode or Boolean FALSE if the shortcode doesn't exist.
-	 *
-	 * @return Mixed
-	 */
-	function getIdByShortcode($shortcode)
-	{
-		$query = mysql_query("SELECT campaign_id FROM tracker WHERE shortcode = '$shortcode'");
-		if (mysql_num_rows($query) == 0)
-		{
-			return false;
-		}
-		else
-		{
-			list($id) = mysql_fetch_row($query);
-			return $id;
-		}
-	}
-
-	/**
 	 * deleteDestination()
 	 *
 	 * Deletes a destination by ID
@@ -714,13 +693,13 @@ class Cloaker
 	 * Retrieves campaign information and initializes all the necessary Cloaker variables as long as a valid
 	 * campaign ID has been provided.
 	 *
-	 * @param int $campaignID The ID of the Campaign to load information for.
+	 * @param Tracker $tracker Tracker instance indicating the setup
 	 *
 	 * @return Mixed An Array with all the campaign details (as present in the DB) or Boolean FALSE if a campaign doesn't exist.
 	 */
-	function getVariables($campaignID)
+	function getVariables($tracker)
 	{
-		$campaignQuery = mysql_query("SELECT * FROM campaigns WHERE id = '$campaignID'");
+		$campaignQuery = mysql_query("SELECT * FROM campaigns WHERE id='{$tracker->campaign_id}'");
 		if (mysql_num_rows($campaignQuery) == 0)
 		{
 			return false;
@@ -801,13 +780,13 @@ class Cloaker
 		// IP Tracking: Start
 		$start = microtime(true);
 		$access_time = time();			
-		$query = mysql_query("SELECT * FROM `iptracker` WHERE `campaign_id` = '".$campaignID."' AND `session_id` = '".$this->unqid."' AND `ip` = '".$this->ip."'");
+		$query = mysql_query("SELECT * FROM `iptracker` WHERE `campaign_id` = '{$tracker->campaign_id}' AND `session_id` = '".$this->unqid."' AND `ip` = '".$this->ip."'");
 		$count = mysql_num_rows($query);
 		
 		if ($count == 0) // if the current Session has not yet been captured by the Cloaker's IP Tracking Module -> insert it
 		{		
-			mysql_query("INSERT INTO `iptracker`(`campaign_id`,`ip`,`session_id`,`referral_url`,`host`,`country`,`region`,`city`,`page_views`,`cloak`,`access_time`,`ct_dt`)
-						 VALUES('".$campaignID."','".$this->ip."','".$this->unqid."','".$this->ref."','".$this->hostname."','".$this->country."','".$this->region."','".$this->city."','1','no','0 minute(s)',now())");		
+			mysql_query("INSERT INTO `iptracker`(`campaign_id`,`ip`,`session_id`,`referral_url`,`host`,`country`,`region`,`city`,`page_views`,`cloak`,`access_time`,`ct_dt`, `traffic_source_id`)
+						 VALUES('{$tracker->campaign_id}','".$this->ip."','".$this->unqid."','".$this->ref."','".$this->hostname."','".$this->country."','".$this->region."','".$this->city."','1','no','0 minute(s)',now(), {$tracker->traffic_source_id})");
 		}
 		else // if the current Session has already been captured by the Cloaker's IP Tracking Module -> update info associated with it
 		{
@@ -817,7 +796,8 @@ class Cloaker
 			$this->cloak = $row['cloak'];
 			$to_time=strtotime($createDate);
 			$accessTime = round(abs($to_time - $access_time) / 60,2)." minute(s)";
-			mysql_query("UPDATE `iptracker` SET `country` = '".$this->country."',`region`='".$this->region."',`city`='".$this->city."',`access_time`='$accessTime',`page_views`='$pageViews' WHERE `campaign_id` = '".$campaignID."' AND `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");	
+			mysql_query("UPDATE `iptracker` SET `country` =
+                '".$this->country."',`region`='".$this->region."',`city`='".$this->city."',`access_time`='$accessTime',`page_views`='$pageViews' WHERE `campaign_id` = '{$tracker->campaign_id}' AND `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");	
 		}	
 		$query = mysql_query("SELECT COUNT(id) FROM `iptracker` WHERE `ip` = '".$this->ip."'");
 		list($ipCount) = mysql_fetch_row($query);
