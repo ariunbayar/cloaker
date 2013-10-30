@@ -15,7 +15,7 @@
             <a href="<?php echo ADMIN_URL ?>traffic_source/">Traffic Sources<span></span></a>
         </li>
         <li <?php echo $data['current_page']=='network'?'class="active"':'' ?>>
-            <a href="<?php echo ADMIN_URL ?>network/">Network<span></span></a>
+            <a href="<?php echo ADMIN_URL ?>network/">Affiliate Network<span></span></a>
         </li>
 
         <?php if($_SESSION['user_level'] == 'superadmin') { ?>

@@ -23,13 +23,11 @@ function edit_traffic_source_controller()
 
 function save_traffic_source_controller()
 {
-    global $cloaker;
-
-    if (!$cloaker->saveTrafficSource(mysql_real_escape_string($_POST['name']), mysql_real_escape_string($_POST['id'])))
-    {
-        $viewData['errors'][] = 'Traffic source could not be save, '.
-            'because the following MySQL Error occurred: <br> <br>'.mysql_error();
-    }
+    $traffic_source = new TrafficSource;
+    $traffic_source->setName($_POST['name']);
+    $traffic_source->setUserId($_SESSION['user_id']);
+    $traffic_source->setId($_POST['id']);
+    $traffic_source->save();
 
     header('Location: '.ADMIN_URL.'/traffic_source/');
     exit;
@@ -38,14 +36,12 @@ function save_traffic_source_controller()
 
 function delete_traffic_source_controller()
 {
-    global $cloaker;
-
-    if (!$cloaker->deleteTrafficSource(mysql_real_escape_string($_GET['id'])))
+    if (!TrafficSource::deleteById($_GET['id']))
     {
         Flash::set('Traffic source could not be deleted, because the '.
             'following MySQL Error occurred: <br> <br>'.mysql_error());
-    }
-    
+    };
+
     header('Location: '.ADMIN_URL.'/traffic_source/');
     exit;
 }

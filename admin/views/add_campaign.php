@@ -10,7 +10,7 @@
                 <tr><td>Name</td><td><input size="38" name="name" type="text"></td></tr>
 
                 <tr>
-                    <td>Network</td>
+                    <td>Affiliate Network</td>
                     <td>
                         <?php echo select_tag('network_id', $data['network_options'], '', '[optional]') ?>
                     </td>
