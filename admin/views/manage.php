@@ -9,12 +9,23 @@
                 <tbody>
                     <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
                     <tr><td>Name</td><td><input size="38" name="name" type="text" value="<?php echo $data['name']; ?>"></td></tr>
+
+                    <tr>
+                        <td>Network</td>
+                        <td>
+                            <?php echo select_tag('network_id',
+                                $data['network_options'], 
+                                $data['network_id'], 
+                                '[optional]') ?>
+                        </td>
+                    </tr>
+
+
                     <?php if ($data['cloak_status'] == 'on'): ?>
                     <tr><td>Cloaking</td><td><input name="cloak_status" value="on" type="radio" class="radio" checked> ON <input name="cloak_status" value="off" type="radio" class="radio"> OFF</td></tr>
                     <?php else: ?>
                     <tr><td>Cloaking</td><td><input name="cloak_status" value="on" type="radio" class="radio"> ON <input name="cloak_status" value="off" type="radio" class="radio" checked> OFF</td></tr>
                     <?php endif; ?>
-                    <tr><td>Campaign URL: </td><td><?php echo substr(ADMIN_URL,0,-6).$data['shortcode']; ?>/ <button type="button" onclick="window.open('<?php echo substr(ADMIN_URL,0,-6).$data['shortcode']; ?>/','_blank');">Visit</button> <button type="submit" name="change">Change</button></td></tr>
                     <tr>
                         <td>Destination (Cloaked URL aka Bad URL):</td>
                         <td>
@@ -91,6 +102,8 @@
                     <?php else: ?>
                     <tr><td>Cloak based on User Agent?</td><td><input name="ua_status" value="on" type="radio" class="radio"> On <input name="ua_status" value="off" type="radio" class="radio" checked> Off</td></tr>
                     <?php endif; ?>	
+
+
                     <tr><td>&nbsp;</td><td><input value="Update" type="submit"></td></tr>
                 </tbody>
             </table>

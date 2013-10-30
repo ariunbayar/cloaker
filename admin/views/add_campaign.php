@@ -8,6 +8,15 @@
             <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                 <tbody>
                 <tr><td>Name</td><td><input size="38" name="name" type="text"></td></tr>
+
+                <tr>
+                    <td>Network</td>
+                    <td>
+                        <?php echo select_tag('network_id', $data['network_options'], '', '[optional]') ?>
+                    </td>
+                </tr>
+
+
                 <tr><td>Cloaked URL (aka Bad URL)</td><td><input size="38" name="cloaked_url" type="text"></td></tr>
                 <tr><td>Cloaking URL (aka Good URL)</td><td><input size="38" name="cloaking_url" type="text"></td></tr>
                 <tr>
@@ -77,19 +86,6 @@
                 </tr>
                 <tr><td>User Agent strings (comma-separated)</td><td><input size="38" name="ua_strings" type="text"></td></tr>
                 <tr><td>Cloak based on User Agent?</td><td><input name="ua_status" value="on" type="radio" class="radio"> On <input name="ua_status" value="off" type="radio" class="radio" checked> Off</td></tr>
-                <tr>
-                    <td>Traffic source</td>
-                    <td>
-                        <?php echo select_tag('traffic_source_id', $data['traffic_source_options'], '', '[optional]') ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Affiliate Campaign</td>
-                    <td>
-                        <?php echo select_tag('affiliate_campaign_id', $data['affiliate_campaign_options'], '', '[optional]') ?>
-                    </td>
-                </tr>
-
                 <tr>
                     <td>&nbsp;</td>
                     <td><input value="Create" type="submit"></td>
