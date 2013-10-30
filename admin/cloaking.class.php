@@ -73,6 +73,7 @@ class Cloaker
 		}
 		else
 		{
+            $id = mysql_real_escape_string($id);
 			$query = mysql_query("SELECT ip FROM denied_ips WHERE campaign_id = '$id'");
 			$iplist = array();
 			while(list($ip) = mysql_fetch_row($query))

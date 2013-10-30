@@ -16,10 +16,14 @@
         <li <?php echo $data['current_page']=='statistics'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL; ?>statistics/<?php echo $data['id']; ?>/">Statistics<span></span></a>
         </li>
+        <li <?php echo $data['current_page']=='generate_links'?'class="active"':'' ?>>
+            <a href="<?php echo ADMIN_URL; ?>generate_links/<?php echo $data['id']; ?>/">Generate Links<span></span></a>
+        </li>
         <li><a href="<?php echo ADMIN_URL; ?>">Back to Dashboard<span></span></a></li>
     </ul>
     <br class="clear">
 </div>
+
 <div class="main">
     <?php if(!empty($data['errors'])): ?>
     <div class="scont">
@@ -53,4 +57,4 @@
 
 <?php $main_content = ob_get_clean() ?>
 <?php require dirname(__FILE__).'/layout.php'; ?>
-<?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 : #} ?>
+<?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 tw=140 : #} ?>
