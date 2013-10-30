@@ -9,8 +9,11 @@ function generate_links()
         exit;
     }
 
-    $viewData = $cloaker->getCampaignDetails($_GET['id']);
+    $campaign_id = $_GET['id'];
+
+    $viewData = $cloaker->getCampaignDetails($campaign_id);
     $viewData['current_page'] = 'generate_links';
+    $viewData['trackers'] = Tracker::getByCampaignId($campaign_id);
     View('generate_links', $viewData);
     exit;
 }

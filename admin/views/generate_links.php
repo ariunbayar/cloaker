@@ -20,6 +20,15 @@
                 </tr>
             </thead>
             <tbody>
+                <?php foreach ($data['trackers'] as $tracker){ ?>
+                <tr>
+                    <td>
+                        <?php $url = substr(ADMIN_URL, 0, -6).$tracker->shortcode.'/' ?>
+                        <?php echo anchor_tag($url) ?>
+                    </td>
+                    <td>edit delete</td>
+                </tr>
+                <?php } ?>
             </tbody>
         </table>
         <div class="bl"><div class="br"></div></div>

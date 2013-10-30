@@ -94,6 +94,35 @@ class TrafficSource
 
 }
 
+class Tracker
+{
+    public $id;
+    public $campaign_id;
+    public $traffic_source_id;
+    public $shortcode;
+
+    /**
+     * @param int Campaign id to look up
+     * @return array Array of objects
+     */
+    static public function getByCampaignId($campaign_id)
+    {
+        $campaign_id = mysql_real_escape_string($campaign_id);
+
+        $query = "SELECT * FROM tracker WHERE campaign_id = '%s'";
+        $sql = sprintf($query, $campaign_id);
+        $rs = mysql_query($sql);
+
+        $entities = array();
+        while ($obj = mysql_fetch_object($rs, get_class()))
+        {
+            $entities[] = $obj;
+        }
+        return $entities;
+    }
+}
+
+
 class Network
 {
     public $id;
@@ -118,7 +147,6 @@ class Network
             $entities[] = $obj;
         }
         return $entities;
-
     }
 }
 ?>
