@@ -121,7 +121,7 @@ class Cloaker
 	{
         // get all the affiliate network
         $user_id = $_SESSION['user_id'];
-        $query = mysql_query("SELECT * FROM affiliate_network WHERE user_id ='$user_id' ORDER BY id ASC");
+        $query = mysql_query("SELECT * FROM network WHERE user_id ='$user_id' ORDER BY id ASC");
         $data = array();
         while ($row = mysql_fetch_assoc($query))
         {
@@ -135,7 +135,7 @@ class Cloaker
 	 */
 	function getAffiliateNetwork($id)
 	{
-        $query = mysql_query("SELECT * FROM affiliate_network WHERE id ='$id'");
+        $query = mysql_query("SELECT * FROM network WHERE id ='$id'");
         return mysql_fetch_row($query);
 	}
 
@@ -296,8 +296,51 @@ class Cloaker
 	 */
 	function insertCampaign($values)
 	{
-		$sql = "INSERT INTO campaigns (name,owner_id,ct_dt,md_dt,shortcode,cloak_status,ref_status,googleurl,ad_status,deniedip_status,denyiprange_status,visit_count,visitcount_status,rdns,rdns_status,geolocation,geoloc_status,geoloc_mismatch_status,ua_strings,ua_status)
-				VALUES ('$values[name]','$_SESSION[user_id]',NOW(),NOW(),MD5(NOW()),'on','$values[ref_status]','$values[googleurl]','$values[ad_status]','$values[deniedip_status]','$values[denyiprange_status]','$values[visit_count]','$values[visitcount_status]','$values[rdns]','$values[rdns_status]','$values[geolocation]','$values[geoloc_status]','$values[geoloc_mismatch_status]','$values[ua_strings]','$values[ua_status]')";
+        $sql = "INSERT INTO campaigns (
+                    name,
+                    owner_id,
+                    ct_dt,
+                    md_dt,
+                    cloak_status,
+                    ref_status,
+                    googleurl,
+                    ad_status,
+                    deniedip_status,
+                    denyiprange_status,
+                    visit_count,
+                    visitcount_status,
+                    rdns,
+                    rdns_status,
+                    geolocation,
+                    geoloc_status,
+                    geoloc_mismatch_status,
+                    ua_strings,
+                    ua_status,
+                    network_id
+                )
+                VALUES (
+                    '$values[name]',
+                    '$_SESSION[user_id]',
+                    NOW(),
+                    NOW(),
+                    'on',
+                    '$values[ref_status]',
+                    '$values[googleurl]',
+                    '$values[ad_status]',
+                    '$values[deniedip_status]',
+                    '$values[denyiprange_status]',
+                    '$values[visit_count]',
+                    '$values[visitcount_status]',
+                    '$values[rdns]',
+                    '$values[rdns_status]',
+                    '$values[geolocation]',
+                    '$values[geoloc_status]',
+                    '$values[geoloc_mismatch_status]',
+                    '$values[ua_strings]',
+                    '$values[ua_status]',
+                    '$values[network_id]'
+                )";
+        //TODO '$values[network_id]'
 		$query = mysql_query($sql);
 		$campaignID = mysql_insert_id();
 		if (!empty($campaignID))
@@ -339,9 +382,28 @@ class Cloaker
 	 */
 	function updateCampaign($values)
 	{
-		$sql = "UPDATE campaigns SET name = '$values[name]', md_dt = NOW(), cloak_status = '$values[cloak_status]', cloaking_url = '$values[cloaking_url]', cloaked_url = '$values[cloaked_url]', ref_status = '$values[ref_status]', googleurl = '$values[googleurl]', ad_status = '$values[ad_status]',
-				deniedip_status = '$values[deniedip_status]', denyiprange_status = '$values[denyiprange_status]', visit_count = '$values[visit_count]', visitcount_status = '$values[visitcount_status]', rdns = '$values[rdns]', rdns_status = '$values[rdns_status]', geolocation = '$values[geolocation]', geoloc_status = '$values[geoloc_status]', geoloc_mismatch_status = '$values[geoloc_mismatch_status]', ua_strings = '$values[ua_strings]', ua_status = '$values[ua_status]'
+        $sql = "UPDATE campaigns SET 
+                    name = '$values[name]', 
+                    md_dt = NOW(), 
+                    cloak_status = '$values[cloak_status]', 
+                    cloaking_url = '$values[cloaking_url]', 
+                    cloaked_url = '$values[cloaked_url]', 
+                    ref_status = '$values[ref_status]', 
+                    googleurl = '$values[googleurl]', 
+                    ad_status = '$values[ad_status]',
+                    deniedip_status = '$values[deniedip_status]', 
+                    denyiprange_status = '$values[denyiprange_status]', 
+                    visit_count = '$values[visit_count]', 
+                    visitcount_status = '$values[visitcount_status]', 
+                    rdns = '$values[rdns]', 
+                    rdns_status = '$values[rdns_status]', 
+                    geolocation = '$values[geolocation]', 
+                    geoloc_status = '$values[geoloc_status]', 
+                    geoloc_mismatch_status = '$values[geoloc_mismatch_status]', 
+                    ua_strings = '$values[ua_strings]', 
+                    ua_status = '$values[ua_status]'
 				WHERE id = '$values[id]'";
+        //TODO affiliate_network_id add sql. $values[]
 		$query = mysql_query($sql);
 		mysql_query("DELETE FROM denied_ips WHERE campaign_id = '$values[id]'");
 		if (!empty($values['iplist']))
@@ -1029,10 +1091,10 @@ class Cloaker
 	{
         $user_id = $_SESSION['user_id'];
         if ($id == null){
-            $sql = "INSERT INTO `affiliate_network` (`id`, `name`, `user_id`)".
+            $sql = "INSERT INTO `network` (`id`, `name`, `user_id`)".
                " VALUES (NULL, '$name', '$user_id')";
         } else {
-            $sql = "UPDATE `affiliate_network` SET `name` = '$name' WHERE `id` = '$id'";
+            $sql = "UPDATE `network` SET `name` = '$name' WHERE `id` = '$id'";
         }
 		$query = mysql_query($sql);
 		return $query;
