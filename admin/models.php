@@ -202,6 +202,27 @@ class TrafficSource extends Model
 }
 
 
+class Migration extends Model
+{
+    static public $_table = 'migration';
+    protected $_fields = array(
+        'id',
+        'file_name',
+    );
+
+    static public function getByFileName($file_name)
+    {
+        $file_name = mysql_real_escape_string($file_name);
+        $query = "SELECT * FROM %s WHERE file_name = '%s' LIMIT 1";
+        $sql = sprintf($query, self::$_table, $file_name);
+        $rs = mysql_query($sql);
+
+        $entity = mysql_fetch_object($rs);
+        return $entity;
+    }
+}
+
+
 class Campaign extends Model
 {
     static public $_table = 'campaigns';
