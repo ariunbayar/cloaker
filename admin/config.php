@@ -12,6 +12,7 @@ $dev_environments = array(
 
     // local config for Ariunbayar
     'cloaker.dev' => array(
+        'DB_USER' => 'root',
         'DB_PASSWORD' => '',
         'ADMIN_URL' => 'http://cloaker.dev/admin/',
     ),
