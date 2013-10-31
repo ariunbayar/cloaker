@@ -10,7 +10,7 @@
 <body>
     <?php echo $main_content ?>
 
-    <!-- JS should be included after elements are loaded -->
+    <!-- Javascript should be included after elements are loaded -->
     <script type="text/javascript" src="<?php echo STATIC_URL; ?>js/jquery-1.9.0.min.js"></script>
     <script type="text/javascript" src="<?php echo STATIC_URL; ?>js/jquery-ui-1.10.3.custom.min.js"></script>
     <script type="text/javascript" src="<?php echo STATIC_URL; ?>js/highcharts/highcharts.js"></script>
