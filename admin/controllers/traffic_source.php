@@ -11,11 +11,9 @@ function traffic_source_controller()
 
 function edit_traffic_source_controller()
 {
-    global $cloaker;
-
     $viewData['one_traffic_source'] = TrafficSource::getById($_GET['id']);
-
     $viewData['traffic_sources'] = TrafficSource::getByUserId($_SESSION['user_id']);
+
     $viewData['current_page'] = 'traffic_source';
     View('traffic_source', $viewData);
     exit;

@@ -115,42 +115,17 @@ class Model
         return $result;
     }
 
-}
-
-
-class TrafficSource extends Model
-{
-    static public $_table = 'traffic_source';
-    protected $_fields = array(
-        'id',
-        'name',
-        'user_id',
-    );
-
     /**
      * @param int User id to look up
      * @return array Array of objects
      */
     static public function getByUserId($user_id)
     {
+        $class = get_called_class();
         $user_id = mysql_real_escape_string($user_id);
-
         $query = "SELECT * FROM %s WHERE user_id = '%s' ORDER BY id ASC";
-        $sql = sprintf($query, self::$_table, $user_id);
+        $sql = sprintf($query, $class::$_table, $user_id);
         return self::hydrate($sql);
-    }
-
-    static public function getById($id)
-    {
-        $id = mysql_real_escape_string($id);
-
-        $query = "SELECT * FROM %s WHERE id = '%s' LIMIT 1";
-        $sql = sprintf($query, self::$_table, $id);
-        $obj = self::hydrate($sql);
-        if ($obj){
-            return $obj[0];
-        }
-        return null;
     }
 }
 
@@ -198,8 +173,6 @@ class Tracker extends Model
         return null;
     }
 
-
-
     public function getTrafficSource()
     {
         return TrafficSource::getById($this->traffic_source_id);
@@ -215,19 +188,17 @@ class Network extends Model
         'name',
         'user_id',
     );
+}
 
-    /**
-     * @param int User id to look up
-     * @return array Array of objects
-     */
-    static public function getByUserId($user_id)
-    {
-        $user_id = mysql_real_escape_string($user_id);
 
-        $query = "SELECT * FROM %s WHERE user_id = '%s' ORDER BY id ASC";
-        $sql = sprintf($query, self::$_table, $user_id);
-        return self::hydrate($sql);
-    }
+class TrafficSource extends Model
+{
+    static public $_table = 'traffic_source';
+    protected $_fields = array(
+        'id',
+        'name',
+        'user_id',
+    );
 }
 
 
