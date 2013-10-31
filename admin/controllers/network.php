@@ -2,9 +2,8 @@
 
 function network_controller()
 {
-    global $cloaker;
+    $viewData['networks'] = Network::getByUserId($_SESSION['user_id']);
 
-    $viewData['networks'] = $cloaker->getNetworks();
     $viewData['current_page'] = 'network';
     View('network', $viewData);
     exit;
@@ -12,10 +11,9 @@ function network_controller()
 
 function edit_network_controller()
 {
-    global $cloaker;
-    list($viewData['id'],$viewData['name']) = $cloaker->getNetwork(mysql_real_escape_string($_GET['id']));
+    $viewData['network'] = Network::getById($_GET['id']);
+    $viewData['networks'] = Network::getByUserId($_SESSION['user_id']);
 
-    $viewData['networks'] = $cloaker->getNetworks();
     $viewData['current_page'] = 'network';
     View('network', $viewData);
     exit;
@@ -23,12 +21,12 @@ function edit_network_controller()
 
 function save_network_controller()
 {
-    global $cloaker;
-    if (!$cloaker->saveNetwork(mysql_real_escape_string($_POST['name']), $_POST['id']))
-    {
-        $viewData['errors'][] = 'Network could not be added, because '.
-            'the following MySQL Error occurred: <br> <br>'.mysql_error();
-    }
+    $network = new Network;
+    $network->name = $_POST['name'];
+    $network->user_id = $_SESSION['user_id'];
+    $network->id = $_POST['id'];
+    $network->save();
+
 
     header('Location: '.ADMIN_URL.'/network/');
     exit;

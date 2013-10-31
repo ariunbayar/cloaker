@@ -34,10 +34,10 @@
                 <tr>
                     <td>Name</td>
                     <td>
-                        <input size="38" name="name" type="text" value="<?php 
-                            if (!empty($data['id'])) echo $data['name'];?>">
-                        <?php if(!empty($data['id'])){ ?>
-                            <input id="formID" type="hidden" name="id" value="<?php echo $data['id']; ?>">
+                        <?php $network = (isset($data['network']) ? $data['network'] : null) ?> 
+                        <input size="38" name="name" type="text" value="<?php if ($network) echo $network->name ?>"/>
+                        <?php if($network) { ?>
+                            <input id="formID" type="hidden" name="id" value="<?php echo $network->id ?>"/>
                             <button type="submit">Update</button>
                         <?php } else { ?>
                             <button type="submit">Add</button>
@@ -60,13 +60,13 @@
 
             <?php foreach($data['networks'] as $network): ?>
                 <tr>
-                    <td><?php echo $network['id'] ?></td>
-                    <td><?php echo $network['name'] ?></td>
+                    <td><?php echo $network->id ?></td>
+                    <td><?php echo $network->name ?></td>
                     <td>
-                         <a href="<?php echo ADMIN_URL; ?>edit_network/<?php echo $network['id']; ?>/">
+                         <a href="<?php echo ADMIN_URL; ?>edit_network/<?php echo $network->id; ?>/">
                             Edit
                         </a>&nbsp;&nbsp;&nbsp; 
-                        <a href="<?php echo ADMIN_URL; ?>delete_network/<?php echo $network['id']; ?>/" 
+                        <a href="<?php echo ADMIN_URL; ?>delete_network/<?php echo $network->id; ?>/" 
                         onclick="return confirm('Are you sure to delete this network?');">
                             Delete
                         </a>

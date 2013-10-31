@@ -92,31 +92,6 @@ class Cloaker
     }
 
     /**
-     * getNetworks()
-     */
-    function getNetworks()
-    {
-        // get all the network
-        $user_id = $_SESSION['user_id'];
-        $query = mysql_query("SELECT * FROM network WHERE user_id ='$user_id' ORDER BY id ASC");
-        $data = array();
-        while ($row = mysql_fetch_assoc($query))
-        {
-            $data[$row['id']] = $row;
-        }
-        return $data;
-    }
-
-    /**
-     * getNetwork()
-     */
-    function getNetwork($id)
-    {
-        $query = mysql_query("SELECT * FROM network WHERE id ='$id'");
-        return mysql_fetch_row($query);
-    }
-
-    /**
      * updateNumPageViewsFor()
      *
      * Updates number of page views cloaked and non-cloaked for current filter.
@@ -967,34 +942,6 @@ class Cloaker
         mysql_query("UPDATE `iptracker` SET `cloak` = 'yes', `reasonforcloak` = '".$reasonMessage."' WHERE `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");    
     }
 
-    /**
-     * saveNetwork()
-     *
-     * Inserts a new network source record into the database.
-     *
-     * @param Array $values An array containing the values that need to be inserted
-     *
-     * @return Boolean TRUE upon success, FALSE upon failure
-     */
-    function saveNetwork($name, $id = null)
-    {
-        $user_id = $_SESSION['user_id'];
-        if ($id == null){
-            $sql = "INSERT INTO `network` (`id`, `name`, `user_id`)".
-               " VALUES (NULL, '$name', '$user_id')";
-        } else {
-            $sql = "UPDATE `network` SET `name` = '$name' WHERE `id` = '$id'";
-        }
-        $query = mysql_query($sql);
-        return $query;
-    }
-
-    function updateNetwork($id, $name)
-    {
-        $query = mysql_query("UPDATE network SET name = '$name' WHERE id = '$id'");
-        return $query;
-    }
-    
     /**
      * getDestinationUrl()
      *
