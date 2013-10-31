@@ -1,3 +1,7 @@
 {"require":
-    {"doctrine/orm": "2.3"}
+    {
+        "doctrine/orm": "2.3",
+        "dg/ftp-deployment": "dev-master"
+    }
 }
+

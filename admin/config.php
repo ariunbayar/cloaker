@@ -2,10 +2,10 @@
 // Default config for production environment
 $config = array(
     'DB_HOST' => '127.0.0.1',
-    'DB_USER' => 'root',
-    'DB_PASSWORD' => 'apmsetup',
+    'DB_USER' => 'cloaker',
+    'DB_PASSWORD' => 't2cUdqbD84sn1iHR3P5kLZA2T76T571L',
     'DB_NAME' => 'cloaker',
-    'ADMIN_URL' => 'http://local.cloaker.test/admin/',
+    'ADMIN_URL' => 'http://cloaker.charlesjasonbush.com/admin/',
 );
 
 $dev_environments = array(

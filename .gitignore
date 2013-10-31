@@ -3,3 +3,4 @@
 /lib/vendor
 /lib/composer.phar
 /lib/composer.lock
+deployment.log
