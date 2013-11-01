@@ -19,7 +19,7 @@
 				<p align="center"><input type="submit" name="login" value="Login"></p>
 			</form>
 		</div>
-        <div class="bl"><div class="br"></div> &copy 2013</div>
+        <div class="bl"><div class="br"></div></div>
 	</div>
 </div>
 
