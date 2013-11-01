@@ -114,19 +114,6 @@ class Model
         $result = mysql_query($sql);
         return $result;
     }
-
-    /**
-     * @param int User id to look up
-     * @return array Array of objects
-     */
-    static public function getByUserId($user_id)
-    {
-        $class = get_called_class();
-        $user_id = mysql_real_escape_string($user_id);
-        $query = "SELECT * FROM %s WHERE user_id = '%s' ORDER BY id ASC";
-        $sql = sprintf($query, $class::$_table, $user_id);
-        return self::hydrate($sql);
-    }
 }
 
 
@@ -188,6 +175,19 @@ class Network extends Model
         'name',
         'user_id',
     );
+
+    /**
+     * @param int User id to look up
+     * @return array Array of objects
+     */
+    static public function getByUserId($user_id)
+    {
+        $class = get_called_class();
+        $user_id = mysql_real_escape_string($user_id);
+        $query = "SELECT * FROM %s WHERE user_id = '%s' ORDER BY id ASC";
+        $sql = sprintf($query, self::$_table, $user_id);
+        return self::hydrate($sql);
+    }
 }
 
 
@@ -199,6 +199,19 @@ class TrafficSource extends Model
         'name',
         'user_id',
     );
+
+    /**
+     * @param int Campaign id to look up
+     * @return array Array of objects
+     */
+    static public function getByCampaignId($campaign_id)
+    {
+        $class = get_called_class();
+        $campaign_id = mysql_real_escape_string($campaign_id);
+        $query = "SELECT * FROM %s WHERE campaign_id = '%s' ORDER BY id ASC";
+        $sql = sprintf($query, self::$_table, $campaign_id);
+        return self::hydrate($sql);
+    }
 }
 
 
