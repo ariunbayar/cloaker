@@ -22,6 +22,7 @@ function generate_links()
         $tracker = new Tracker();
         $tracker->campaign_id = $campaign_id;
         $tracker->traffic_source_id = $_POST['traffic_source_id'];
+        $tracker->network_id = $_POST['network_id'];
         $tracker->shortcode = generateShortCode();
         $tracker->is_landing_page = (int)$_POST['landing_page'];
         $tracker->save();
@@ -34,8 +35,9 @@ function generate_links()
 
     $options = to_select_options(TrafficSource::getByCampaignId($campaign_id));
     $viewData['traffic_source_options'] = $options;
+    $options = to_select_options(Network::getByCampaignId($campaign_id));
+    $viewData['network_options'] = $options;
 
-    $viewData['network'] = Network::getById($viewData['network_id']);
     $viewData['trackers'] = Tracker::getByCampaignId($campaign_id);
 
     $viewData['current_page'] = 'generate_links';

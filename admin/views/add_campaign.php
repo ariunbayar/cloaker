@@ -7,16 +7,10 @@
         <form action="<?php echo ADMIN_URL; ?>add_campaign/" method="POST">
             <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                 <tbody>
-                <tr><td>Name</td><td><input size="38" name="name" type="text"></td></tr>
-
                 <tr>
-                    <td>Affiliate Network</td>
-                    <td>
-                        <?php echo select_tag('network_id', $data['network_options'], '', '-- not specified --') ?>
-                    </td>
+                    <td>Name</td>
+                    <td><input size="38" name="name" type="text"></td>
                 </tr>
-
-
                 <tr>
                     <td>Cloaked URL (aka Bad URL)</td>
                     <td>

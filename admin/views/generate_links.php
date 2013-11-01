@@ -25,11 +25,7 @@
                     <tr>
                         <td>Affiliate Network:</td>
                         <td>
-                            <?php if (isset($data['network']) && $data['network']){ ?>
-                                <?php echo $data['network']->name ?>
-                            <?php }else{ ?>
-                                [Not specified. You can specify in "Campaign Details" tab]
-                            <?php } ?>
+                            <?php echo select_tag('network_id', $data['network_options'], '', '-- not specified --') ?>
                         </td>
                     </tr>
                     <tr>
@@ -75,6 +71,13 @@
                     <td>
                         <?php if ($tracker->traffic_source_id){ ?>
                             <?php echo $tracker->getTrafficSource()->name ?>
+                        <?php }else{ ?>
+                            [not specified]
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <?php if ($tracker->network_id){ ?>
+                            <?php echo $tracker->getNetwork()->name ?>
                         <?php }else{ ?>
                             [not specified]
                         <?php } ?>

@@ -8,15 +8,9 @@
             <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                 <tbody>
                     <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
-                    <tr><td>Name</td><td><input size="38" name="name" type="text" value="<?php echo $data['name']; ?>"></td></tr>
                     <tr>
-                        <td>Affiliate Network</td>
-                        <td>
-                            <?php echo select_tag('network_id',
-                                $data['network_options'], 
-                                $data['network_id'], 
-                                '-- not specified --') ?>
-                        </td>
+                        <td>Name</td>
+                        <td><input size="38" name="name" type="text" value="<?php echo $data['name']; ?>"></td>
                     </tr>
                     <?php if ($data['cloak_status'] == 'on'): ?>
                     <tr><td>Cloaking</td><td><input name="cloak_status" value="on" type="radio" class="radio" checked> ON <input name="cloak_status" value="off" type="radio" class="radio"> OFF</td></tr>

@@ -11,10 +11,6 @@
         <li <?php echo $data['current_page']=='add_campaign'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL ?>add_campaign/">New Campaign<span></span></a>
         </li>
-        <li <?php echo $data['current_page']=='network'?'class="active"':'' ?>>
-            <a href="<?php echo ADMIN_URL ?>network/">Affiliate Network<span></span></a>
-        </li>
-
         <?php if($_SESSION['user_level'] == 'superadmin') { ?>
         <li <?php echo $data['current_page']=='global_ip'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL ?>giplist/">Global IP List<span></span></a>

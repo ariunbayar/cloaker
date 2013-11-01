@@ -114,19 +114,6 @@ class Model
         $result = mysql_query($sql);
         return $result;
     }
-
-    /**
-     * @param int User id to look up
-     * @return array Array of objects
-     */
-    static public function getByUserId($user_id)
-    {
-        $class = get_called_class();
-        $user_id = mysql_real_escape_string($user_id);
-        $query = "SELECT * FROM %s WHERE user_id = '%s' ORDER BY id ASC";
-        $sql = sprintf($query, $class::$_table, $user_id);
-        return self::hydrate($sql);
-    }
 }
 
 
@@ -137,6 +124,7 @@ class Tracker extends Model
         'id',
         'campaign_id',
         'traffic_source_id',
+        'network_id',
         'shortcode',
         'is_landing_page',
         'created_at',
@@ -173,6 +161,11 @@ class Tracker extends Model
         return null;
     }
 
+    public function getNetwork()
+    {
+        return Network::getById($this->network_id);
+    }
+
     public function getTrafficSource()
     {
         return TrafficSource::getById($this->traffic_source_id);
@@ -186,8 +179,18 @@ class Network extends Model
     protected $_fields = array(
         'id',
         'name',
-        'user_id',
+        'campaign_id',
     );
+
+    static public function getByCampaignId($user_id)
+    {
+        $user_id = mysql_real_escape_string($user_id);
+
+        $query = "SELECT * FROM %s WHERE campaign_id = '%s' ORDER BY id ASC";
+        $sql = sprintf($query, self::$_table, $user_id);
+        return self::hydrate($sql);
+    }
+
 }
 
 

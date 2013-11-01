@@ -18,9 +18,6 @@ function add_campaign_controller()
         }
     }
 
-    $options = to_select_options(Network::getByUserId($_SESSION['user_id']));
-    $viewData['network_options'] = $options;
-
     $viewData['current_page'] = 'add_campaign';
     View('add_campaign', $viewData);
     exit;
@@ -31,41 +28,35 @@ function manage_campaign_controller()
 {
     global $cloaker;
 
-    if (empty($_GET['id']))
-    {
+    if (empty($_GET['id'])) {
         header('Location: '.ADMIN_URL);
         exit;
     }
-    else
+
+    $campaignID = mysql_real_escape_string($_GET['id']);
+    $viewData = $cloaker->getCampaignDetails($campaignID);
+    if (!empty($_POST)) // the update form has been submitted
     {
-        $campaignID = mysql_real_escape_string($_GET['id']);
-        $viewData = $cloaker->getCampaignDetails($campaignID);
-        if (!empty($_POST)) // the update form has been submitted
+
+        foreach($_POST as $key => $value)
         {
-
-            foreach($_POST as $key => $value)
-            {
-                $values[$key] = mysql_real_escape_string($value);
-            }
-            if (!$cloaker->updateCampaign($values))
-            {
-                $viewData['errors'][] = 'Campaign could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error();
-            }
-            else
-            {
-                $viewData = $cloaker->getCampaignDetails($campaignID);
-                $viewData['success'][] = 'Campaign was updated successfully!';
-            }
+            $values[$key] = mysql_real_escape_string($value);
         }
-
-        $options = to_select_options(Network::getByUserId($_SESSION['user_id']));
-        $viewData['network_options'] = $options;
-
-        $viewData['destinations'] = $cloaker->getDestinations($campaignID);
-        $viewData['current_page'] = 'manage';
-        View('manage', $viewData);
-        exit;
+        if (!$cloaker->updateCampaign($values))
+        {
+            $viewData['errors'][] = 'Campaign could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error();
+        }
+        else
+        {
+            $viewData = $cloaker->getCampaignDetails($campaignID);
+            $viewData['success'][] = 'Campaign was updated successfully!';
+        }
     }
+
+    $viewData['destinations'] = $cloaker->getDestinations($campaignID);
+    $viewData['current_page'] = 'manage';
+    View('manage', $viewData);
+    exit;
 }
 
 

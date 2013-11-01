@@ -1,46 +1,51 @@
 <?php
 
-function network_controller()
+function network_controller($data = array())
 {
-    $viewData['networks'] = Network::getByUserId($_SESSION['user_id']);
+    $networks = Network::getByCampaignId($_GET['id']);
+    $campaign = get_entity_or_redirect('Campaign', $_GET['id']);
 
-    $viewData['current_page'] = 'network';
+    $viewData = array_merge($data, array(
+        'id' => $_GET['id'],  // TODO is a fallback to old templating
+        'campaign' => $campaign,
+        'networks' => $networks,
+        'current_page' => 'network',
+    ));
     View('network', $viewData);
     exit;
 }
+
 
 function edit_network_controller()
 {
-    $viewData['network'] = Network::getById($_GET['id']);
-    $viewData['networks'] = Network::getByUserId($_SESSION['user_id']);
-
-    $viewData['current_page'] = 'network';
-    View('network', $viewData);
-    exit;
+    $data['network'] = Network::getById($_GET['network_id']);
+    network_controller($data);
 }
+
 
 function save_network_controller()
 {
     $network = new Network;
+    $network->id = $_POST['network_id'];
     $network->name = $_POST['name'];
-    $network->user_id = $_SESSION['user_id'];
-    $network->id = $_POST['id'];
+    $network->campaign_id = $_GET['id'];
     $network->save();
 
 
-    header('Location: '.ADMIN_URL.'/network/');
+    header('Location: '.ADMIN_URL."/network/{$_GET['id']}/");
     exit;
 }
 
+
 function delete_network_controller()
 {
-    if (!Network::deleteById($_GET['id']))
+    if (!Network::deleteById($_GET['network_id']))
     {
         $viewData['errors'][] = 'Network could not be deleted, because '. 
             'the following MySQL Error occurred: <br> <br>'.mysql_error();
     }
 
-    header('Location: '.ADMIN_URL.'/network/');
+    header('Location: '.ADMIN_URL."/network/{$_GET['id']}/");
     exit;
 }
 
