@@ -11,9 +11,6 @@
         <li <?php echo $data['current_page']=='add_campaign'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL ?>add_campaign/">New Campaign<span></span></a>
         </li>
-        <li <?php echo $data['current_page']=='traffic_source'?'class="active"':'' ?>>
-            <a href="<?php echo ADMIN_URL ?>traffic_source/">Traffic Sources<span></span></a>
-        </li>
         <li <?php echo $data['current_page']=='network'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL ?>network/">Affiliate Network<span></span></a>
         </li>

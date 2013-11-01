@@ -10,6 +10,9 @@
         <li <?php echo $data['current_page']=='manage'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL; ?>manage/<?php echo $data['id']; ?>/">Campaign Details<span></span></a>
         </li>
+        <li <?php echo $data['current_page']=='traffic_source'?'class="active"':'' ?>>
+            <a href="<?php echo ADMIN_URL ?>traffic_source/<?php echo $data['id'] ?>/">Traffic Sources<span></span></a>
+        </li>
         <li <?php echo $data['current_page']=='destinations'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL; ?>destinations/<?php echo $data['id']; ?>/">Destinations<span></span></a>
         </li>
