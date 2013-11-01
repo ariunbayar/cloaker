@@ -16,7 +16,7 @@
             <a href="<?php echo ADMIN_URL ?>giplist/">Global IP List<span></span></a>
         </li>
         <li <?php echo $data['current_page']=='migration_deploy'?'class="active"':'' ?>>
-            <a href="<?php echo ADMIN_URL ?>migration_deploy/">Migration<span></span></a>
+            <a href="<?php echo ADMIN_URL ?>migration_deploy/">Run migration<span></span></a>
         </li>
         <?php } ?>
         <li><a href="<?php echo ADMIN_URL ?>logout/">Logout<span></span></a></li>

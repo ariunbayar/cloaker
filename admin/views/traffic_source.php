@@ -34,7 +34,7 @@
                 <tr>
                     <td>Name</td>
                     <td>
-                        <?php $ts = (isset($data['traffic_source']) ? $data['traffic_source'] : null) ?> 
+                        <?php $ts = (isset($data['traffic_source']) ? $data['traffic_source'] : null) ?>
                         <input size="38" name="name" type="text" value="<?php if ($ts) echo $ts->name ?>"/>
                         <?php if ($ts) { ?>
                             <input id="formID" type="hidden" name="id" value="<?php echo $ts->id ?>">

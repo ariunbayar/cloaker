@@ -18,7 +18,3 @@ Run following command to deploy::
 
     lib/deploy.sh
 
-Run migration script::
-
-    lib/php migration_script.php
-
