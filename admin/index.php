@@ -24,6 +24,7 @@ require dirname(__FILE__).'/controllers/statistics.php';
 require dirname(__FILE__).'/controllers/traffic_source.php';
 require dirname(__FILE__).'/controllers/network.php';
 require dirname(__FILE__).'/controllers/generate_links.php';
+require dirname(__FILE__).'/controllers/migration.php';
 
 $cloaker = new Cloaker();
 
@@ -98,6 +99,10 @@ if (isset($_SESSION['logged_in']))
 
         case 'giplist' :
             global_ip_controller();
+            break;
+
+        case 'migration_deploy' :
+            migration_deploy_controller();
             break;
 
         case 'logout':

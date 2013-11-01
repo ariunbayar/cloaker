@@ -19,6 +19,9 @@
         <li <?php echo $data['current_page']=='global_ip'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL ?>giplist/">Global IP List<span></span></a>
         </li>
+        <li <?php echo $data['current_page']=='migration_deploy'?'class="active"':'' ?>>
+            <a href="<?php echo ADMIN_URL ?>migration_deploy/">Migration<span></span></a>
+        </li>
         <?php } ?>
         <li><a href="<?php echo ADMIN_URL ?>logout/">Logout<span></span></a></li>
     </ul>
@@ -45,6 +48,17 @@
             <div class="tl"><div class="tr"></div></div>
             <h2 class="boxtitle">Error</h2>
             <p><?php echo Flash::get() ?></p>
+            <div class="bl"><div class="br"></div></div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <?php if(!empty($data['success'])): ?>
+    <div class="scont">
+        <div class="box">
+            <div class="tl"><div class="tr"></div></div>
+            <h2 class="boxtitle">Success</h2>
+            <p><?php echo $data['success']; ?></p>
             <div class="bl"><div class="br"></div></div>
         </div>
     </div>

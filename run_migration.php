@@ -1,14 +1,14 @@
 <?php
-require dirname(__FILE__).'/admin/config.php';
-require dirname(__FILE__).'/admin/models.php';
+//require dirname(__FILE__).'/admin/config.php';
+//require dirname(__FILE__).'/admin/models.php';
 
-$link = mysql_connect(
-    $config['DB_HOST'],
-    $config['DB_USER'],
-    ''
-);
+//$link = mysql_connect(
+    //$config['DB_HOST'],
+    //$config['DB_USER'],
+    //''
+//);
 
-mysql_select_db($config['DB_NAME'], $link);
+//mysql_select_db($config['DB_NAME'], $link);
 
 $dir_path = dirname(__FILE__)."/migration/";
 $files = scandir($dir_path);
@@ -17,7 +17,7 @@ foreach ($files as $file) {
         $migration = Migration::getByFileName($file);
         $file_name = ($migration) ? $migration->file_name : null;
         if (!($file_name == $file)){
-            echo $file."\n";
+            //echo $file."\n";
             $sql_content = file_get_contents($dir_path.$file);
             // run each query separately
             $queries = explode(";", $sql_content);
@@ -25,10 +25,10 @@ foreach ($files as $file) {
                 $query = trim($query);
                 if ($query){
                     if (!mysql_query($query)) {
-                        echo "\n"."Warning: This SQL has error! Please run manual."."\n";
-                        echo mysql_error()."\n";
-                        echo $query."\n";
-                        exit();
+                        $has_error = true;
+                        $error =  $file."\n"."Warning: This SQL has error! Please run manual."."\n".mysql_error()."\n".$query."\n";
+                        //echo $error;
+                        Flash::set($error);
                     }
                 }
             }
@@ -38,5 +38,5 @@ foreach ($files as $file) {
         }
     }
 }
-mysql_close($link);
+//mysql_close($link);
 ?>

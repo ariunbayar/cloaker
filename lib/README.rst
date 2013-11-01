@@ -8,9 +8,17 @@
 
     lib/composer.phar install -d lib/
 
+3. New migrations run::
+
+    php run_migration.php
 
 Deploy
 ===
 Run following command to deploy::
 
     lib/deploy.sh
+
+Run migration script::
+
+    lib/php migration_script.php
+
