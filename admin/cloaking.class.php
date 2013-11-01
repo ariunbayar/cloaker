@@ -369,12 +369,6 @@ class Cloaker
         return $query;
     }
 
-    function updateTrafficSource($id, $name)
-    {
-        $query = mysql_query("UPDATE traffic_source SET name = '$name' WHERE id = '$id'");
-        return $query;
-    }
-
     /**
      * deleteTrackerRecordsFor()
      *

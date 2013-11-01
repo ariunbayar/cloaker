@@ -32,7 +32,7 @@ function generate_links()
 
     $viewData = $cloaker->getCampaignDetails($campaign_id);
 
-    $options = to_select_options(TrafficSource::getByUserId($user_id));
+    $options = to_select_options(TrafficSource::getByCampaignId($campaign_id));
     $viewData['traffic_source_options'] = $options;
 
     $viewData['network'] = Network::getById($viewData['network_id']);

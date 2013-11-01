@@ -132,4 +132,18 @@ function to_select_options($entities, $key_field='id', $value_field='name')
     }
     return $options;
 }
+
+
+function get_entity_or_redirect($model_class, $id)
+{
+    if (is_numeric($id)) {
+        $entity = $model_class::getById($id);
+        if ($entity instanceof $model_class){
+            return $entity;
+        }
+    }
+
+    header('Location: '.ADMIN_URL);
+    exit;
+}
 ?>

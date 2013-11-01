@@ -28,13 +28,13 @@
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
         <h2 class="boxtitle">Manage Traffic Source</h2>
-        <form action="<?php echo ADMIN_URL; ?>save_traffic_source/" method="POST">
+        <form action="<?php echo ADMIN_URL; ?>save_traffic_source/<?php echo $data['campaign']->id ?>/" method="POST">
             <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                 <tbody>
                 <tr>
                     <td>Name</td>
                     <td>
-                        <?php $ts = (isset($data['one_traffic_source']) ? $data['one_traffic_source'] : null) ?> 
+                        <?php $ts = (isset($data['traffic_source']) ? $data['traffic_source'] : null) ?> 
                         <input size="38" name="name" type="text" value="<?php if ($ts) echo $ts->name ?>"/>
                         <?php if ($ts) { ?>
                             <input id="formID" type="hidden" name="id" value="<?php echo $ts->id ?>">
@@ -62,10 +62,10 @@
                 <td><?php echo $traffic->id ?></td>
                 <td><?php echo $traffic->name ?></td>
                 <td>
-                    <a href="<?php echo ADMIN_URL; ?>edit_traffic_source/<?php echo $traffic->id; ?>/">
+                    <a href="<?php echo ADMIN_URL.'edit_traffic_source/'.$data['campaign']->id.'/?ts_id='.$traffic->id ?>">
                         Edit
                     </a>&nbsp;&nbsp;&nbsp;
-                    <a href="<?php echo ADMIN_URL; ?>delete_traffic_source/<?php echo $traffic->id; ?>/"
+                    <a href="<?php echo ADMIN_URL.'delete_traffic_source/'.$data['campaign']->id.'/?ts_id='.$traffic->id ?>"
                         onclick="return confirm('Are you sure to delete this traffic source?');">
                         Delete
                     </a>
@@ -79,5 +79,5 @@
 </div>
 
 <?php $main_content = ob_get_clean() ?>
-<?php require dirname(__FILE__).'/layout_dashboard.php'; ?>
+<?php require dirname(__FILE__).'/layout_manage.php'; ?>
 <?php // {# vim: set ts=4 sw=4 sts=4 fdn=20 tw=140 : #} ?>
