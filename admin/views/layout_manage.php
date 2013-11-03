@@ -19,14 +19,16 @@
         <li <?php echo $data['current_page']=='offer'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL.'offer/'.$data['id'].'/' ?>">Offers<span></span></a>
         </li>
+        <?php /*
         <li <?php echo $data['current_page']=='destinations'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL; ?>destinations/<?php echo $data['id']; ?>/">Destinations<span></span></a>
         </li>
-        <li <?php echo $data['current_page']=='statistics'?'class="active"':'' ?>>
-            <a href="<?php echo ADMIN_URL; ?>statistics/<?php echo $data['id']; ?>/">Statistics<span></span></a>
-        </li>
+        */ ?>
         <li <?php echo $data['current_page']=='generate_links'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL; ?>generate_links/<?php echo $data['id']; ?>/">Generate Links<span></span></a>
+        </li>
+        <li <?php echo $data['current_page']=='statistics'?'class="active"':'' ?>>
+            <a href="<?php echo ADMIN_URL; ?>statistics/<?php echo $data['id']; ?>/">Statistics<span></span></a>
         </li>
         <li><a href="<?php echo ADMIN_URL; ?>">Back to Dashboard<span></span></a></li>
     </ul>
