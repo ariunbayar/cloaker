@@ -102,13 +102,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Affiliate Network:</td>
+                        <td>Affiliate Network (optional):</td>
                         <td>
                             <?php echo select_tag('network_id', $data['network_options'], '', '-- not specified --') ?>
                         </td>
                     </tr>
                     <tr>
-                        <td>Traffic source:</td>
+                        <td>Traffic source (optional):</td>
                         <td>
                             <?php echo select_tag('traffic_source_id', $data['traffic_source_options'], '', '-- not specified --') ?>
                         </td>
@@ -134,9 +134,10 @@
             <thead>
                 <tr class="hd">
                     <td>Type</td>
-                    <td>URL</td>
                     <td>Traffic source</td>
                     <td>Affiliate network</td>
+                    <td>Offer</td>
+                    <td>URL</td>
                     <td>Created at</td>
                     <td>Options</td>
                 </tr>
@@ -152,11 +153,6 @@
                         <?php } ?>
                     </td>
                     <td>
-                        <?php $url = substr(ADMIN_URL, 0, -6).$tracker->shortcode.'/' ?>
-                        <?php echo anchor_tag($url) ?>
-                        <a href="<?php echo ADMIN_URL.'regenerate_url/'.$tracker->id.'/' ?>" class="btn">Regenerate URL</a>
-                    </td>
-                    <td>
                         <?php if ($tracker->traffic_source_id){ ?>
                             <?php echo $tracker->getTrafficSource()->name ?>
                         <?php }else{ ?>
@@ -169,6 +165,17 @@
                         <?php }else{ ?>
                         --
                         <?php } ?>
+                    </td>
+                    <td>
+                        <?php $offer = $tracker->getOffer() ?>
+                        <?php echo $offer->name.' ($'.$offer->payout.')' ?><br/>
+                        <b>Cloaked:</b> <?php echo anchor_tag($offer->getCloakedUrl()->url) ?><br/>
+                        <b>Cloaking:</b> <?php echo anchor_tag($offer->getCloakingUrl()->url) ?>
+                    </td>
+                    <td>
+                        <?php $url = substr(ADMIN_URL, 0, -6).$tracker->shortcode.'/' ?>
+                        <?php echo anchor_tag($url) ?>
+                        <a href="<?php echo ADMIN_URL.'regenerate_url/'.$tracker->id.'/' ?>" class="btn">Regenerate URL</a>
                     </td>
                     <td><?php echo $tracker->created_at ?></td>
                     <td>

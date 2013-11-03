@@ -129,6 +129,7 @@ class Tracker extends Model
         'campaign_id',
         'traffic_source_id',
         'network_id',
+        'offer_id',
         'shortcode',
         'is_landing_page',
         'created_at',
@@ -173,6 +174,11 @@ class Tracker extends Model
     public function getTrafficSource()
     {
         return TrafficSource::getById($this->traffic_source_id);
+    }
+
+    public function getOffer()
+    {
+        return Offer::getById($this->offer_id);
     }
 }
 

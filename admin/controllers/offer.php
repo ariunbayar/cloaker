@@ -48,9 +48,7 @@ function save_offer_controller()
     }else{
         $offer = new Offer;
         $cloaked_url = new Destination;
-        $cloaked_url->campaign_id = $campaign_id;  // TODO don't need this
         $cloaking_url = new Destination;
-        $cloaking_url->campaign_id = $campaign_id;  // TODO don't need this
     }
 
     $cloaked_url->url = $_POST['cloaked_url'];
