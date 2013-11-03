@@ -41,17 +41,24 @@ function save_offer_controller()
 {
     $campaign_id = $_GET['id'];
 
-    $cloaked_url = new Destination;
+    if (is_numeric($_POST['offer_id'])){
+        $offer = get_entity_or_redirect('Offer', $_GET['offer_id']);
+        $cloaked_url = $offer->getCloakedUrl();
+        $cloaking_url = $offer->getCloakingUrl();
+    }else{
+        $offer = new Offer;
+        $cloaked_url = new Destination;
+        $cloaked_url->campaign_id = $campaign_id;  // TODO don't need this
+        $cloaking_url = new Destination;
+        $cloaking_url->campaign_id = $campaign_id;  // TODO don't need this
+    }
+
     $cloaked_url->url = $_POST['cloaked_url'];
-    $cloaked_url->campaign_id = $campaign_id;
     $cloaked_url->save();
 
-    $cloaking_url = new Destination;
     $cloaking_url->url = $_POST['cloaking_url'];
-    $cloaking_url->campaign_id = $campaign_id;
     $cloaking_url->save();
 
-    $offer = new Offer;
     $offer->id = $_POST['offer_id'];
     $offer->network_id = $_POST['network_id'];
     $offer->name = $_POST['name'];
