@@ -25,6 +25,7 @@ require dirname(__FILE__).'/controllers/traffic_source.php';
 require dirname(__FILE__).'/controllers/network.php';
 require dirname(__FILE__).'/controllers/generate_links.php';
 require dirname(__FILE__).'/controllers/migration.php';
+require dirname(__FILE__).'/controllers/offer.php';
 
 $cloaker = new Cloaker();
 
@@ -105,8 +106,25 @@ if (isset($_SESSION['logged_in']))
             migration_deploy_controller();
             break;
 
+        case 'offer':
+            offer_controller();
+            break;
+
+        case 'edit_offer':
+            edit_offer_controller();
+            break;
+
+        case 'delete_offer':
+            delete_offer_controller();
+            break;
+
+        case 'save_offer':
+            save_offer_controller();
+            break;
+
         case 'logout':
             logout_controller();
+            break;
 
         default:
             dashboard_controller();

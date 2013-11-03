@@ -133,10 +133,10 @@
         <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
             <thead>
                 <tr class="hd">
+                    <td>Type</td>
                     <td>URL</td>
                     <td>Traffic source</td>
                     <td>Affiliate network</td>
-                    <td>Type</td>
                     <td>Created at</td>
                     <td>Options</td>
                 </tr>
@@ -144,6 +144,13 @@
             <tbody>
                 <?php foreach ($data['trackers'] as $tracker){ ?>
                 <tr>
+                    <td>
+                        <?php if ($tracker->is_landing_page){ ?>
+                            Landing page setup
+                        <?php }else{ ?>
+                            Direct linking
+                        <?php } ?>
+                    </td>
                     <td>
                         <?php $url = substr(ADMIN_URL, 0, -6).$tracker->shortcode.'/' ?>
                         <?php echo anchor_tag($url) ?>
@@ -153,21 +160,14 @@
                         <?php if ($tracker->traffic_source_id){ ?>
                             <?php echo $tracker->getTrafficSource()->name ?>
                         <?php }else{ ?>
-                            [not specified]
+                        --
                         <?php } ?>
                     </td>
                     <td>
                         <?php if ($tracker->network_id){ ?>
                             <?php echo $tracker->getNetwork()->name ?>
                         <?php }else{ ?>
-                            [not specified]
-                        <?php } ?>
-                    </td>
-                    <td>
-                        <?php if ($tracker->is_landing_page){ ?>
-                            Landing page setup
-                        <?php }else{ ?>
-                            Direct linking
+                        --
                         <?php } ?>
                     </td>
                     <td><?php echo $tracker->created_at ?></td>

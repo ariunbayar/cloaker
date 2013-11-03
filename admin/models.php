@@ -68,6 +68,10 @@ class Model
             $sql = sprintf($query, $this::$_table, $field_names, $field_values);
         }
         $rs = mysql_query($sql);
+
+        if (!$is_editing){
+            $this->id = mysql_insert_id();
+        }
         return $rs;
     }
 
@@ -255,5 +259,59 @@ class Campaign extends Model
         $sql = sprintf($query, self::$_table, $user_id);
         return self::hydrate($sql);
     }
+}
+
+
+class Offer extends Model
+{
+    static public $_table = 'offer';
+    protected $_fields = array(
+        'id',
+        'network_id',
+        'name',
+        'cloaked_url',
+        'cloaking_url',
+        'payout',
+        'campaign_id',
+    );
+
+    /**
+     * @param int Campaign id to look up
+     * @return array Array of Offer instances
+     */
+    static public function getByCampaignId($campaign_id)
+    {
+        $campaign_id = mysql_real_escape_string($campaign_id);
+        $query = "SELECT * FROM %s WHERE campaign_id = '%s' ORDER BY id ASC";
+        $sql = sprintf($query, self::$_table, $campaign_id);
+        return self::hydrate($sql);
+    }
+
+    public function getNetwork()
+    {
+        return Network::getById($this->network_id);
+    }
+
+    public function getCloakedUrl()
+    {
+        return Destination::getById($this->cloaked_url);
+    }
+
+    public function getCloakingUrl()
+    {
+        return Destination::getById($this->cloaking_url);
+    }
+}
+
+
+class Destination extends Model
+{
+    static public $_table = 'destinations';
+    protected $_fields = array(
+        'id',
+        'campaign_id',
+        'url',
+        'notes',
+    );
 }
 ?>

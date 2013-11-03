@@ -18,7 +18,7 @@ function network_controller($data = array())
 
 function edit_network_controller()
 {
-    $data['network'] = Network::getById($_GET['network_id']);
+    $data = array('network' => Network::getById($_GET['network_id']));
     network_controller($data);
 }
 
@@ -30,7 +30,6 @@ function save_network_controller()
     $network->name = $_POST['name'];
     $network->campaign_id = $_GET['id'];
     $network->save();
-
 
     header('Location: '.ADMIN_URL."/network/{$_GET['id']}/");
     exit;
