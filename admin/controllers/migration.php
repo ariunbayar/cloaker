@@ -70,7 +70,7 @@ function migration_deploy_controller()
             $sql = "DROP TABLE $tmp_table";
             mysql_query($sql);
         }
-        $viewData['success'] = 'Migration run successfully!';
+        $viewData['success'] = 'Migration has run successfully!';
     }
 
     $viewData['current_page'] = 'migration_deploy';

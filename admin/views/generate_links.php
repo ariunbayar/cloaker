@@ -12,14 +12,93 @@
                         <td style="width: 200px;">Generate link for:</td>
                         <td>
                             <label>
-                                <input type="radio" name="landing_page" value="0" class="radio" checked/>
+                                <input type="radio" name="landing_page" value="0" class="radio"/>
                                 Direct linking
                             </label>
                             <br/>
                             <label>
-                                <input type="radio" name="landing_page" value="0" class="radio"/>
+                                <input type="radio" name="landing_page" value="1" class="radio"/>
                                 Landing page setup (<b style="color:red">NOT IMPLEMENTED</b>)
                             </label>
+                            <div class="scenario" id="direct_linking_scenario" style="display:none">
+                                <div class="box">
+                                    <div class="title">Advertisement</div>
+                                    <div class="headline">Next generation walkman</div>
+                                    <div class="description">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="display_url">http://cloaker.com/abc123/</div>
+                                </div>
+
+                                <div class="arrow">
+                                    http://cloaker.com/abc123/
+                                    &rarr;
+                                </div>
+
+                                <div class="box">
+                                    <div class="title">Redirector</div>
+                                    Cloaker redirects directly<br/>
+                                    to product page
+                                </div>
+
+                                <div class="arrow">
+                                    http://apple.com/ipod/
+                                    &rarr;
+                                </div>
+
+                                <div class="box">
+                                    <div class="title">Product page</div>
+                                    product: iPod<br/>
+                                    price: $399<br/>
+                                    tech spec: 80G
+                                    <div class="headline">order &gt;&gt;&gt;</div>
+                                </div>
+                            </div>
+
+                            <div class="scenario" id="landing_page_scenario" style="display:none">
+                                <div class="box">
+                                    <div class="title">Advertisement</div>
+                                    <div class="headline">Next generation walkman</div>
+                                    <div class="description">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="display_url">http://cloaker.com/abc123/</div>
+                                </div>
+
+                                <div class="arrow">
+                                    http://.../offers.html?sc=abc123 &rarr;
+                                </div>
+
+                                <div class="box">
+                                    <div class="title">Landing page</div>
+                                    <div class="headline">iPod (offer 1)</div>
+                                    <div class="description">http://cloaker.com/abc123-1/</div>
+                                    <div class="headline">iPod Nano (offer 2)</div>
+                                    <div class="description">http://cloaker.com/abc123-2/</div>
+                                </div>
+                                <div class="arrow">
+                                    (selects 2nd offer)<br/>
+                                    http://cloaker.com/abc123-2/ &rarr;
+                                </div>
+
+                                <div class="box">
+                                    <div class="title">Redirector</div>
+                                    Cloaker redirects directly<br/>
+                                    to product page
+                                </div>
+
+                                <div class="arrow">
+                                    http://apple.com/ipod-nano/ &rarr;
+                                </div>
+
+                                <div class="box">
+                                    <div class="title">Product page</div>
+                                    product: iPod Nano<br/>
+                                    price: $199<br/>
+                                    tech spec: 20G
+                                    <div class="headline">order &gt;&gt;&gt;</div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -43,6 +122,7 @@
 
         </form>
         <div class="bl"><div class="br"></div></div>
+
     </div>
 </div>	
 
@@ -55,6 +135,7 @@
                 <tr class="hd">
                     <td>URL</td>
                     <td>Traffic source</td>
+                    <td>Affiliate network</td>
                     <td>Type</td>
                     <td>Created at</td>
                     <td>Options</td>
@@ -101,6 +182,14 @@
         <div class="bl"><div class="br"></div></div>
     </div>
 </div>			
+
+<?php ob_start() ?>
+$('input[name=landing_page]').change(function(){
+    var is_landing_page = ($(this).val() == 1);
+    $('#direct_linking_scenario').toggle(!is_landing_page);
+    $('#landing_page_scenario').toggle(is_landing_page);
+});
+<?php G::set('main_js', ob_get_clean(), True) ?>
 
 <?php $main_content = ob_get_clean() ?>
 <?php require dirname(__FILE__).'/layout_manage.php'; ?>
