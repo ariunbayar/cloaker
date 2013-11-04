@@ -191,7 +191,7 @@ class Tracker extends Model
             }
             $url .= $join_str.'sc='.$this->shortcode;
         }else{
-            $url = substr(ADMIN_URL, 0, -6).$this->shortcode;
+            $url = substr(ADMIN_URL, 0, -6).$this->shortcode.'/';
         }
         return $url;
     }

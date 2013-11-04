@@ -226,7 +226,7 @@
                             <li>
                                 <?php echo $offer->name.' ($'.$offer->payout.')' ?>
                                 <?php if ($tracker->is_landing_page){ ?>
-                                    (<?php echo anchor_tag($url.'-'.$offer->id) ?>)
+                                    (<?php echo anchor_tag($url.'-'.$offer->id.'/') ?>)
                                 <?php } ?>
                             </li>
                         <?php } ?>
