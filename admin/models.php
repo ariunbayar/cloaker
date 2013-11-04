@@ -129,9 +129,9 @@ class Tracker extends Model
         'campaign_id',
         'traffic_source_id',
         'network_id',
-        'offer_id',
         'shortcode',
         'is_landing_page',
+        'landing_page_url',
         'created_at',
     );
 
@@ -176,9 +176,24 @@ class Tracker extends Model
         return TrafficSource::getById($this->traffic_source_id);
     }
 
-    public function getOffer()
+    public function getOffers()
     {
-        return Offer::getById($this->offer_id);
+        return TrackerOffer::getOffersByTrackerId($this->id);
+    }
+
+    public function getAdURL()
+    {
+        if ($this->is_landing_page){
+            $url = $this->landing_page_url;
+            $join_str = '?';
+            if (strpos($url, '?')){
+                $join_str = (substr($url, -1, 1) == '?' ? '' : '&');
+            }
+            $url .= $join_str.'sc='.$this->shortcode;
+        }else{
+            $url = substr(ADMIN_URL, 0, -6).$this->shortcode;
+        }
+        return $url;
     }
 }
 
@@ -319,5 +334,36 @@ class Destination extends Model
         'url',
         'notes',
     );
+}
+
+
+class TrackerOffer extends Model
+{
+    static public $_table = 'tracker_offer';
+    protected $_fields = array(
+        'tracker_id',
+        'offer_id',
+    );
+
+    static public function getOffersByTrackerId($tracker_id)
+    {
+        $tracker_id = mysql_real_escape_string($tracker_id);
+        $query = "
+            SELECT t2.* FROM %s t1
+            LEFT JOIN %s t2 ON t1.offer_id=t2.id
+            WHERE t1.tracker_id = '%s' ORDER BY id ASC
+        ";
+        $sql = sprintf($query, self::$_table, Offer::$_table, $tracker_id);
+        return Offer::hydrate($sql);
+    }
+
+    static public function deleteByTrackerId($tracker_id)
+    {
+        $tracker_id = mysql_real_escape_string($tracker_id);
+        $query = "DELETE FROM %s WHERE tracker_id = '%s'";
+        $sql = sprintf($query, self::$_table, $tracker_id);
+        $result = mysql_query($sql);
+        return $result;
+    }
 }
 ?>

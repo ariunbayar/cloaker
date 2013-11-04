@@ -22,4 +22,4 @@ RewriteRule ^(.*)/(.*)/$ index.php?action=$1&id=$2 [NC,L,QSA]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)/$ index.php?action=$1 [NC,L]
+RewriteRule ^(.*)/$ index.php?action=$1 [NC,L,QSA]

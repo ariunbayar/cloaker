@@ -17,30 +17,6 @@
                     <?php else: ?>
                     <tr><td>Cloaking</td><td><input name="cloak_status" value="on" type="radio" class="radio"> ON <input name="cloak_status" value="off" type="radio" class="radio" checked> OFF</td></tr>
                     <?php endif; ?>
-                    <tr>
-                        <td>Destination (Cloaked URL aka Bad URL):</td>
-                        <td>
-                        <?php foreach($data['destinations'] as $destination): ?>
-                            <?php if($destination['id'] == $data['cloaked_url']): ?>
-                            <br><input size="38" name="cloaked_url" value="<?php echo $destination['id']; ?>" type="radio" class="radio" checked> <?php echo $destination['url'].' '.$destination['notes']; ?><br>
-                            <?php else: ?>
-                            <br><input size="38" name="cloaked_url" value="<?php echo $destination['id']; ?>" type="radio" class="radio"> <?php echo $destination['url'].' '.$destination['notes']; ?><br>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Destination (Cloaking URL aka Good URL):</td>
-                        <td>
-                        <?php foreach($data['destinations'] as $destination): ?>
-                            <?php if($destination['id'] == $data['cloaking_url']): ?>
-                            <br><input size="38" name="cloaking_url" value="<?php echo $destination['id']; ?>" type="radio" class="radio" checked> <?php echo $destination['url'].' '.$destination['notes']; ?><br>
-                            <?php else: ?>
-                            <br><input size="38" name="cloaking_url" value="<?php echo $destination['id']; ?>" type="radio" class="radio"> <?php echo $destination['url'].' '.$destination['notes']; ?><br>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                        </td>
-                    </tr>
                     <?php if ($data['ref_status'] == 'on'): ?>
                     <tr><td>Cloak based on non-empty referal url:</td><td><input name="ref_status" value="on" type="radio" class="radio" checked> On <input name="ref_status" value="off" type="radio" class="radio"> Off</td></tr>
                     <?php else: ?>

@@ -198,6 +198,42 @@ function deleteDestination(id)
     document.forms[0].submit();
 }
 
+
+function generateLinksTab()
+{
+    // events
+    $('input[name=landing_page]').change(function(){
+        var is_landing_page = ($(this).val() == 1);
+        $('.direct_linking_setup').toggle(!is_landing_page);
+        $('.landing_page_setup').toggle(is_landing_page);
+    });
+    $('select[name=network_id]').change(function(){
+        var network_id = $(this).val();
+        var shown_rows = $('#offers tbody tr.network_'+network_id).show();
+        var hidden_rows = $('#offers tbody tr').not(shown_rows).hide();
+        hidden_rows.find(':checkbox:checked').click();
+    });
+    $('#offers tbody tr td:nth-child(n+2)').click(function(){
+        var checkbox = $(this).parent().find(':checkbox');
+        checkbox.click();
+    });
+    $('#offers :checkbox').click(function(e){
+        if ($('[name=landing_page][value=0]').prop('checked') == false){
+            return;
+        }
+
+        var network_id = $('select[name=network_id]').val();
+        console.log($('#offers tbody tr.network_'+network_id+' :checkbox').not(this));
+        $('#offers tbody tr.network_'+network_id+' :checkbox').not(this).prop('checked', false);
+    });
+
+    // onload actions
+    $('.direct_linking_setup, .landing_page_setup').hide();
+    $('select[name=network_id]').change();
+    $('[name=landing_page][value=0]').click();
+}
+
+
 $(function(){
     toDateRange("input[name=date_from]", "input[name=date_to]");
     clickableRowsForCampaignList('#campaign_list');

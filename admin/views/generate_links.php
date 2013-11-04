@@ -5,7 +5,6 @@
         <div class="tl"><div class="tr"></div></div>
         <h2 class="boxtitle">Generate links: <?php echo $data['name']; ?></h2>
         <form method="post">
-            <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
             <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                 <tbody>
                     <tr>
@@ -18,9 +17,9 @@
                             <br/>
                             <label>
                                 <input type="radio" name="landing_page" value="1" class="radio"/>
-                                Landing page setup (<b style="color:red">NOT IMPLEMENTED</b>)
+                                Landing page setup
                             </label>
-                            <div class="scenario" id="direct_linking_scenario" style="display:none">
+                            <div class="scenario direct_linking_setup">
                                 <div class="box">
                                     <div class="title">Advertisement</div>
                                     <div class="headline">Next generation walkman</div>
@@ -55,7 +54,7 @@
                                 </div>
                             </div>
 
-                            <div class="scenario" id="landing_page_scenario" style="display:none">
+                            <div class="scenario landing_page_setup">
                                 <div class="box">
                                     <div class="title">Advertisement</div>
                                     <div class="headline">Next generation walkman</div>
@@ -75,6 +74,7 @@
                                     <div class="description">http://cloaker.com/abc123-1/</div>
                                     <div class="headline">iPod Nano (offer 2)</div>
                                     <div class="description">http://cloaker.com/abc123-2/</div>
+                                    &lt;generated LP code&gt;
                                 </div>
                                 <div class="arrow">
                                     (selects 2nd offer)<br/>
@@ -101,10 +101,11 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>Affiliate Network (optional):</td>
+                    <tr class="landing_page_setup">
+                        <td>Landing page URL:</td>
                         <td>
-                            <?php echo select_tag('network_id', $data['network_options'], '', '-- not specified --') ?>
+                            <input type="text" name="landing_page_url" size="40"/>
+                            Please setup the landing page and enter the URL here
                         </td>
                     </tr>
                     <tr>
@@ -114,8 +115,60 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Affiliate Network (optional)</td>
+                        <td>
+                            <?php echo select_tag('network_id', $data['network_options'], '', '-- not specified --') ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Affiliate Offers:</td>
+                        <td>
+                            <span class="direct_linking_setup">
+                                You can select only <strong>one offer</strong> for direct linking setup
+                            </span>
+
+                            <table width="100%" cellspacing="0" cellpadding="4" border="1" class="table" id="offers">
+                                <thead>
+                                <tr class="hd">
+                                    <td></td>
+                                    <td>Name</td>
+                                    <td>Affiliate Network</td>
+                                    <td>URL</td>
+                                    <td>Payout</td>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <?php foreach($data['offers'] as $offer): ?>
+                                <tr class="network_<?php echo $offer->network_id ? $offer->network_id : ''?>">
+                                    <td><input type="checkbox" name="offer_ids[]" value="<?php echo $offer->id ?>" class="radio"/></td>
+                                    <td><?php echo $offer->name ?></td>
+                                    <td>
+                                        <?php if ($offer->network_id){ ?>
+                                            <?php echo $offer->getNetwork()->name ?>
+                                        <?php }else{ ?>
+                                            --
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <b>Cloaked:</b> <?php echo $offer->getCloakedUrl()->url ?><br/>
+                                        <b>Cloaking:</b> <?php echo $offer->getCloakingUrl()->url ?>
+                                    </td>
+                                    <td>
+                                        $<?php echo $offer->payout ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
                         <td></td>
-                        <td><button type="submit">Generate tracking link</button></td>
+                        <td>
+                            <input type="submit" value="Generate tracking link" class="direct_linking_setup"/>
+                            <input type="submit" value="Generate link and Landing page codes" class="landing_page_setup"/>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -136,8 +189,8 @@
                     <td>Type</td>
                     <td>Traffic source</td>
                     <td>Affiliate network</td>
-                    <td>Offer</td>
-                    <td>URL</td>
+                    <td>Offer (payout) (url)</td>
+                    <td>Advertising URL</td>
                     <td>Created at</td>
                     <td>Options</td>
                 </tr>
@@ -166,16 +219,22 @@
                         --
                         <?php } ?>
                     </td>
+                    <?php $url = substr(ADMIN_URL, 0, -6).$tracker->shortcode ?>
                     <td>
-                        <?php $offer = $tracker->getOffer() ?>
-                        <?php echo $offer->name.' ($'.$offer->payout.')' ?><br/>
-                        <b>Cloaked:</b> <?php echo anchor_tag($offer->getCloakedUrl()->url) ?><br/>
-                        <b>Cloaking:</b> <?php echo anchor_tag($offer->getCloakingUrl()->url) ?>
+                        <ul>
+                        <?php foreach ($tracker->getOffers() as $offer){ ?>
+                            <li>
+                                <?php echo $offer->name.' ($'.$offer->payout.')' ?>
+                                <?php if ($tracker->is_landing_page){ ?>
+                                    (<?php echo anchor_tag($url.'-'.$offer->id) ?>)
+                                <?php } ?>
+                            </li>
+                        <?php } ?>
+                        </ul>
                     </td>
                     <td>
-                        <?php $url = substr(ADMIN_URL, 0, -6).$tracker->shortcode.'/' ?>
-                        <?php echo anchor_tag($url) ?>
-                        <a href="<?php echo ADMIN_URL.'regenerate_url/'.$tracker->id.'/' ?>" class="btn">Regenerate URL</a>
+                        <?php echo anchor_tag($tracker->getAdURL()) ?>
+                        <a href="<?php echo ADMIN_URL.'regenerate_url/'.$tracker->id.'/' ?>" class="btn">Regenerate Shortcode</a>
                     </td>
                     <td><?php echo $tracker->created_at ?></td>
                     <td>
@@ -191,11 +250,7 @@
 </div>			
 
 <?php ob_start() ?>
-$('input[name=landing_page]').change(function(){
-    var is_landing_page = ($(this).val() == 1);
-    $('#direct_linking_scenario').toggle(!is_landing_page);
-    $('#landing_page_scenario').toggle(is_landing_page);
-});
+generateLinksTab();
 <?php G::set('main_js', ob_get_clean(), True) ?>
 
 <?php $main_content = ob_get_clean() ?>

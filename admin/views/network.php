@@ -38,10 +38,8 @@
                         <input size="38" name="name" type="text" value="<?php if ($network) echo $network->name ?>"/>
                         <?php if($network) { ?>
                             <input id="formID" type="hidden" name="network_id" value="<?php echo $network->id ?>"/>
-                            <button type="submit">Update</button>
-                        <?php } else { ?>
-                            <button type="submit">Add</button>
                         <?php } ?>
+                        <input type="submit" value="Add"/>
                     </td>
                 </tr>
                 </tbody>

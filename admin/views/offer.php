@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><button type="submit">Save offer</button></td>
+                    <td><input type="submit" value="Save offer"/></td>
                 </tr>
                 </tbody>
             </table>

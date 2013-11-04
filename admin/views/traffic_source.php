@@ -38,10 +38,8 @@
                         <input size="38" name="name" type="text" value="<?php if ($ts) echo $ts->name ?>"/>
                         <?php if ($ts) { ?>
                             <input id="formID" type="hidden" name="id" value="<?php echo $ts->id ?>">
-                            <button type="submit">Update</button>
-                        <?php } else { ?>
-                            <button type="submit">Add</button>
                         <?php } ?>
+                        <input type="submit" value="Save"/>
                     </td>
                 </tr>
                 </tbody>

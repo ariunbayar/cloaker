@@ -10,6 +10,8 @@
                 <tr>
                     <td></td>
                     <td>
+                        Click following URL to run the migration:<br/>
+                        <?php echo anchor_tag(ADMIN_URL.'migration_deploy/?execute=yes') ?>
                     </td>
                 </tr>
                 </tbody>

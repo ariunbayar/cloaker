@@ -7,6 +7,12 @@ function migration_deploy_controller()
         exit;
     }
 
+    if (!(isset($_GET['execute']) && $_GET['execute'] == 'yes')){
+        $viewData['current_page'] = 'migration_deploy';
+        View('migration_deploy', $viewData);
+        exit;
+    }
+
     $prefix = 'tmp';
 
     $tables = array();
@@ -70,11 +76,11 @@ function migration_deploy_controller()
             $sql = "DROP TABLE $tmp_table";
             mysql_query($sql);
         }
-        $viewData['success'] = 'Migration has run successfully!';
+        Flash::set('Migration has run successfully!<br/>'
+                   .'TODO: Show this message as success');
     }
 
-    $viewData['current_page'] = 'migration_deploy';
-    View('migration_deploy', $viewData);
+    header('Location: '.ADMIN_URL.'/migration_deploy/');
     exit;
 }
 ?>
