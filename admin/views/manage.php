@@ -40,7 +40,7 @@
                     <?php else: ?>
                     <tr><td>Deny the above IP Range</td><td><input name="denyiprange_status" value="on" type="radio" class="radio"> On <input name="denyiprange_status" value="off" type="radio" class="radio" checked> Off</td></tr>
                     <?php endif; ?>
-                    <tr><td>Visits Count (in number of visits)</td><td><input name="visit_count" value="5" type="text"></td></tr>
+                    <tr><td>Visits Count (in number of visits)</td><td><input name="visit_count" value="<?php echo $data['visit_count'] ?>" type="text"></td></tr>
                     <?php if ($data['visitcount_status'] == 'on'): ?>
                     <tr><td>Cloak Based on Visits Count?</td><td><input name="visitcount_status" value="on" type="radio" class="radio" checked> On <input name="visitcount_status" value="off" type="radio" class="radio"> Off</td></tr>
                     <?php else: ?>

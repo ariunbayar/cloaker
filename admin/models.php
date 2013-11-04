@@ -267,9 +267,25 @@ class Campaign extends Model
     static public $_table = 'campaigns';
     protected $_fields = array(
         'id',
-        'name',
         'owner_id',
-        'network_id',
+        'name',
+        'ct_dt',
+        'md_dt',
+        'cloak_status',
+        'ref_status',
+        'googleurl',
+        'ad_status',
+        'deniedip_status',
+        'denyiprange_status',
+        'visit_count',
+        'visitcount_status',
+        'rdns',
+        'rdns_status',
+        'geolocation',
+        'geoloc_status',
+        'geoloc_mismatch_status',
+        'ua_strings',
+        'ua_status'
     );
 
     static public function getByUserId($user_id)
@@ -330,7 +346,6 @@ class Destination extends Model
     static public $_table = 'destinations';
     protected $_fields = array(
         'id',
-        'campaign_id',
         'url',
         'notes',
     );
@@ -365,5 +380,28 @@ class TrackerOffer extends Model
         $result = mysql_query($sql);
         return $result;
     }
+}
+
+
+class DeniedIP extends Model
+{
+    static public $_table = 'denied_ips';
+    protected $_fields = array(
+        'id',
+        'campaign_id',
+        'ip',
+        'ct',
+    );
+}
+
+class DeniedIPRange extends Model
+{
+    static public $_table = 'denied_ip_ranges';
+    protected $_fields = array(
+        'id',
+        'campaign_id',
+        'iprange',
+        'ct',
+    );
 }
 ?>
