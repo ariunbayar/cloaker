@@ -17,39 +17,39 @@ include('admin/models.php');
 $cloaker = new Cloaker();
 if (!empty($_GET['shortcode']) && !$cloaker->checkGiplist())
 {
-    $shortcode = mysql_real_escape_string($_GET['shortcode']);
+    $shortcode = $_GET['shortcode'];
+    $offer_id = null;
+    if (strpos($shortcode, '-')){
+        list($shortcode, $offer_id) = explode('-', $shortcode);
+    }
     $tracker = Tracker::getByShortcode($shortcode);
     if ($tracker) // shortcode exists and successfully resolves a tracking setup
     {
+        if ($tracker->is_landing_page){
+            $offer = Offer::getById($offer_id);
+        }else{
+            $offer = array_pop($tracker->getOffers());
+        }
         $campaignDetails = $cloaker->getVariables($tracker);
         $subid = $campaignDetails['subid'];
         if ($campaignDetails['cloak_status'] == 'on') // If cloaking is enabled for the current Campaign...
         {
-            if ((!$cloaker->shouldCloak($campaignDetails)) && ($campaignDetails['cloak_status']=="on")) // if cloaking is enabled, but no reason for cloaking is detected -> redirect to the cloaked URL
+            if (!$cloaker->shouldCloak($campaignDetails))  // TODO check
             {
-                header('Location: '.$cloaker->getDestinationUrl($campaignDetails['cloaked_url'], $subid));
+                header('Location: '.$cloaker->getDestinationUrl($offer->cloaked_url, $subid));
                 exit;
             }
             else // if cloaking is enabled and a reason for cloaking is detected -> display fake landing page
             {
-                header('Location: '.$cloaker->getDestinationUrl($campaignDetails['cloaking_url'], $subid));
+                header('Location: '.$cloaker->getDestinationUrl($offer->cloaking_url, $subid));
                 exit;
             }
         }
         else // if cloaking is disabled -> display fake landing page
         {
-            header('Location: '.$cloaker->getDestinationUrl($campaignDetails['cloaking_url'], $subid));
+            header('Location: '.$cloaker->getDestinationUrl($offer->cloaking_url, $subid));
             exit;
         }        
     }
-    else
-    {
-        exit;
-    }
-
-}
-else
-{
-    exit;
 }
 ?>

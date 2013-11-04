@@ -676,7 +676,7 @@ class Cloaker
         }
         if ($campaignDetails['ad_status'] == 'on') // Cloak based on certain GET variables present in the HTTP Request?
         {
-            $getParams = explode(',',$campaignDetails['googleurl']);
+            $getParams = explode(',', $campaignDetails['googleurl']);
             foreach($getParams as $key)
             {
                 if (array_key_exists($key, $_GET))
@@ -689,7 +689,7 @@ class Cloaker
         if ($campaignDetails['rdns_status'] == 'on') // Cloak based on Reverse DNS is ON?
         {
             $hostname = $this->hostname;
-            $rdns = explode(',',$campaignDetails['rdns']);    
+            $rdns = explode(',', $campaignDetails['rdns']);
             for($i=0;$i<count($rdns);$i++)
             {
                 if (strpos(trim($hostname),$rdns[$i]) !== false)
@@ -702,7 +702,7 @@ class Cloaker
         }
         if ($campaignDetails['geoloc_status'] == 'on') // Cloak based on Geolocation Match is ON?
         {
-            $geoLocation = array_map('strtolower', explode(',',$campaignDetails['geolocation']));
+            $geoLocation = array_map('strtolower', explode(',', $campaignDetails['geolocation']));
             if ((in_array(trim(strtolower($this->country)), $geoLocation)) || (in_array(trim(strtolower($this->region)), $geoLocation)) || (in_array(trim(strtolower($this->city)), $geoLocation)))
             {
                 $this->reasonForCloak('Geo Location Matched');
@@ -711,7 +711,7 @@ class Cloaker
         }
         if ($campaignDetails['geoloc_mismatch_status'] == 'on') // Cloak based on Geolocation Mismatch is ON?
         {
-            $geoLocation = array_map('strtolower', explode(',',$campaignDetails['geolocation']));
+            $geoLocation = array_map('strtolower', explode(',', $campaignDetails['geolocation']));
             if ((!in_array(trim(strtolower($this->country)), $geoLocation)) || (!in_array(trim(strtolower($this->region)), $geoLocation)) || (!in_array(trim(strtolower($this->city)), $geoLocation)))
             {
                 $this->reasonForCloak('Geo Location Mismatch');
@@ -720,7 +720,7 @@ class Cloaker
         }
         if ($campaignDetails['deniedip_status'] == 'on') // Cloak based on IP is ON?
         {
-            $query = mysql_query("SELECT ip FROM denied_ips WHERE campaign_id = '$campaignDetails[id]'");
+            $query = mysql_query("SELECT ip FROM denied_ips WHERE campaign_id = '{$campaignDetails['id']}'");
             while (list($ip) = mysql_fetch_row($query))
             {
                 if ($this->ip == $ip)
