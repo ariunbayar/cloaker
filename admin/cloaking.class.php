@@ -53,6 +53,7 @@ class Cloaker
      * Lists information about the campaigns currently present in the system. The function is used for
      * displaying all the details on the Dashboard/Campaigns screen and/or for listing campaign specific
      * details on the Manage screen.
+     * TODO use Campaign::getById() instead
      *
      * @return Array
      */
@@ -207,60 +208,6 @@ class Cloaker
             $data[] = $row;
         }
         return $data;
-    }
-    
-    /**
-     * updateCampaign()
-     *
-     * Updates a campaign record already present in the database.
-     *
-     * @param Array $values An array containing the values that need to be updated
-     *
-     * @return Boolean TRUE upon success, FALSE upon failure
-     */
-    function updateCampaign($values)
-    {
-        $sql = "UPDATE campaigns SET
-                    name = '$values[name]',
-                    md_dt = NOW(),
-                    cloak_status = '$values[cloak_status]',
-                    cloaking_url = '$values[cloaking_url]',
-                    cloaked_url = '$values[cloaked_url]',
-                    ref_status = '$values[ref_status]',
-                    googleurl = '$values[googleurl]',
-                    ad_status = '$values[ad_status]',
-                    deniedip_status = '$values[deniedip_status]',
-                    denyiprange_status = '$values[denyiprange_status]',
-                    visit_count = '$values[visit_count]',
-                    visitcount_status = '$values[visitcount_status]',
-                    rdns = '$values[rdns]',
-                    rdns_status = '$values[rdns_status]',
-                    geolocation = '$values[geolocation]',
-                    geoloc_status = '$values[geoloc_status]',
-                    geoloc_mismatch_status = '$values[geoloc_mismatch_status]',
-                    ua_strings = '$values[ua_strings]',
-                    ua_status = '$values[ua_status]'
-                WHERE id = '$values[id]'";
-        $query = mysql_query($sql);
-        mysql_query("DELETE FROM denied_ips WHERE campaign_id = '$values[id]'");
-        if (!empty($values['iplist']))
-        {
-            $iplist = explode(PHP_EOL,$values['iplist']);
-            foreach($iplist as $ip)
-            {
-                mysql_query("INSERT INTO denied_ips (campaign_id,ip,ct) VALUES ('$values[id]','$ip',NOW())");
-            }
-        }
-        mysql_query("DELETE FROM denied_ip_ranges WHERE campaign_id = '$values[id]'");
-        if (!empty($values['iprange']))
-        {
-            $iprange = explode(PHP_EOL,$values['iprange']);
-            foreach($iprange as $ip)
-            {
-                mysql_query("INSERT INTO denied_ip_ranges (campaign_id,iprange,ct) VALUES ('$values[id]','$ip',NOW())");
-            }
-        }
-        return $query;
     }
     
     /**

@@ -296,6 +296,24 @@ class Campaign extends Model
         $sql = sprintf($query, self::$_table, $user_id);
         return self::hydrate($sql);
     }
+
+    public function getDeniedIpDisplay()
+    {
+        $iplist = array();
+        foreach (DeniedIP::getByCampaignId($this->id) as $denied_ip){
+            $iplist[] = $denied_ip->ip;
+        }
+        return implode(PHP_EOL, $iplist);
+    }
+
+    public function getDeniedIpRangeDisplay()
+    {
+        $ip_ranges = array();
+        foreach (DeniedIPRange::getByCampaignId($this->id) as $denied_ip_range){
+            $ip_ranges[] = $denied_ip_range->iprange;
+        }
+        return implode(PHP_EOL, $ip_ranges);
+    }
 }
 
 
@@ -392,6 +410,24 @@ class DeniedIP extends Model
         'ip',
         'ct',
     );
+
+    static public function getByCampaignId($campaign_id)
+    {
+        $campaign_id = mysql_real_escape_string($campaign_id);
+
+        $query = "SELECT * FROM %s WHERE campaign_id='%s' ORDER BY id";
+        $sql = sprintf($query, self::$_table, $campaign_id);
+        return self::hydrate($sql);
+    }
+
+    static public function deleteByCampaignId($campaign_id)
+    {
+        $campaign_id = mysql_real_escape_string($campaign_id);
+        $query = "DELETE FROM %s WHERE campaign_id = '%s'";
+        $sql = sprintf($query, self::$_table, $campaign_id);
+        $result = mysql_query($sql);
+        return $result;
+    }
 }
 
 class DeniedIPRange extends Model
@@ -403,5 +439,23 @@ class DeniedIPRange extends Model
         'iprange',
         'ct',
     );
+
+    static public function getByCampaignId($campaign_id)
+    {
+        $campaign_id = mysql_real_escape_string($campaign_id);
+
+        $query = "SELECT * FROM %s WHERE campaign_id='%s' ORDER BY id";
+        $sql = sprintf($query, self::$_table, $campaign_id);
+        return self::hydrate($sql);
+    }
+
+    static public function deleteByCampaignId($campaign_id)
+    {
+        $campaign_id = mysql_real_escape_string($campaign_id);
+        $query = "DELETE FROM %s WHERE campaign_id = '%s'";
+        $sql = sprintf($query, self::$_table, $campaign_id);
+        $result = mysql_query($sql);
+        return $result;
+    }
 }
 ?>

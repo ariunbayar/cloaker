@@ -1,8 +1,6 @@
 <?php
 function add_campaign_controller()
 {
-    global $cloaker;
-
     if ($_POST)
     {
         $values = $_POST;
@@ -100,36 +98,77 @@ function add_campaign_controller()
 
 function manage_campaign_controller()
 {
-    global $cloaker;
+    $campaign = get_entity_or_redirect('Campaign', $_GET['id']);
+    if ($_POST)
+    {
+        $values = $_POST;
+        $errors = array();
 
-    if (empty($_GET['id'])) {
-        header('Location: '.ADMIN_URL);
+        // Save the campaign
+        $campaign->name = $values['name'];
+        $campaign->cloak_status = $values['cloak_status'];
+        $campaign->ref_status = $values['ref_status'];
+        $campaign->googleurl = $values['googleurl'];
+        $campaign->ad_status = $values['ad_status'];
+        $campaign->deniedip_status = $values['deniedip_status'];
+        $campaign->denyiprange_status = $values['denyiprange_status'];
+        $campaign->visit_count = $values['visit_count'];
+        $campaign->visitcount_status = $values['visitcount_status'];
+        $campaign->rdns = $values['rdns'];
+        $campaign->rdns_status = $values['rdns_status'];
+        $campaign->geolocation = $values['geolocation'];
+        $campaign->geoloc_status = $values['geoloc_status'];
+        $campaign->geoloc_mismatch_status = $values['geoloc_mismatch_status'];
+        $campaign->ua_strings = $values['ua_strings'];
+        $campaign->ua_status = $values['ua_status'];
+        $campaign->md_dt = date('Y-m-d H:i:s');
+        if (!$campaign->save()) $errors[] = mysql_error();
+
+        // Save denied ip addresses
+        if ($values['iplist']) {
+            DeniedIP::deleteByCampaignId($campaign->id);
+            $iplist = explode(PHP_EOL, $values['iplist']);
+            foreach ($iplist as $ip) {
+                if (strlen(trim($ip)) == 0) continue;
+                $denied_ip = new DeniedIP;
+                $denied_ip->campaign_id = $campaign->id;
+                $denied_ip->ip = $ip;
+                $denied_ip->ct = date('Y-m-d H:i:s');
+                if (!$denied_ip->save()) $errors[] = mysql_error();
+            }
+        }
+
+        // Save denied ip ranges
+        if ($values['iprange']) {
+            DeniedIPRange::deleteByCampaignId($campaign->id);
+            $ip_ranges = explode(PHP_EOL, $values['iprange']);
+            foreach($ip_ranges as $ip_range) {
+                if (strlen(trim($ip_range)) == 0) continue;
+                $denied_ip_range = new DeniedIPRange;
+                $denied_ip_range->campaign_id = $campaign->id;
+                $denied_ip_range->iprange = $ip_range;
+                $denied_ip_range->ct = date('Y-m-d H:i:s');
+                if (!$denied_ip_range->save()) $errors[] = mysql_error();
+            }
+        }
+
+        if ($errors){
+            Flash::set('Campaign could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error());
+        }else{
+            Flash::set('Campaign was updated successfully!'.
+                       '<br/>TODO Change this to success message, not error');
+        }
+
+        header('Location: '.ADMIN_URL.'manage/'.$campaign->id.'/');
         exit;
     }
 
-    $campaignID = mysql_real_escape_string($_GET['id']);
-    $viewData = $cloaker->getCampaignDetails($campaignID);
-    if (!empty($_POST)) // the update form has been submitted
-    {
-
-        foreach($_POST as $key => $value)
-        {
-            $values[$key] = mysql_real_escape_string($value);
-        }
-        if (!$cloaker->updateCampaign($values))
-        {
-            $viewData['errors'][] = 'Campaign could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error();
-        }
-        else
-        {
-            $viewData = $cloaker->getCampaignDetails($campaignID);
-            $viewData['success'][] = 'Campaign was updated successfully!';
-        }
-    }
-
-    $viewData['destinations'] = $cloaker->getDestinations($campaignID);
-    $viewData['current_page'] = 'manage';
-    View('manage', $viewData);
+    $data = array(
+        'id' => $_GET['id'],  // TODO is a fallback to old templating
+        'campaign' => $campaign,
+        'current_page' => 'manage',
+    );
+    View('manage', $data);
     exit;
 }
 
