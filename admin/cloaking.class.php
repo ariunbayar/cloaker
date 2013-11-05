@@ -21,9 +21,9 @@ class Cloaker
     protected $country;  // Country that the request is coming from
     protected $region;     // Region/State that the request is coming from
     protected $city;     // City that the request is coming from
-    
+
     protected $ipCount,$cloak; // These seem to be unused?
-    
+
     /**
      * __construct()
      *
@@ -34,19 +34,19 @@ class Cloaker
     function __construct()
     {
         // Initialize variables
-        $this->ip = $_SERVER['REMOTE_ADDR'];    
+        $this->ip = $_SERVER['REMOTE_ADDR'];
         $this->ref = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
         $this->hostname = gethostbyaddr($this->ip);
         $this->ipkey = '334a8ea9e2e47a210049c24b4c6d734c3d6578f3b525d1e997bb1a7a52977a7e';
         $this->unqid = session_id();
         $this->page = $_SERVER['REQUEST_URI'];
         $this->url = "http://api.ipinfodb.com/v3/ip-city/?key=".$this->ipkey."&ip=".$this->ip."&format=raw";
-        
+
         // Connect to database
         $connection = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD);
         mysql_select_db(DB_NAME, $connection);
     }
-    
+
     /**
      * getCampaignDetails()
      *
@@ -209,7 +209,7 @@ class Cloaker
         }
         return $data;
     }
-    
+
     /**
      * deleteCampaign()
      *
@@ -243,7 +243,7 @@ class Cloaker
         $campaign_id = mysql_real_escape_string($campaign_id);
         mysql_query("DELETE FROM iptracker WHERE campaign_id = '$campaign_id'");
     }
-    
+
     /**
      * deleteDestination()
      *
@@ -257,7 +257,7 @@ class Cloaker
         $query = mysql_query("DELETE FROM destinations WHERE id = '$id'");
         return $query;
     }
-    
+
     /**
      * addDestination()
      *
@@ -273,7 +273,7 @@ class Cloaker
         $query = mysql_query("INSERT INTO destinations (campaign_id,url,notes) VALUES ('$id','$url','$notes')");
         return $query;
     }
-    
+
     /**
      * getDestinationDetails()
      *
@@ -287,7 +287,7 @@ class Cloaker
         $query = mysql_query("SELECT url,notes FROM destinations WHERE id = '$id'");
         return mysql_fetch_row($query);
     }
-    
+
     /**
      * updateDestination()
      *
@@ -516,7 +516,7 @@ class Cloaker
         return array($data, $max_days_reached);
     }
 
-    
+
     /**
      * getVariables()
      *
@@ -535,9 +535,9 @@ class Cloaker
             return false;
         }
         $campaignDetails = mysql_fetch_assoc($campaignQuery);
-        
+
         // Geolocate IP: Start
-        
+
         $start = microtime(true);
         $context = stream_context_create(array( // a stream_context we would use along with the file_get_contents() operation
             'http' => array(
@@ -546,7 +546,7 @@ class Cloaker
         ));
         $ipApiUrl = "http://www.ipaddressapi.com/l/4e6c100ddeef1338ae6f91af2f61413aa2ffad38de58?h=".$this->ip; // URL to the Geolocation API provided by ipaddressapi.com
         $apiResponse = @file_get_contents($ipApiUrl, 0, $context); // store the API response into a variable
-        
+
         // A typical ipaddressapi.com API response contains:
         //
         // - Host Name or IP Address queried,
@@ -563,7 +563,7 @@ class Cloaker
         // - Organization
         //
         // e.g. "192.0.43.10","192.0.43.10","US","United States","CA","California","Marina Del Rey","","33.980300","-118.451700","ICANN","ICANN"
-        
+
         if (!empty($apiResponse)) // if a response was successfully received from the ipaddressapi.com API...
         {
             $responseDetails = explode(',',str_replace('"','',$apiResponse));
@@ -576,7 +576,7 @@ class Cloaker
         {
             // what we basically do here is send a request to an alternative API, provided by IPinfoDB.com
             $apiResponse = @file_get_contents($this->url, 0, $context);
-            
+
             // An IPinfoDB.com API response contains the following information:
             //
             // - Status Code
@@ -592,7 +592,7 @@ class Cloaker
             // - Time Zone
             //
             // e.g. OK;;192.0.43.10;US;UNITED STATES;CALIFORNIA;LOS ANGELES;90094;34.0522;-118.244;-08:00
-            
+
             if (!empty($apiResponse)) // response was successfully received from the IPinfoDB.com API...
             {
                 $responseDetails = explode(';',$apiResponse);
@@ -605,17 +605,17 @@ class Cloaker
         $end = microtime(true);
         $duration = $end - $start;
         $this->durValue['ipAddreddApi'] = $duration; // how much time it took the Cloaker to geolocate the IP?
-        // Geolocate IP: Finished    
-        
+        // Geolocate IP: Finished
+
         // IP Tracking: Start
         $start = microtime(true);
-        $access_time = time();            
+        $access_time = time();
         $sql = "SELECT * FROM `iptracker` WHERE `campaign_id` =
             '{$tracker->campaign_id}' AND `session_id` = '".$this->unqid."'
             AND `ip` = '".$this->ip."'";
         $query = mysql_query($sql);
         $count = mysql_num_rows($query);
-        
+
         if ($count == 0) // if the current Session has not yet been captured by the Cloaker's IP Tracking Module -> insert it
         {
             mysql_query("INSERT INTO `iptracker`(`campaign_id`,`ip`,`session_id`,`referral_url`,`host`,`country`,`region`,`city`,`page_views`,`cloak`,`access_time`,`ct_dt`, `traffic_source_id`)
@@ -630,23 +630,23 @@ class Cloaker
             $to_time=strtotime($createDate);
             $accessTime = round(abs($to_time - $access_time) / 60,2)." minute(s)";
             mysql_query("UPDATE `iptracker` SET `country` =
-                '".$this->country."',`region`='".$this->region."',`city`='".$this->city."',`access_time`='$accessTime',`page_views`='$pageViews' WHERE `campaign_id` = '{$tracker->campaign_id}' AND `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");    
+                '".$this->country."',`region`='".$this->region."',`city`='".$this->city."',`access_time`='$accessTime',`page_views`='$pageViews' WHERE `campaign_id` = '{$tracker->campaign_id}' AND `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");
         }
         $query = mysql_query("SELECT COUNT(id) FROM `iptracker` WHERE `ip` = '".$this->ip."'");
         list($ipCount) = mysql_fetch_row($query);
         $this->ipCount = $ipCount;
         $end = microtime(true);
-        $duration = $end - $start;        
+        $duration = $end - $start;
         $this->durValue['ipQry'] = $duration; // how much time did the Cloaker spend on IP Tracking?
         // IP Tracking: End
 
         // return ip tracking id as a subid
         $row = mysql_fetch_assoc(mysql_query($sql));
         $campaignDetails['subid'] = $row['id'];
-        
+
         return $campaignDetails;
     }
-    
+
     /**
      * shouldCloak()
      *
@@ -740,17 +740,17 @@ class Cloaker
                 if (($a == $ipBlocks[0]) && (empty($ipBlocks[1])))
                 {
                     $this->reasonForCloak('Denied IP Range Matched');
-                    return true;                    
+                    return true;
                 }
                 else if (($a == $ipBlocks[0]) && ($b == $ipBlocks[1]) && (empty($ipBlocks[2])))
                 {
                     $this->reasonForCloak('Denied IP Range Matched');
-                    return true;                    
+                    return true;
                 }
                 else if (($a == $ipBlocks[0]) && ($b == $ipBlocks[1]) && ($c == $ipBlocks[2]) && (empty($ipBlocks[3])))
                 {
                     $this->reasonForCloak('Denied IP Range Matched');
-                    return true;                    
+                    return true;
                 }
                 else if ($this->ip == $ip)
                 {
@@ -794,7 +794,7 @@ class Cloaker
      */
     private function reasonForCloak($reasonMessage)
     {
-        mysql_query("UPDATE `iptracker` SET `cloak` = 'yes', `reasonforcloak` = '".$reasonMessage."' WHERE `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");    
+        mysql_query("UPDATE `iptracker` SET `cloak` = 'yes', `reasonforcloak` = '".$reasonMessage."' WHERE `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");
     }
 
     /**
