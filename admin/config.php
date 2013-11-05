@@ -6,6 +6,7 @@ $config = array(
     'DB_PASSWORD' => 't2cUdqbD84sn1iHR3P5kLZA2T76T571L',
     'DB_NAME' => 'cloaker',
     'ADMIN_URL' => 'http://cloaker.charlesjasonbush.com/admin/',
+    'MIGRATE_PASSWORD' => 'b56zssTf4KvyQVsY',
 );
 
 $dev_environments = array(

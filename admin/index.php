@@ -129,7 +129,9 @@ if (isset($_SESSION['logged_in']))
         default:
             dashboard_controller();
     }
-} else {
+}else if ($_GET['action'] == 'migration_deploy') {
+    migration_deploy_controller();
+}else{
     login_controller();
 }
 

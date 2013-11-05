@@ -1,10 +1,13 @@
 <?php
 function migration_deploy_controller()
 {
-    // only superadmin has access to this page
-    if ($_SESSION['user_level'] != 'superadmin') {
-        header('Location: '.ADMIN_URL.'dashboard/');
-        exit;
+    // must supply correct password when running from automated script
+    if (!(isset($_GET['password']) && $_GET['password'] == MIGRATE_PASSWORD)){
+        // only superadmin has access to this page
+        if ($_SESSION['user_level'] != 'superadmin') {
+            header('Location: '.ADMIN_URL.'dashboard/');
+            exit;
+        }
     }
 
     if (!(isset($_GET['execute']) && $_GET['execute'] == 'yes')){
