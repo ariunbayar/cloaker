@@ -1,8 +1,9 @@
 <?php
 
 $admins = array("admin@example.com");
-$subject = "Deployment log: ".date('Y-m-d H:i:s');
-$file_name = dirname(__FILE__).'/deployment.log';
+
+$subject = "Deployment log: ".date('Y-m-d H:i');
+$file_name = dirname(__FILE__).'/../deployment.log';
 
 $content = file_get_contents($file_name);
 
@@ -11,11 +12,7 @@ foreach ($admins as $admin) {
     $headers .= "To: ".$admin."\n";
     $headers .= "From: <server@cloaker.com>\n";
 
-    if(@mail($admin, $subject, $content, $headers)){
-        echo "successfully sent";
-    }else {
-        echo "has error";
-    }
+    @mail($admin, $subject, $content, $headers);
 }
 ?>
 

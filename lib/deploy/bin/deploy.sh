@@ -17,7 +17,6 @@ then
     cd $repo_path
     git pull
     lib/deploy.sh
-    cd ..
-    php mailer.php
+    php lib/deploy/mailer.php
     cd $olddir
 fi
