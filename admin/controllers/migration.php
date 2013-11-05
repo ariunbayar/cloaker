@@ -26,7 +26,6 @@ function migration_deploy_controller()
 
     // backup tables
     foreach ($tables as $table) {
-        continue;
         $tmp_table = $prefix.'_'.$table;
         $sql = "CREATE TABLE $tmp_table LIKE $table";
         mysql_query($sql);
