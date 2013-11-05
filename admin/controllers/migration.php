@@ -37,15 +37,12 @@ function migration_deploy_controller()
 
     $dir_path = dirname(__FILE__)."/../../migration/";
     $files = scandir($dir_path);
-    var_dump('ssdfs', $files);
     foreach ($files as $file) {
 
         if (preg_match('/.sql$/', $file)){
-            var_dump('files_real...',$file);
             $migration = Migration::getByFileName($file);
             $file_name = ($migration ? $migration->file_name : null);
 
-            var_dump('db_file_name...',$file_name);
             if ($file_name != $file) {
                 $sql_content = file_get_contents($dir_path.$file);
                 // run each query separately
@@ -85,7 +82,6 @@ function migration_deploy_controller()
         Flash::set('Migration has run successfully!<br/>'
                    .'TODO: Show this message as success');
     }
-die;
     header('Location: '.ADMIN_URL.'/migration_deploy/');
     exit;
 }
