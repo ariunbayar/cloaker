@@ -16,6 +16,7 @@ function _get_migration_files()
 function _run_migration()
 {
     $prefix = 'tmp';
+    $dir_path = dirname(__FILE__)."/../../migration/";
 
     $tables = array();
     $result = mysql_query('SHOW TABLES');
