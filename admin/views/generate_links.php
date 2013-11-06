@@ -11,12 +11,12 @@
                         <td style="width: 200px;">Generate link for:</td>
                         <td>
                             <label>
-                                <input type="radio" name="landing_page" value="0" class="radio"/>
+                                <input type="radio" name="landing_page" value="0" class="radio" <?php if ($data['tracker']->is_landing_page != 1){ echo 'checked="checked"'; } ?>/>
                                 Direct linking
                             </label>
                             <br/>
                             <label>
-                                <input type="radio" name="landing_page" value="1" class="radio"/>
+                                <input type="radio" name="landing_page" value="1" class="radio" <?php if ($data['tracker']->is_landing_page == 1){ echo 'checked="checked"'; } ?>/>
                                 Landing page setup
                             </label>
                             <div class="scenario direct_linking_setup">
@@ -104,20 +104,22 @@
                     <tr class="landing_page_setup">
                         <td>Landing page URL:</td>
                         <td>
-                            <input type="text" name="landing_page_url" size="40"/>
+                            <input type="text" name="landing_page_url" size="40" value="<?php if(isset($data['tracker'])){echo $data['tracker']->landing_page_url;}?>"/>
                             Please setup the landing page and enter the URL here
                         </td>
                     </tr>
                     <tr>
                         <td>Traffic source (optional):</td>
                         <td>
-                            <?php echo select_tag('traffic_source_id', $data['traffic_source_options'], '', '-- not specified --') ?>
+                            <?php  $traffic_source_id = (isset($data['tracker']) ? $data['tracker']->traffic_source_id : null);?>
+                            <?php echo select_tag('traffic_source_id', $data['traffic_source_options'], $traffic_source_id, '-- not specified --') ?>
                         </td>
                     </tr>
                     <tr>
                         <td>Affiliate Network (optional)</td>
                         <td>
-                            <?php echo select_tag('network_id', $data['network_options'], '', '-- not specified --') ?>
+                            <?php  $affiliate_network_id = (isset($data['tracker']) ? $data['tracker']->network_id : null);?>
+                            <?php echo select_tag('network_id', $data['network_options'], $affiliate_network_id, '-- not specified --') ?>
                         </td>
                     </tr>
                     <tr>
@@ -141,7 +143,7 @@
                                 <tbody>
                                 <?php foreach($data['offers'] as $offer): ?>
                                 <tr class="network_<?php echo $offer->network_id ? $offer->network_id : ''?>">
-                                    <td><input type="checkbox" name="offer_ids[]" value="<?php echo $offer->id ?>" class="radio"/></td>
+                                    <td><input type="checkbox" name="offer_ids[]" value="<?php echo $offer->id ?>" class="radio" <?php $tracker_offers = TrackerOffer::getOffersByTrackerId($data['tracker']->id); foreach ($tracker_offers as $tracker_offer) { if ($tracker_offer->id == $offer->id){ echo 'checked="checked"'; }} ?>/></td>
                                     <td><?php echo $offer->name ?></td>
                                     <td>
                                         <?php if ($offer->network_id){ ?>
@@ -238,6 +240,9 @@
                     </td>
                     <td><?php echo $tracker->created_at ?></td>
                     <td>
+                        <?php $url = ADMIN_URL."edit_tracker/{$tracker->id}/" ?>
+                        <a href="<?php echo $url ?>">Edit</a>
+                        &nbsp;&nbsp;&nbsp;
                         <?php $url = ADMIN_URL."delete_tracker/{$tracker->id}/" ?>
                         <a href="<?php echo $url ?>" onclick="return confirm('Are you sure to delete this tracking setup?')">Delete</a>
                     </td>
