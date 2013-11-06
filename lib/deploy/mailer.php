@@ -10,7 +10,7 @@ $content = file_get_contents($file_name);
 foreach ($admins as $admin) {
     $headers  = "MIME-Version: 1.0\n";
     $headers .= "To: ".$admin."\n";
-    $headers .= "From: <server@cloaker.com>\n";
+    $headers .= "From: <admin@charlesjasonbush.com>\n";
 
     @mail($admin, $subject, $content, $headers);
 }
