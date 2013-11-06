@@ -94,6 +94,10 @@ if (isset($_SESSION['logged_in']))
             regenerateUrl();
             break;
 
+        case 'edit_tracker':
+            edit_tracker_controller();
+            break;
+
         case 'delete_tracker':
             deleteTracker();
             break;

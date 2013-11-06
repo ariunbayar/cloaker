@@ -230,7 +230,7 @@ function generateLinksTab()
     // onload actions
     $('.direct_linking_setup, .landing_page_setup').hide();
     $('select[name=network_id]').change();
-    $('[name=landing_page][value=0]').click();
+    $('[name=landing_page]:checked').change();
 }
 
 
