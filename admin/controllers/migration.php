@@ -50,6 +50,7 @@ function _run_migration()
                         $error =  $file."\n"."Warning: This SQL has error! Please run manual.".
                             "\n".mysql_error()."\n".$query."\n";
                         Flash::set($error);
+                        break;
                     }
                 }
             }
