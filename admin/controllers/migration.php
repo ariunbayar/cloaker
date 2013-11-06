@@ -2,8 +2,7 @@
 function _get_migration_files()
 {
     $migrations = array();
-    $dir_path = dirname(__FILE__)."/../../migration/";
-    $files = scandir($dir_path);
+    $files = scandir(MIGRATION_DIR);
     foreach ($files as $file) {
         if (preg_match('/.sql$/', $file)){
             $migrations[] = $file;
@@ -16,7 +15,6 @@ function _get_migration_files()
 function _run_migration()
 {
     $prefix = 'tmp';
-    $dir_path = dirname(__FILE__)."/../../migration/";
 
     $tables = array();
     $result = mysql_query('SHOW TABLES');
@@ -40,7 +38,7 @@ function _run_migration()
         $file_name = ($migration ? $migration->file_name : null);
 
         if ($file_name != $file) {
-            $sql_content = file_get_contents($dir_path.$file);
+            $sql_content = file_get_contents(MIGRATION_DIR.$file);
             // run each query separately
             $queries = explode(";", $sql_content);
             foreach ($queries as $query) {
