@@ -4,19 +4,26 @@
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
         <h2 class="boxtitle">Migration Deploy</h2>
-        <form action="<?php echo ADMIN_URL; ?>migration_deploy/" method="POST">
-            <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
-                <tbody>
-                <tr>
-                    <td></td>
-                    <td>
-                        Click following URL to run the migration:<br/>
-                        <?php echo anchor_tag(ADMIN_URL.'migration_deploy/?execute=yes') ?>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </form>
+        <p>
+            <?php $files = $data['migration_files'] ?>
+            <?php foreach ($data['migrations'] as $migration){ ?>
+                <?php $idx = array_search($migration->file_name, $files) ?>
+                <?php echo ($idx === false ? 'no' : '<b>yes</b>') ?>
+                -
+                <?php echo $migration->file_name ?>
+                <br/>
+                <?php unset($files[$idx]) ?>
+            <?php } ?>
+            <?php foreach ($files as $file){ ?>
+                no - <?php echo $file ?>
+                <br/>
+            <?php } ?>
+
+            <br/>
+            <a href="<?php echo ADMIN_URL.'migration_deploy/?execute=yes' ?>" class="btn">
+                Click here to run the missing migration
+            </a>
+        </p>
         <div class="bl"><div class="br"></div></div>
     </div>
 </div>

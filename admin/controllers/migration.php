@@ -1,21 +1,20 @@
 <?php
-function migration_deploy_controller()
+function _get_migration_files()
 {
-    // must supply correct password when running from automated script
-    if (!(isset($_GET['password']) && $_GET['password'] == MIGRATE_PASSWORD)){
-        // only superadmin has access to this page
-        if ($_SESSION['user_level'] != 'superadmin') {
-            header('Location: '.ADMIN_URL.'dashboard/');
-            exit;
+    $migrations = array();
+    $dir_path = dirname(__FILE__)."/../../migration/";
+    $files = scandir($dir_path);
+    foreach ($files as $file) {
+        if (preg_match('/.sql$/', $file)){
+            $migrations[] = $file;
         }
     }
+    return $migrations;
+}
 
-    if (!(isset($_GET['execute']) && $_GET['execute'] == 'yes')){
-        $viewData['current_page'] = 'migration_deploy';
-        View('migration_deploy', $viewData);
-        exit;
-    }
 
+function _run_migration()
+{
     $prefix = 'tmp';
 
     $tables = array();
@@ -35,33 +34,28 @@ function migration_deploy_controller()
 
     $has_error = false;
 
-    $dir_path = dirname(__FILE__)."/../../migration/";
-    $files = scandir($dir_path);
-    foreach ($files as $file) {
+    foreach (_get_migration_files() as $file) {
+        $migration = Migration::getByFileName($file);
+        $file_name = ($migration ? $migration->file_name : null);
 
-        if (preg_match('/.sql$/', $file)){
-            $migration = Migration::getByFileName($file);
-            $file_name = ($migration ? $migration->file_name : null);
-
-            if ($file_name != $file) {
-                $sql_content = file_get_contents($dir_path.$file);
-                // run each query separately
-                $queries = explode(";", $sql_content);
-                foreach ($queries as $query) {
-                    $query = trim($query);
-                    if ($query){
-                        if (!mysql_query($query)) {
-                            $has_error = true;
-                            $error =  $file."\n"."Warning: This SQL has error! Please run manual.".
-                                "\n".mysql_error()."\n".$query."\n";
-                            Flash::set($error);
-                        }
+        if ($file_name != $file) {
+            $sql_content = file_get_contents($dir_path.$file);
+            // run each query separately
+            $queries = explode(";", $sql_content);
+            foreach ($queries as $query) {
+                $query = trim($query);
+                if ($query){
+                    if (!mysql_query($query)) {
+                        $has_error = true;
+                        $error =  $file."\n"."Warning: This SQL has error! Please run manual.".
+                            "\n".mysql_error()."\n".$query."\n";
+                        Flash::set($error);
                     }
                 }
-                $migration = new Migration();
-                $migration->file_name = $file;
-                $migration->save();
             }
+            $migration = new Migration();
+            $migration->file_name = $file;
+            $migration->save();
         }
     }
     
@@ -82,7 +76,32 @@ function migration_deploy_controller()
         Flash::set('Migration has run successfully!<br/>'
                    .'TODO: Show this message as success');
     }
-    header('Location: '.ADMIN_URL.'/migration_deploy/');
+}
+
+
+function migration_deploy_controller()
+{
+    // must supply correct password when running from automated script
+    if (!(isset($_GET['password']) && $_GET['password'] == MIGRATE_PASSWORD)){
+        // only superadmin has access to this page
+        if ($_SESSION['user_level'] != 'superadmin') {
+            header('Location: '.ADMIN_URL.'dashboard/');
+            exit;
+        }
+    }
+
+    if (isset($_GET['execute']) && $_GET['execute'] == 'yes'){
+        _run_migration();
+        header('Location: '.ADMIN_URL.'/migration_deploy/');
+        exit;
+    }
+
+    $data = array(
+        'current_page' => 'migration_deploy',
+        'migration_files' => _get_migration_files(),
+        'migrations' => Migration::getAll(),
+    );
+    View('migration_deploy', $data);
     exit;
 }
 ?>
