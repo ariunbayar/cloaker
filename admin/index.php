@@ -26,6 +26,7 @@ require dirname(__FILE__).'/controllers/network.php';
 require dirname(__FILE__).'/controllers/generate_links.php';
 require dirname(__FILE__).'/controllers/migration.php';
 require dirname(__FILE__).'/controllers/offer.php';
+require dirname(__FILE__).'/controllers/register_subid.php';
 
 $cloaker = new Cloaker();
 $action = (isset($_GET['action']) ? $_GET['action'] : '');
@@ -124,6 +125,10 @@ if (isset($_SESSION['logged_in']))
 
         case 'save_offer':
             save_offer_controller();
+            break;
+
+        case 'register_subid':
+            register_subid_controller();
             break;
 
         case 'logout':

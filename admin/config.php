@@ -34,4 +34,5 @@ foreach ($config as $param => $value) {
 }
 define('ADMIN_URL', SITE_URL.'admin/');  // full URL to static files (css, js etc.)
 define('STATIC_URL', ADMIN_URL.'static/');  // full URL to static files (css, js etc.)
+define('MIGRATION_DIR', dirname(__FILE__)."/../migration/");  // full URL to migration files (.sql)
 ?>

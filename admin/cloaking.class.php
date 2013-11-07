@@ -192,6 +192,43 @@ class Cloaker
     }
 
     /**
+    * saveSubId($subidlist)
+    *
+    * Save subids
+    *
+    * @param mixed $subidlist
+    * @return Number of saved subids
+    */
+    function saveSubId($subidlist)
+    {
+        $return_data = array(
+            'correct_sub_id_count' => 0,
+            'wrong_sub_id_count' => 0,
+            'wrong_sub_id' => array()
+        );
+        $wrong_sub_id = array();
+        if (!empty($subidlist)) {
+            $subids = explode(PHP_EOL, $subidlist);
+            foreach($subids as $subid) {
+                $subid = trim($subid);
+                if ($subid != null && $subid != '' && is_numeric($subid)) {
+                    $query = "SELECT id FROM iptracker WHERE `id` = '$subid'";
+                    if (mysql_fetch_row(mysql_query($query))){
+                        $query = "UPDATE iptracker SET is_converted = 1 WHERE id = '$subid'";
+                        if(mysql_query($query)) {
+                            $return_data['correct_sub_id_count']++;
+                        }
+                    } else {
+                        $return_data['wrong_sub_id'][] = $subid;
+                        $return_data['wrong_sub_id_count']++;
+                    }
+                }
+            }
+        }
+        return $return_data;
+    }
+
+    /**
      * getDestinations()
      *
      * Returns all destinations corresponding to a campaign ID

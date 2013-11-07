@@ -27,6 +27,7 @@
         <li <?php echo $data['current_page']=='generate_links'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL; ?>generate_links/<?php echo $data['id']; ?>/">Generate Links<span></span></a>
         </li>
+
         <li <?php echo $data['current_page']=='statistics'?'class="active"':'' ?>>
             <a href="<?php echo ADMIN_URL; ?>statistics/<?php echo $data['id']; ?>/">Statistics<span></span></a>
         </li>
