@@ -88,7 +88,7 @@ class Model
         $sql = sprintf($query, $class::$_table, $id);
         $rs = mysql_query($sql);
 
-        $entity = mysql_fetch_object($rs, get_called_class());
+        $entity = mysql_fetch_object($rs, $class);
         return $entity;
     }
 
@@ -117,6 +117,15 @@ class Model
         $sql = sprintf($query, $class::$_table, $id);
         $result = mysql_query($sql);
         return $result;
+    }
+
+    static public function getAll()
+    {
+        $class = get_called_class();
+
+        $query = "SELECT * FROM %s ORDER BY id ASC";
+        $sql = sprintf($query, $class::$_table);
+        return self::hydrate($sql);
     }
 }
 

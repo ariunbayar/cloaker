@@ -26,12 +26,13 @@ require dirname(__FILE__).'/controllers/network.php';
 require dirname(__FILE__).'/controllers/generate_links.php';
 require dirname(__FILE__).'/controllers/migration.php';
 require dirname(__FILE__).'/controllers/offer.php';
+require dirname(__FILE__).'/controllers/register_subid.php';
 
 $cloaker = new Cloaker();
+$action = (isset($_GET['action']) ? $_GET['action'] : '');
 
 if (isset($_SESSION['logged_in']))
 {
-    $action = (isset($_GET['action']) ? $_GET['action'] : '');
     switch($action)
     {
         case 'add_campaign':
@@ -94,6 +95,10 @@ if (isset($_SESSION['logged_in']))
             regenerateUrl();
             break;
 
+        case 'edit_tracker':
+            edit_tracker_controller();
+            break;
+
         case 'delete_tracker':
             deleteTracker();
             break;
@@ -122,6 +127,10 @@ if (isset($_SESSION['logged_in']))
             save_offer_controller();
             break;
 
+        case 'register_subid':
+            register_subid_controller();
+            break;
+
         case 'logout':
             logout_controller();
             break;
@@ -129,7 +138,7 @@ if (isset($_SESSION['logged_in']))
         default:
             dashboard_controller();
     }
-}else if ($_GET['action'] == 'migration_deploy') {
+}else if ($action == 'migration_deploy') {
     migration_deploy_controller();
 }else{
     login_controller();
