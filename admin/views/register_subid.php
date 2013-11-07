@@ -3,19 +3,19 @@
 <div class="scont">
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
-        <h2 class="boxtitle">Register subid</h2>
+        <h2 class="boxtitle">Register Sub ID</h2>
         <form action="<?php echo ADMIN_URL; ?>register_subid/" method="POST">
             <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
                 <tbody>
                 <tr>
-                    <td>Subid list</td>
+                    <td>Sub ID list</td>
                     <td>
-                        <textarea rows="15" cols="30" name="subidlist"></textarea>
+                    <textarea rows="15" cols="30" name="subidlist"><?php echo implode(PHP_EOL, $data['wrong_sub_ids']); ?></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td><input value="Register" type="submit"></td>
+                    <td><input value="Update" type="submit"></td>
                 </tr>
                 </tbody>
             </table>

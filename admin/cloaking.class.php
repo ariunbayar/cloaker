@@ -192,29 +192,40 @@ class Cloaker
     }
 
     /**
-    * saveSubid($subidlist)
+    * saveSubId($subidlist)
     *
     * Save subids
     *
     * @param mixed $subidlist
     * @return Number of saved subids
     */
-    function saveSubid($subidlist)
+    function saveSubId($subidlist)
     {
-        $i = 0;
-        if (!empty($subidlist))
-        {
+        $return_data = array(
+            'correct_sub_id_count' => 0,
+            'wrong_sub_id_count' => 0,
+            'wrong_sub_id' => array()
+        );
+        $wrong_sub_id = array();
+        if (!empty($subidlist)) {
             $subids = explode(PHP_EOL, $subidlist);
-            foreach($subids as $subid)
-            {
-                if ($subid != null && $subid != '')
-                {
-                   mysql_query("UPDATE iptracker SET is_converted = 1 WHERE id = '$subid'");
-                   $i++;
+            foreach($subids as $subid) {
+                $subid = trim($subid);
+                if ($subid != null && $subid != '' && is_numeric($subid)) {
+                    $query = "SELECT id FROM iptracker WHERE `id` = '$subid'";
+                    if (mysql_fetch_row(mysql_query($query))){
+                        $query = "UPDATE iptracker SET is_converted = 1 WHERE id = '$subid'";
+                        if(mysql_query($query)) {
+                            $return_data['correct_sub_id_count']++;
+                        }
+                    } else {
+                        $return_data['wrong_sub_id'][] = $subid;
+                        $return_data['wrong_sub_id_count']++;
+                    }
                 }
             }
         }
-        return $i;
+        return $return_data;
     }
 
     /**
