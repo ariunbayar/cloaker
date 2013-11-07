@@ -146,4 +146,10 @@ function get_entity_or_redirect($model_class, $id)
     header('Location: '.ADMIN_URL);
     exit;
 }
+
+
+function url_to($uri_to_append)
+{
+    return ADMIN_URL.$uri_to_append;
+}
 ?>

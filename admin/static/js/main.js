@@ -231,6 +231,20 @@ function generateLinksTab()
     $('.direct_linking_setup, .landing_page_setup').hide();
     $('select[name=network_id]').change();
     $('[name=landing_page]:checked').change();
+
+    // modal/popup/dialog box for view LP code
+    $('.view_lp_code').click(function(e){
+        $("#landing_page_code").dialog({
+            modal: true,
+            buttons: {
+                Close: function() {
+                  $(this).dialog("close");
+                }
+            },
+            width: 400
+        });
+        e.preventDefault();
+    });
 }
 
 
