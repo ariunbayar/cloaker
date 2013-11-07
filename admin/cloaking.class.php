@@ -564,21 +564,20 @@ class Cloaker
      *
      * @return Mixed An Array with all the campaign details (as present in the DB) or Boolean FALSE if a campaign doesn't exist.
      */
-    function getVariables($tracker)
+    function getVariables(Tracker $tracker)
     {
-        $campaignQuery = mysql_query("SELECT * FROM campaigns WHERE id='{$tracker->campaign_id}'");
-        if (mysql_num_rows($campaignQuery) == 0)
-        {
+        $campaign = $tracker->getCampaign();
+        if (!($campaign instanceof Campaign)){
             return false;
         }
-        $campaignDetails = mysql_fetch_assoc($campaignQuery);
 
         // Geolocate IP: Start
-
         $start = microtime(true);
-        $context = stream_context_create(array( // a stream_context we would use along with the file_get_contents() operation
+
+        // a stream_context we would use along with the file_get_contents() operation
+        $context = stream_context_create(array(
             'http' => array(
-            'timeout' => 2 // file_get_contents() timeout in seconds
+                'timeout' => 2 // file_get_contents() timeout in seconds
             )
         ));
         $ipApiUrl = "http://www.ipaddressapi.com/l/4e6c100ddeef1338ae6f91af2f61413aa2ffad38de58?h=".$this->ip; // URL to the Geolocation API provided by ipaddressapi.com
@@ -677,11 +676,10 @@ class Cloaker
         $this->durValue['ipQry'] = $duration; // how much time did the Cloaker spend on IP Tracking?
         // IP Tracking: End
 
-        // return ip tracking id as a subid
         $row = mysql_fetch_assoc(mysql_query($sql));
-        $campaignDetails['subid'] = $row['id'];
 
-        return $campaignDetails;
+        // return subid with campaign details
+        return array($row['id'], $campaign);
     }
 
     /**
@@ -698,12 +696,12 @@ class Cloaker
      * - Recurring Visits Count Check
      * - Browser History Check
      *
-     * @param Array $campaignDetails An array containing all the information stored about a campaign in the "campaigns" MySQL table.
+     * @param Campaign $campaign
      * @return Boolean
      */
-    function shouldCloak($campaignDetails)
+    function shouldCloak(Campaign $campaign)
     {
-        if ($campaignDetails['ref_status'] == 'on') // Cloak based on non-empty referral url is ON?
+        if ($campaign->ref_status == 'on') // Cloak based on non-empty referral url is ON?
         {
             if (!empty($this->ref)) // Referreal URL is not empty?
             {
@@ -711,9 +709,9 @@ class Cloaker
                 return true;
             }
         }
-        if ($campaignDetails['ad_status'] == 'on') // Cloak based on certain GET variables present in the HTTP Request?
+        if ($campaign->ad_status == 'on') // Cloak based on certain GET variables present in the HTTP Request?
         {
-            $getParams = explode(',', $campaignDetails['googleurl']);
+            $getParams = explode(',', $campaign->googleurl);
             foreach($getParams as $key)
             {
                 if (array_key_exists($key, $_GET))
@@ -723,10 +721,10 @@ class Cloaker
                 }
             }
         }
-        if ($campaignDetails['rdns_status'] == 'on') // Cloak based on Reverse DNS is ON?
+        if ($campaign->rdns_status == 'on') // Cloak based on Reverse DNS is ON?
         {
             $hostname = $this->hostname;
-            $rdns = explode(',', $campaignDetails['rdns']);
+            $rdns = explode(',', $campaign->rdns);
             for($i=0;$i<count($rdns);$i++)
             {
                 if (strpos(trim($hostname),$rdns[$i]) !== false)
@@ -737,27 +735,27 @@ class Cloaker
                 }
             }
         }
-        if ($campaignDetails['geoloc_status'] == 'on') // Cloak based on Geolocation Match is ON?
+        if ($campaign->geoloc_status == 'on') // Cloak based on Geolocation Match is ON?
         {
-            $geoLocation = array_map('strtolower', explode(',', $campaignDetails['geolocation']));
+            $geoLocation = array_map('strtolower', explode(',', $campaign->geolocation));
             if ((in_array(trim(strtolower($this->country)), $geoLocation)) || (in_array(trim(strtolower($this->region)), $geoLocation)) || (in_array(trim(strtolower($this->city)), $geoLocation)))
             {
                 $this->reasonForCloak('Geo Location Matched');
                 return true;
             }
         }
-        if ($campaignDetails['geoloc_mismatch_status'] == 'on') // Cloak based on Geolocation Mismatch is ON?
+        if ($campaign->geoloc_mismatch_status == 'on') // Cloak based on Geolocation Mismatch is ON?
         {
-            $geoLocation = array_map('strtolower', explode(',', $campaignDetails['geolocation']));
+            $geoLocation = array_map('strtolower', explode(',', $campaign->geolocation));
             if ((!in_array(trim(strtolower($this->country)), $geoLocation)) || (!in_array(trim(strtolower($this->region)), $geoLocation)) || (!in_array(trim(strtolower($this->city)), $geoLocation)))
             {
                 $this->reasonForCloak('Geo Location Mismatch');
                 return true;
             }
         }
-        if ($campaignDetails['deniedip_status'] == 'on') // Cloak based on IP is ON?
+        if ($campaign->deniedip_status == 'on') // Cloak based on IP is ON?
         {
-            $query = mysql_query("SELECT ip FROM denied_ips WHERE campaign_id = '{$campaignDetails['id']}'");
+            $query = mysql_query("SELECT ip FROM denied_ips WHERE campaign_id = '{$campaign->id}'");
             while (list($ip) = mysql_fetch_row($query))
             {
                 if ($this->ip == $ip)
@@ -767,9 +765,9 @@ class Cloaker
                 }
             }
         }
-        if ($campaignDetails['denyiprange_status'] == 'on') // Cloak based on IP Range is ON?
+        if ($campaign->denyiprange_status == 'on') // Cloak based on IP Range is ON?
         {
-            $query = mysql_query("SELECT iprange FROM denied_ip_ranges WHERE campaign_id = '$campaignDetails[id]'");
+            $query = mysql_query("SELECT iprange FROM denied_ip_ranges WHERE campaign_id = '{$campaign->id}'");
             list($a,$b,$c,$d) = explode(".",$this->ip); // split IP into its A-, B-, C-, and D-blocks
             while (list($ip) = mysql_fetch_row($query))
             {
@@ -796,19 +794,19 @@ class Cloaker
                 }
             }
         }
-        if ($campaignDetails['visitcount_status'] == 'on') // Cloak based on number of recurring visits?
+        if ($campaign->visitcount_status == 'on') // Cloak based on number of recurring visits?
         {
             $query = mysql_query("SELECT page_views FROM `iptracker` WHERE `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");
             list($visits) = mysql_fetch_row($query);
-            if ($visits > $campaignDetails['visit_count'])
+            if ($visits > $campaign->visit_count)
             {
                 $this->reasonForCloak('Visit Threshold Exceeded');
                 return true;
             }
         }
-        if ($campaignDetails['ua_status'] == 'on') // Cloak based on User Agent strings?
+        if ($campaign->ua_status == 'on') // Cloak based on User Agent strings?
         {
-            $uaStrings = explode(',',$campaignDetails['ua_strings']);
+            $uaStrings = explode(',',$campaign->ua_strings);
             foreach($uaStrings as $uaString)
             {
                 if (strpos($_SERVER['HTTP_USER_AGENT'],$uaString) !== false)
