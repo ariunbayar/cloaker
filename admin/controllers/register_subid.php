@@ -13,7 +13,7 @@ function register_subid_controller()
                 $viewData['errors'][] = 'Sub ID list could not be saved, because the following MySQL Error occurred: <br> <br>'.mysql_error();
             }
             if ($result['wrong_sub_id_count']) {
-                $sub_id_error = $result['wrong_sub_id_count']." Wrong Sub ID. Please check Sub IDs.";
+                $sub_id_error = $result['wrong_sub_id_count']." Wrong Sub ID. Please see non-updated sub ids in the text area!";
                 $wrong_sub_id = array();
                 foreach ($result['wrong_sub_id'] as $sub_id) {
                     $wrong_sub_id[] = $sub_id;

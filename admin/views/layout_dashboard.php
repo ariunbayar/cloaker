@@ -11,7 +11,7 @@
             <a href="<?php echo ADMIN_URL ?>add_campaign/">New Campaign<span></span></a>
         </li>
         <li <?php echo $data['current_page']=='register_subid'?'class="active"':'' ?>>
-            <a href="<?php echo ADMIN_URL; ?>register_subid/">Register Sub ID<span></span></a>
+            <a href="<?php echo ADMIN_URL; ?>register_subid/">Update Sub ID<span></span></a>
         </li>
         <?php if($_SESSION['user_level'] == 'superadmin') { ?>
         <li <?php echo $data['current_page']=='global_ip'?'class="active"':'' ?>>

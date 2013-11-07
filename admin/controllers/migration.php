@@ -58,7 +58,7 @@ function _run_migration()
             $migration->save();
         }
     }
-    
+
     if ($has_error) {  // Restore old tables
         foreach ($tables as $table){
             $tmp_table = $prefix.'_'.$table;
