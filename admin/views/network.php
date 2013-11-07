@@ -39,7 +39,7 @@
                         <?php if($network) { ?>
                             <input id="formID" type="hidden" name="network_id" value="<?php echo $network->id ?>"/>
                         <?php } ?>
-                        <input type="submit" value="Add"/>
+                        <input type="submit" value="Save"/>
                     </td>
                 </tr>
                 </tbody>

@@ -1,5 +1,28 @@
 <h3 id="filter_toggle">Click here to toggle filter <span id="indicator">+</span></h3>
 <form id="filter_form" style="display: none;" action="<?php echo sprintf($data['url_format'], 1)?>">
+    <div class="column">
+        <label>Converted:</label>
+        <select name="converted">
+            <option value="">---</option>
+            <option value="1" <?php echo ($data['filters']['converted'] == '1' ? 'selected' : '') ?>>
+                Yes
+            </option>
+            <option value="0" <?php echo ($data['filters']['converted'] == '0' ?  'selected' : '') ?>>
+                No
+            </option>
+        </select>
+
+        <label>Traffic source:</label>
+        <?php echo select_tag('traffic_source_id', $data['traffic_source_id'], $data['filters']['traffic_source_id'], '---') ?>
+
+        <label>Affiliate Network</label>
+        <?php echo select_tag('network', $data['network'], $data['filters']['network'], '---') ?>
+
+        <label>Offer</label>
+        <?php echo select_tag('offer', $data['offer'], $data['filters']['offer'], '---') ?>
+
+    </div>
+
     <div class="column"/>
         <label>IP address:</label>
         <input type="text" name="ip" value="<?php echo $data['filters']['ip'] ?>"/>

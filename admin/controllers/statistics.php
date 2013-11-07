@@ -19,6 +19,7 @@ function statistics_controller()
     $allowed_filters = array(
         'id',
         'ip',
+        'converted',
         'referer',
         'host',
         'country',
@@ -28,6 +29,9 @@ function statistics_controller()
         'cloak_reason',
         'access_date_from',
         'access_date_to',
+        'traffic_source_id',
+        'network',
+        'offer',
     );
     $filters = array();
     foreach ($allowed_filters as $field) {
@@ -35,8 +39,16 @@ function statistics_controller()
             $filters[$field] = $_GET[$field];
         }
     }
+    $campaign_id = mysql_real_escape_string($_GET['id']);
+    $viewData = $cloaker->getCampaignDetails($campaign_id);
 
-    $viewData = $cloaker->getCampaignDetails(mysql_real_escape_string($_GET['id']));
+    $options = to_select_options(TrafficSource::getByCampaignId($campaign_id));
+    $viewData['traffic_source_id'] = $options;
+    $options = to_select_options(Network::getByCampaignId($campaign_id));
+    $viewData['network'] = $options;
+    $options = to_select_options(Offer::getByCampaignId($campaign_id));
+    $viewData['offer'] = $options;
+
     $viewData['page'] = (empty($_GET['page'])) ? 1 : (int)$_GET['page'];
     $viewData['total_pages'] = $cloaker->countStatistics($filters);
     $viewData['statistics'] = $cloaker->getStatistics($filters, $viewData['page']);

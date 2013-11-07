@@ -5,15 +5,16 @@
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
         <h2 class="boxtitle">Campaign Statistics: <?php echo $data['name']; ?></h2>
-        <?php require dirname(__FILE__).'/_statistics_filter.php'; ?>
         <?php if ($data['total_pages']){ ?>
             <?php require dirname(__FILE__).'/_statistics_chart.php'; ?>
         <?php } ?>
+        <?php require dirname(__FILE__).'/_statistics_filter.php'; ?>
         <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
             <tbody>
             <tr class="hd">
-                <td>subid</td>
+                <td>Sub ID</td>
                 <td>IP</td>
+                <td>Converted</td>
                 <td>Referer</td>
                 <td>Host</td>
                 <td>Country</td>
@@ -32,6 +33,13 @@
             <tr class="mhov">
                 <td><?php echo $stats['id']; ?></td>
                 <td><?php echo $stats['ip']; ?></td>
+                <td>
+                    <?php if($stats['is_converted'] == 1) {
+                        echo "yes";
+                    } else {
+                        echo "no";
+                    } ?>
+                </td>
                 <td><?php echo $stats['referral_url']; ?></td>
                 <td><?php echo $stats['host']; ?></td>
                 <td><?php echo $stats['country']; ?></td>
