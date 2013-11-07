@@ -262,10 +262,9 @@
         Please put following in your landing page source code.
         <div>
 
-<?php $url = SITE_URL.'lp_code.php' ?>
-<textarea class="code" disabled="disabled" style="width: 330px; height: 150px; font-family: 'Lucida Console', Monaco, monospace;">
+<textarea class="code" readonly="readonly" onclick="this.focus();this.select();" style="width: 330px; height: 150px; font-family: 'Lucida Console', Monaco, monospace; font-size: 0.8em;">
 <script type="text/javascript">
-var s='<?php echo $url ?>?y='+new Date().getTime()+'&r='+document.referrer;
+var s='<?php echo SITE_URL ?>'+location.search+'&y='+new Date().getTime()+'&r='+document.referrer;
 document.write(
     '<s'+'cript src="'+s+'" type="text/javascript"></s'+'cript>'
 );

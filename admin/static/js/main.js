@@ -223,7 +223,6 @@ function generateLinksTab()
         }
 
         var network_id = $('select[name=network_id]').val();
-        console.log($('#offers tbody tr.network_'+network_id+' :checkbox').not(this));
         $('#offers tbody tr.network_'+network_id+' :checkbox').not(this).prop('checked', false);
     });
 
