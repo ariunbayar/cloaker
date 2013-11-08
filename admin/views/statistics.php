@@ -51,7 +51,8 @@
                             }
                         } else {
                             if($stats['offer_id']){
-                                echo Destination::getById(Offer::getById($stats['offer_id'])->cloaking_url)-url;
+                                echo
+                                    Destination::getById(Offer::getById($stats['offer_id'])->cloaking_url)->url;
                             }
                         }?>
                 </td>

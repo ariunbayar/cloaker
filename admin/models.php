@@ -388,6 +388,7 @@ class TrackerOffer extends Model
 {
     static public $_table = 'tracker_offer';
     protected $_fields = array(
+        'id',
         'tracker_id',
         'offer_id',
     );
