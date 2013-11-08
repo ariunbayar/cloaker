@@ -566,12 +566,12 @@ class Cloaker
      * campaign ID has been provided.
      *
      * @param Tracker $tracker Tracker instance indicating the setup
-     * @param int $offer_id
+     * @param Offer $offer
      * @param bool $is_viewing_landing_page
      *
      * @return Mixed An Array with all the campaign details (as present in the DB) or Boolean FALSE if a campaign doesn't exist.
      */
-    function getVariables(Tracker $tracker, $offer_id, $is_viewing_landing_page = false)
+    function getVariables(Tracker $tracker, $offer, $is_viewing_landing_page = false)
     {
         $campaign = $tracker->getCampaign();
         if (!($campaign instanceof Campaign)){
@@ -661,8 +661,14 @@ class Cloaker
 
         if ($count == 0) // if the current Session has not yet been captured by the Cloaker's IP Tracking Module -> insert it
         {
-            $tracker_id_for_lp = ($is_viewing_landing_page ? "'{$tracker->id}'" : 'NULL');
-            $offer_id = (is_numeric($offer_id) ? "'$offer_id'" : 'NULL');
+            $network_id = $tracker->network_id ?: 'NULL';
+            if ($is_viewing_landing_page) {
+                $tracker_id_for_lp = "'{$tracker->id}'";
+                $offer_id = 'NULL';
+            }else{
+                $tracker_id_for_lp = 'NULL';
+                $offer_id = "'{$offer->id}'";
+            }
             mysql_query("
                 INSERT INTO `iptracker`(
                     `campaign_id`,
@@ -678,6 +684,7 @@ class Cloaker
                     `access_time`,
                     `ct_dt`,
                     `offer_id`,
+                    `network_id`,
                     `tracker_id_for_lp`,
                     `traffic_source_id`
                 )
@@ -695,6 +702,7 @@ class Cloaker
                     '0 minute(s)',
                     now(),
                     $offer_id,
+                    $network_id,
                     $tracker_id_for_lp,
                     '{$tracker->traffic_source_id}'
                 )
