@@ -375,6 +375,7 @@ class Cloaker
         $this->_add_filter('network_id', "network_id = '%s'", $filter_array, $values);
         $this->_add_filter('offer_id', "offer_id = '%s'", $filter_array, $values);
         $this->_add_filter('access_date_to', "ct_dt <= '%s 23:59:59'", $filter_full_date_covered, $values);
+        $this->_add_filter('tracker_id_for_lp', "tracker_id_for_lp = '%s'", $filter_array, $values);
 
         if ($num_days_to_normalize_date_range === null){
             $this->_add_filter('access_date_from', "ct_dt >= '%s 00:00:00'", $filter_array, $values);
@@ -414,7 +415,6 @@ class Cloaker
     {
         $filter_str = $this->buildFilters($values);
         $offset = $page * $limit - $limit;
-        //TODO write JOIN
         $query = "
             SELECT * FROM iptracker
             WHERE $filter_str

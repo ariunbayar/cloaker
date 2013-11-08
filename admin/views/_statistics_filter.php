@@ -32,6 +32,9 @@
     </div>
 
     <div class="column"/>
+        <label>Landing Page:</label>
+        <?php echo select_tag('tracker_id_for_lp', $data['tracker_options'], $data['filters']['tracker_id_for_lp'], '---') ?>
+
         <label>IP address:</label>
         <input type="text" name="ip" value="<?php echo $data['filters']['ip'] ?>"/>
 
@@ -40,18 +43,20 @@
 
         <label>Host:</label>
         <input type="text" name="host" value="<?php echo $data['filters']['host'] ?>"/>
-
-        <label>Country:</label>
-        <input type="text" name="country" value="<?php echo $data['filters']['country'] ?>"/>
     </div>
 
     <div class="column"/>
+        <label>Country:</label>
+        <input type="text" name="country" value="<?php echo $data['filters']['country'] ?>"/>
+
         <label>Region:</label>
         <input type="text" name="region" value="<?php echo $data['filters']['region'] ?>"/>
 
         <label>City:</label>
         <input type="text" name="city" value="<?php echo $data['filters']['city'] ?>"/>
+    </div>
 
+    <div class="column"/>
         <?php if($_SESSION['user_level'] == 'superadmin') { ?>
         <label>Cloak:</label>
         <select name="cloak">
@@ -85,9 +90,7 @@
             <?php } ?>
         </select>
         <?php } ?>
-    </div>
 
-    <div class="column"/>
         <label>Access date:</label>
         <input type="text" name="access_date_from" value="<?php echo $data['filters']['access_date_from'] ?>"/>
         <label></label>

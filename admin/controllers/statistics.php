@@ -32,6 +32,7 @@ function statistics_controller()
         'traffic_source_id',
         'network_id',
         'offer_id',
+        'tracker_id_for_lp',
     );
     $filters = array();
     foreach ($allowed_filters as $field) {
@@ -49,6 +50,7 @@ function statistics_controller()
     $options = to_select_options(Network::getByCampaignId($campaign_id));
     $viewData['networks'] = $options;
     $viewData['offers'] = Offer::getByCampaignId($campaign_id);
+    $viewData['tracker_options'] = Tracker::getLandingPageOptionsByCampaignId($campaign_id);
 
     $per_page = 50;
 

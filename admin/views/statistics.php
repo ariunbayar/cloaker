@@ -5,24 +5,24 @@
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
         <h2 class="boxtitle">Campaign Statistics: <?php echo $data['name']; ?></h2>
+        <?php require dirname(__FILE__).'/_statistics_filter.php'; ?>
         <?php if ($data['total_pages']){ ?>
             <?php require dirname(__FILE__).'/_statistics_chart.php'; ?>
         <?php } ?>
-        <?php require dirname(__FILE__).'/_statistics_filter.php'; ?>
         <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
             <tbody>
             <tr class="hd">
                 <td>Sub ID</td>
                 <td></td>
-                <td>Geolocation & IP</td>
+                <td>Geolocation, Host &amp; IP</td>
                 <td>Referer</td>
+                <td>Traffic source</td>
                 <td>Affiliate Network</td>
                 <td>Offer / Landing Page</td>
                 <td># Views</td>
                 <?php if($_SESSION['user_level'] == 'superadmin') { ?>
                     <td>Cloak Reason</td>
                 <?php } ?>
-                <td>Traffic source</td>
                 <td>Access Date</td>
             </tr>
             <?php foreach($data['statistics'] as $stats): ?>
@@ -30,7 +30,9 @@
                 <td><?php echo $stats['id']; ?></td>
                 <td>
                     <?php if ($stats['is_converted']){ ?>
-                        <i class="fa fa-dollar fa-lg dollar-icon"></i>
+                        <abbr title="This is a converted click">
+                            <i class="fa fa-dollar fa-lg dollar-icon"></i>
+                        </abbr>
                     <?php } ?>
                 </td>
                 <td>
@@ -39,7 +41,18 @@
                         <?php echo $stats['host']; ?>
                     </abbr>
                 </td>
-                <td><?php echo $stats['referral_url']; ?></td>
+                <td>
+                    <?php if ($stats['referral_url']){ ?>
+                        <?php echo anchor_tag($stats['referral_url'], get_domain_from_url($stats['referral_url'])) ?>
+                    <?php } ?>
+                </td>
+                <td>
+                    <?php if ($stats['traffic_source_id']){ ?>
+                        <?php echo TrafficSource::getById($stats['traffic_source_id'])->name ?>
+                    <?php }else{ ?>
+                        -
+                    <?php } ?>
+                </td>
                 <td><?php 
                     if ($stats['network_id']){ 
                         echo Network::getById($stats['network_id'])->name;
@@ -65,13 +78,6 @@
                 <?php if($_SESSION['user_level'] == 'superadmin') { ?>
                     <td><?php echo $stats['reasonforcloak']; ?></td>
                 <?php } ?>
-                <td>
-                    <?php if ($stats['traffic_source_id']){ ?>
-                        <?php echo TrafficSource::getById($stats['traffic_source_id'])->name ?>
-                    <?php }else{ ?>
-                        -
-                    <?php } ?>
-                </td>
                 <td>
                     <abbr title="Access time: <?php echo $stats['access_time']; ?>">
                         <?php echo date('Y-m-d H:i', strtotime($stats['ct_dt'])); ?>

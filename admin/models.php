@@ -158,6 +158,17 @@ class Tracker extends Model
         return self::hydrate($sql);
     }
 
+    static public function getLandingPageOptionsByCampaignId($campaign_id)
+    {
+        $campaign_id = mysql_real_escape_string($campaign_id);
+
+        $query = "SELECT * FROM %s WHERE campaign_id='%s' AND is_landing_page = 1
+                  ORDER BY created_at DESC";
+        $sql = sprintf($query, self::$_table, $campaign_id);
+        $entities = self::hydrate($sql);
+        return to_select_options($entities, 'id', 'landing_page_url');
+    }
+
     /**
      * @param int Shortcode to look up
      * @return Tracker
