@@ -37,6 +37,8 @@ function statistics_controller()
     foreach ($allowed_filters as $field) {
         if (isset($_GET[$field])){
             $filters[$field] = $_GET[$field];
+        } else {
+            $filters[$field] = "";
         }
     }
     $campaign_id = mysql_real_escape_string($_GET['id']);
