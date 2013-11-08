@@ -66,8 +66,7 @@ if ($shortcode && !$cloaker->checkGiplist())
         }
 
         // track this hit/click
-        $offer_id = ($offer ? $offer->id : null);
-        list($subid, $campaign) = $cloaker->getVariables($tracker, $offer_id, $is_viewing_landing_page);
+        list($subid, $campaign) = $cloaker->getVariables($tracker, $offer, $is_viewing_landing_page);
 
         if ($is_viewing_landing_page){
             // assuming this is the javascript page
