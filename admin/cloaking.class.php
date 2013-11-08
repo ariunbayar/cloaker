@@ -371,6 +371,8 @@ class Cloaker
         $this->_add_filter('converted', "is_converted = '%s'", $filter_array, $values);
         $this->_add_filter('cloak', "cloak = '%s'", $filter_array, $values);
         $this->_add_filter('cloak_reason', "reasonforcloak = '%s'", $filter_array, $values);
+        $this->_add_filter('traffic_source_id', "traffic_source_id = '%s'", $filter_array, $values);
+        $this->_add_filter('network', "network_id = '%s'", $filter_array, $values);
         $this->_add_filter('access_date_to', "ct_dt <= '%s 23:59:59'", $filter_full_date_covered, $values);
 
         if ($num_days_to_normalize_date_range === null){
