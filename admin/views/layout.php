@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL; ?>css/style.css">
     <link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL; ?>css/ui-lightness/jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL ?>css/font-awesome.min.css">
 </head>
 <body>
     <?php echo $main_content ?>

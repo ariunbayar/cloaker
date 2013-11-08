@@ -13,6 +13,7 @@
             <tbody>
             <tr class="hd">
                 <td>subid</td>
+                <td></td>
                 <td>IP</td>
                 <td>Referer</td>
                 <td>Host</td>
@@ -31,6 +32,11 @@
             <?php foreach($data['statistics'] as $stats): ?>
             <tr class="mhov">
                 <td><?php echo $stats['id']; ?></td>
+                <td>
+                    <?php if ($stats['is_converted']){ ?>
+                        <i class="fa fa-dollar fa-lg dollar-icon"></i>
+                    <?php } ?>
+                </td>
                 <td><?php echo $stats['ip']; ?></td>
                 <td><?php echo $stats['referral_url']; ?></td>
                 <td><?php echo $stats['host']; ?></td>
@@ -46,7 +52,7 @@
                     <?php if ($stats['traffic_source_id']){ ?>
                         <?php echo TrafficSource::getById($stats['traffic_source_id'])->name ?>
                     <?php }else{ ?>
-                        [not specified]
+                        -
                     <?php } ?>
                 </td>
                 <td><?php echo $stats['access_time']; ?></td>
