@@ -17,7 +17,7 @@ class Model
         if (in_array($name, $this->_fields)){
             return $this->_values[$name];
         }
-        return null;
+        throw new Exception('No such field "'.$name.'" for '.get_called_class());
     }
 
     public function __set($name, $value)
@@ -203,6 +203,11 @@ class Tracker extends Model
             $url = substr(ADMIN_URL, 0, -6).$this->shortcode.'/';
         }
         return $url;
+    }
+
+    public function getCampaign()
+    {
+        return Campaign::getById($this->campaign_id);
     }
 }
 

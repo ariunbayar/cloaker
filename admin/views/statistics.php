@@ -13,8 +13,9 @@
             <tbody>
             <tr class="hd">
                 <td>Sub ID</td>
+                <td></td>
                 <td>IP</td>
-                <td>Converted</td>
+                <td>Landing Page</td>
                 <td>Referer</td>
                 <td>Host</td>
                 <td>Country</td>
@@ -32,13 +33,16 @@
             <?php foreach($data['statistics'] as $stats): ?>
             <tr class="mhov">
                 <td><?php echo $stats['id']; ?></td>
+                <td>
+                    <?php if ($stats['is_converted']){ ?>
+                        <i class="fa fa-dollar fa-lg dollar-icon"></i>
+                    <?php } ?>
+                </td>
                 <td><?php echo $stats['ip']; ?></td>
                 <td>
-                    <?php if($stats['is_converted'] == 1) {
-                        echo "yes";
-                    } else {
-                        echo "no";
-                    } ?>
+                    <?php if ($stats['tracker_id_for_lp']){ ?>
+                    <?php echo Tracker::getById($stats['tracker_id_for_lp'])->landing_page_url; ?>
+                    <?php } ?>
                 </td>
                 <td><?php echo $stats['referral_url']; ?></td>
                 <td><?php echo $stats['host']; ?></td>
@@ -54,7 +58,7 @@
                     <?php if ($stats['traffic_source_id']){ ?>
                         <?php echo TrafficSource::getById($stats['traffic_source_id'])->name ?>
                     <?php }else{ ?>
-                        [not specified]
+                        -
                     <?php } ?>
                 </td>
                 <td><?php echo $stats['access_time']; ?></td>

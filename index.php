@@ -25,12 +25,11 @@ function _get_shortcode()
     return array(false, null);
 }
 
-function _redirect_to_offer($cloaker, $campaignDetails, $offer)
+function _redirect_to_offer($cloaker, $campaign, $offer, $subid)
 {
-    $subid = $campaignDetails['subid'];
-    if ($campaignDetails['cloak_status'] == 'on') // If cloaking is enabled for the current Campaign...
+    if ($campaign->cloak_status == 'on') // If cloaking is enabled for the current Campaign...
     {
-        if (!$cloaker->shouldCloak($campaignDetails))
+        if (!$cloaker->shouldCloak($campaign))
         {
             header('Location: '.$cloaker->getDestinationUrl($offer->cloaked_url, $subid));
             exit;
@@ -61,7 +60,7 @@ if ($shortcode && !$cloaker->checkGiplist())
     if ($tracker) // shortcode exists and successfully resolves a tracking setup
     {
         // track this hit/click
-        $campaignDetails = $cloaker->getVariables($tracker);
+        list($subid, $campaign) = $cloaker->getVariables($tracker, $is_viewing_landing_page);
 
         if ($tracker->is_landing_page){
             $offer = Offer::getById($offer_id);
@@ -70,9 +69,10 @@ if ($shortcode && !$cloaker->checkGiplist())
         }
 
         if ($is_viewing_landing_page){
+            // assuming this is the javascript page
             exit;
         }else{
-            _redirect_to_offer($cloaker, $campaignDetails, $offer);
+            _redirect_to_offer($cloaker, $campaign, $offer, $subid);
         }
     }
 }
