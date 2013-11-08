@@ -14,20 +14,15 @@
             <tr class="hd">
                 <td>Sub ID</td>
                 <td></td>
-                <td>IP</td>
+                <td>IP & Geolocation</td>
                 <td>Landing Page</td>
                 <td>Referer</td>
-                <td>Host</td>
-                <td>Country</td>
-                <td>Region</td>
-                <td>City</td>
+                <td>Offer url</td>
                 <td>Page Views</td>
                 <?php if($_SESSION['user_level'] == 'superadmin') { ?>
-                    <td>Cloak</td>
                     <td>Cloak Reason</td>
                 <?php } ?>
                 <td>Traffic source</td>
-                <td>Access Time</td>
                 <td>Access Date</td>
             </tr>
             <?php foreach($data['statistics'] as $stats): ?>
@@ -38,20 +33,25 @@
                         <i class="fa fa-dollar fa-lg dollar-icon"></i>
                     <?php } ?>
                 </td>
-                <td><?php echo $stats['ip']; ?></td>
+                <td>
+                    <span title="<?php echo $stats['host']; ?>">
+                        <?php echo $stats['ip']; ?> & <?php echo $stats['country'].', '.$stats['region'].', '.$stats['city']; ?>
+                    </span>
+                </td>
                 <td>
                     <?php if ($stats['tracker_id_for_lp']){ ?>
                     <?php echo Tracker::getById($stats['tracker_id_for_lp'])->landing_page_url; ?>
                     <?php } ?>
                 </td>
                 <td><?php echo $stats['referral_url']; ?></td>
-                <td><?php echo $stats['host']; ?></td>
-                <td><?php echo $stats['country']; ?></td>
-                <td><?php echo $stats['region']; ?></td>
-                <td><?php echo $stats['city']; ?></td>
+                <td><?php if ($stats['cloak'] == "yes") { 
+                            echo '$stats[cloaked_url]'; 
+                        } else {
+                            echo '$stats[cloaking_url]'; 
+                        }?>
+                </td>
                 <td><?php echo $stats['page_views']; ?></td>
                 <?php if($_SESSION['user_level'] == 'superadmin') { ?>
-                    <td><?php echo $stats['cloak']; ?></td>
                     <td><?php echo $stats['reasonforcloak']; ?></td>
                 <?php } ?>
                 <td>
@@ -61,8 +61,7 @@
                         -
                     <?php } ?>
                 </td>
-                <td><?php echo $stats['access_time']; ?></td>
-                <td><?php echo $stats['ct_dt']; ?></td>
+                <td><span title="Access time: <?php echo $stats['access_time']; ?>"><?php echo $stats['ct_dt']; ?></span></td>
             </tr>
             <?php endforeach; ?>
             </tbody>
