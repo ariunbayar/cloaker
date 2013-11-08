@@ -34,9 +34,10 @@
                     <?php } ?>
                 </td>
                 <td>
-                    <span title="<?php echo $stats['host']; ?>">
-                        <?php echo $stats['ip']; ?> & <?php echo $stats['country'].', '.$stats['region'].', '.$stats['city']; ?>
+                    <span style="color:#2f7ed8" title="Host: <?php echo $stats['host']; ?>">
+                        <?php echo $stats['ip']; ?>
                     </span>
+                    & <?php echo $stats['country'].', '.$stats['region'].', '.$stats['city']; ?>
                 </td>
                 <td>
                     <?php if ($stats['tracker_id_for_lp']){ ?>
@@ -44,10 +45,10 @@
                     <?php } ?>
                 </td>
                 <td><?php echo $stats['referral_url']; ?></td>
-                <td><?php if ($stats['cloak'] == "yes") { 
-                            echo '$stats[cloaked_url]'; 
+                <td><?php if ($stats['cloak'] == "yes") {
+                            echo '$stats[cloaked_url]';
                         } else {
-                            echo '$stats[cloaking_url]'; 
+                            echo '$stats[cloaking_url]';
                         }?>
                 </td>
                 <td><?php echo $stats['page_views']; ?></td>
@@ -61,7 +62,7 @@
                         -
                     <?php } ?>
                 </td>
-                <td><span title="Access time: <?php echo $stats['access_time']; ?>"><?php echo $stats['ct_dt']; ?></span></td>
+                <td><span style="color:#2f7ed8" title="Access time: <?php echo $stats['access_time']; ?>"><?php echo $stats['ct_dt']; ?></span></td>
             </tr>
             <?php endforeach; ?>
             </tbody>
