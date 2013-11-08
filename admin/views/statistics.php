@@ -15,10 +15,10 @@
                 <td>Sub ID</td>
                 <td></td>
                 <td>Geolocation & IP</td>
-                <td>Landing Page</td>
                 <td>Referer</td>
-                <td>Offer url</td>
-                <td>Page Views</td>
+                <td>Affiliate Network</td>
+                <td>Offer / Landing Page</td>
+                <td># Views</td>
                 <?php if($_SESSION['user_level'] == 'superadmin') { ?>
                     <td>Cloak Reason</td>
                 <?php } ?>
@@ -39,21 +39,27 @@
                         <?php echo $stats['host']; ?>
                     </abbr>
                 </td>
-                <td>
-                    <?php if ($stats['tracker_id_for_lp']){ ?>
-                    <?php echo Tracker::getById($stats['tracker_id_for_lp'])->landing_page_url; ?>
-                    <?php } ?>
-                </td>
                 <td><?php echo $stats['referral_url']; ?></td>
-                <td><?php if ($stats['cloak'] == "yes") {
-                            if($stats['offer_id']){
+                <td><?php 
+                    if ($stats['network_id']){ 
+                        echo Network::getById($stats['network_id'])->name;
+                    }
+                    ?>
+                </td>
+                <td>
+                    <?php if ($stats['tracker_id_for_lp']) { ?>
+                        <?php echo Tracker::getById($stats['tracker_id_for_lp'])->landing_page_url; ?>
+                    <?php } else { ?>
+                        <?php if ($stats['offer_id']) { ?>
+                        <abbr title="Offer URL: <?php if ($stats['cloak'] == "yes") {
                                 echo Destination::getById(Offer::getById($stats['offer_id'])->cloaked_url)->url;
-                            }
-                        } else {
-                            if($stats['offer_id']){
+                            } else {
                                 echo Destination::getById(Offer::getById($stats['offer_id'])->cloaking_url)->url;
-                            }
-                        }?>
+                            }?>">
+                            <?php echo Offer::getById($stats['offer_id'])->name; ?>
+                        <?php } ?>
+                        </abbr>
+                    <?php } ?>
                 </td>
                 <td><?php echo $stats['page_views']; ?></td>
                 <?php if($_SESSION['user_level'] == 'superadmin') { ?>
@@ -68,7 +74,7 @@
                 </td>
                 <td>
                     <abbr title="Access time: <?php echo $stats['access_time']; ?>">
-                        <?php echo $stats['ct_dt']; ?>
+                        <?php echo date('Y-m-d H:i', strtotime($stats['ct_dt'])); ?>
                     </abbr>
                 </td>
             </tr>
