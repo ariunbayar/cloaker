@@ -343,7 +343,7 @@ class Cloaker
 
     function _add_filter($field, $format, &$filter_array, $values)
     {
-        if (isset($values[$field]) && $values[$field]){
+        if (isset($values[$field]) && (strlen($values[$field]) > 0)){
             $filter_array[] = sprintf($format, mysql_real_escape_string($values[$field]));
         }
     }
@@ -413,6 +413,7 @@ class Cloaker
     {
         $filter_str = $this->buildFilters($values);
         $offset = $page * $limit - $limit;
+        //TODO write JOIN
         $query = "
             SELECT * FROM iptracker
             WHERE $filter_str
