@@ -184,7 +184,7 @@
 <div class="scont">
     <div class="box">
         <div class="tl"><div class="tr"></div></div>
-        <h2 class="boxtitle">Previously generated links</h2>
+        <h2 class="boxtitle">Previously generated links: <?php echo $data['name'] ?></h2>
         <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table">
             <thead>
                 <tr class="hd">
@@ -202,7 +202,10 @@
                 <tr>
                     <td>
                         <?php if ($tracker->is_landing_page){ ?>
-                            Landing page setup
+                            Landing page setup<br/>
+                            <a href="#" class="view_lp_code">
+                                view landing page code
+                            </a>
                         <?php }else{ ?>
                             Direct linking
                         <?php } ?>
@@ -252,7 +255,26 @@
         </table>
         <div class="bl"><div class="br"></div></div>
     </div>
-</div>			
+</div>
+
+<div id="landing_page_code" title="Landing Page code" style="display:none">
+    <p>
+        Please put following in your landing page source code.
+        <div>
+
+<textarea class="code" readonly="readonly" onclick="this.focus();this.select();" style="width: 330px; height: 150px; font-family: 'Lucida Console', Monaco, monospace; font-size: 0.8em;">
+<script type="text/javascript">
+var s='<?php echo SITE_URL ?>'+location.search+'&y='+new Date().getTime()+'&r='+document.referrer;
+document.write(
+    '<s'+'cript src="'+s+'" type="text/javascript"></s'+'cript>'
+);
+</script>
+</textarea>
+
+        </div>
+        So that we can track that your landing page is viewed.
+    </p>
+</div>
 
 <?php ob_start() ?>
 generateLinksTab();

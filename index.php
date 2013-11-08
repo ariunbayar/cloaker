@@ -14,10 +14,45 @@ include('admin/config.php');
 include('admin/cloaking.class.php');
 include('admin/models.php');
 
-$cloaker = new Cloaker();
-if (!empty($_GET['shortcode']) && !$cloaker->checkGiplist())
+
+function _get_shortcode()
 {
-    $shortcode = $_GET['shortcode'];
+    if (isset($_GET['shortcode'])){  // regular ad click
+        return array(false, $_GET['shortcode']);
+    }else if (isset($_GET['sc'])){  // landing page js include
+        return array(true, $_GET['sc']);
+    }
+    return array(false, null);
+}
+
+function _redirect_to_offer($cloaker, $campaignDetails, $offer)
+{
+    $subid = $campaignDetails['subid'];
+    if ($campaignDetails['cloak_status'] == 'on') // If cloaking is enabled for the current Campaign...
+    {
+        if (!$cloaker->shouldCloak($campaignDetails))
+        {
+            header('Location: '.$cloaker->getDestinationUrl($offer->cloaked_url, $subid));
+            exit;
+        }
+        else // if cloaking is enabled and a reason for cloaking is detected -> display fake landing page
+        {
+            header('Location: '.$cloaker->getDestinationUrl($offer->cloaking_url, $subid));
+            exit;
+        }
+    }
+    else // if cloaking is disabled -> display fake landing page
+    {
+        header('Location: '.$cloaker->getDestinationUrl($offer->cloaking_url, $subid));
+        exit;
+    }
+}
+
+
+$cloaker = new Cloaker();
+list($is_viewing_landing_page, $shortcode) = _get_shortcode();
+if ($shortcode && !$cloaker->checkGiplist())
+{
     $offer_id = null;
     if (strpos($shortcode, '-')){
         list($shortcode, $offer_id) = explode('-', $shortcode);
@@ -25,31 +60,20 @@ if (!empty($_GET['shortcode']) && !$cloaker->checkGiplist())
     $tracker = Tracker::getByShortcode($shortcode);
     if ($tracker) // shortcode exists and successfully resolves a tracking setup
     {
+        // track this hit/click
+        $campaignDetails = $cloaker->getVariables($tracker);
+
         if ($tracker->is_landing_page){
             $offer = Offer::getById($offer_id);
         }else{
             $offer = array_pop($tracker->getOffers());
         }
-        $campaignDetails = $cloaker->getVariables($tracker);
-        $subid = $campaignDetails['subid'];
-        if ($campaignDetails['cloak_status'] == 'on') // If cloaking is enabled for the current Campaign...
-        {
-            if (!$cloaker->shouldCloak($campaignDetails))  // TODO check
-            {
-                header('Location: '.$cloaker->getDestinationUrl($offer->cloaked_url, $subid));
-                exit;
-            }
-            else // if cloaking is enabled and a reason for cloaking is detected -> display fake landing page
-            {
-                header('Location: '.$cloaker->getDestinationUrl($offer->cloaking_url, $subid));
-                exit;
-            }
-        }
-        else // if cloaking is disabled -> display fake landing page
-        {
-            header('Location: '.$cloaker->getDestinationUrl($offer->cloaking_url, $subid));
+
+        if ($is_viewing_landing_page){
             exit;
-        }        
+        }else{
+            _redirect_to_offer($cloaker, $campaignDetails, $offer);
+        }
     }
 }
 ?>

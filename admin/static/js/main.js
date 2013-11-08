@@ -223,7 +223,6 @@ function generateLinksTab()
         }
 
         var network_id = $('select[name=network_id]').val();
-        console.log($('#offers tbody tr.network_'+network_id+' :checkbox').not(this));
         $('#offers tbody tr.network_'+network_id+' :checkbox').not(this).prop('checked', false);
     });
 
@@ -231,6 +230,20 @@ function generateLinksTab()
     $('.direct_linking_setup, .landing_page_setup').hide();
     $('select[name=network_id]').change();
     $('[name=landing_page]:checked').change();
+
+    // modal/popup/dialog box for view LP code
+    $('.view_lp_code').click(function(e){
+        $("#landing_page_code").dialog({
+            modal: true,
+            buttons: {
+                Close: function() {
+                  $(this).dialog("close");
+                }
+            },
+            width: 400
+        });
+        e.preventDefault();
+    });
 }
 
 
