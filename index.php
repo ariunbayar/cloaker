@@ -59,14 +59,15 @@ if ($shortcode && !$cloaker->checkGiplist())
     $tracker = Tracker::getByShortcode($shortcode);
     if ($tracker) // shortcode exists and successfully resolves a tracking setup
     {
-        // track this hit/click
-        list($subid, $campaign) = $cloaker->getVariables($tracker, $is_viewing_landing_page);
-
         if ($tracker->is_landing_page){
             $offer = Offer::getById($offer_id);
         }else{
             $offer = array_pop($tracker->getOffers());
         }
+
+        // track this hit/click
+        $offer_id = ($offer ? $offer->id : null);
+        list($subid, $campaign) = $cloaker->getVariables($tracker, $offer_id, $is_viewing_landing_page);
 
         if ($is_viewing_landing_page){
             // assuming this is the javascript page
