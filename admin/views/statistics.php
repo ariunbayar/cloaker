@@ -34,7 +34,7 @@
                     <?php } ?>
                 </td>
                 <td>
-                    <?php echo Geolocation_show($stats['country'],$stats['region'],$stats['city']); ?><br/>
+                    <?php echo Geolocation_show($stats['country'],$stats['region'],$stats['city']); ?>
                     <abbr title="IP: <?php echo $stats['ip']; ?>">
                         <?php echo $stats['host']; ?>
                     </abbr>
@@ -47,11 +47,11 @@
                 <td><?php echo $stats['referral_url']; ?></td>
                 <td><?php if ($stats['cloak'] == "yes") {
                             if($stats['offer_id']){
-                                    echo Destination::getById(Offer::getById($stats['offer_id'])->cloaked_url)->url;
+                                echo Destination::getById(Offer::getById($stats['offer_id'])->cloaked_url)->url;
                             }
                         } else {
                             if($stats['offer_id']){
-                                echo Destination::getById(Offer::getById($stats['offer_id'])->cloaking_url)-url;
+                                echo Destination::getById(Offer::getById($stats['offer_id'])->cloaking_url)->url;
                             }
                         }?>
                 </td>
@@ -66,7 +66,11 @@
                         -
                     <?php } ?>
                 </td>
-                <td><abbr title="Access time: <?php echo $stats['access_time']; ?>"><?php echo $stats['ct_dt']; ?></abbr></td>
+                <td>
+                    <abbr title="Access time: <?php echo $stats['access_time']; ?>">
+                        <?php echo $stats['ct_dt']; ?>
+                    </abbr>
+                </td>
             </tr>
             <?php endforeach; ?>
             </tbody>

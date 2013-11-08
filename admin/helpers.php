@@ -85,9 +85,10 @@ function Geolocation_show($country, $region, $city){
     }
     $geolocation = $city.$region.$country;
     if (strlen($geolocation) == 0) {
-        $geolocation = "";
+        return $geolocation = "";
+    } else {
+        return $geolocation."<br/>";
     }
-    return $geolocation;
 }
 
 

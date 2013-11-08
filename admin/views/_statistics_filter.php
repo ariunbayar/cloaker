@@ -20,7 +20,6 @@
 
         <label>Offer</label>
         <?php echo select_tag('offer_id', $data['offer_id'], $data['filters']['offer_id'], '---') ?>
-
     </div>
 
     <div class="column"/>
