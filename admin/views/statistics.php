@@ -15,6 +15,7 @@
                 <td>subid</td>
                 <td></td>
                 <td>IP</td>
+                <td>Landing Page</td>
                 <td>Referer</td>
                 <td>Host</td>
                 <td>Country</td>
@@ -38,6 +39,11 @@
                     <?php } ?>
                 </td>
                 <td><?php echo $stats['ip']; ?></td>
+                <td>
+                    <?php if ($stats['tracker_id_for_lp']){ ?>
+                    <?php echo Tracker::getById($stats['tracker_id_for_lp'])->landing_page_url; ?>
+                    <?php } ?>
+                </td>
                 <td><?php echo $stats['referral_url']; ?></td>
                 <td><?php echo $stats['host']; ?></td>
                 <td><?php echo $stats['country']; ?></td>

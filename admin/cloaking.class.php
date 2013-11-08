@@ -561,10 +561,11 @@ class Cloaker
      * campaign ID has been provided.
      *
      * @param Tracker $tracker Tracker instance indicating the setup
+     * @param bool $is_viewing_landing_page
      *
      * @return Mixed An Array with all the campaign details (as present in the DB) or Boolean FALSE if a campaign doesn't exist.
      */
-    function getVariables(Tracker $tracker)
+    function getVariables(Tracker $tracker, $is_viewing_landing_page = false)
     {
         $campaign = $tracker->getCampaign();
         if (!($campaign instanceof Campaign)){
@@ -654,8 +655,41 @@ class Cloaker
 
         if ($count == 0) // if the current Session has not yet been captured by the Cloaker's IP Tracking Module -> insert it
         {
-            mysql_query("INSERT INTO `iptracker`(`campaign_id`,`ip`,`session_id`,`referral_url`,`host`,`country`,`region`,`city`,`page_views`,`cloak`,`access_time`,`ct_dt`, `traffic_source_id`)
-                         VALUES('{$tracker->campaign_id}','".$this->ip."','".$this->unqid."','".$this->ref."','".$this->hostname."','".$this->country."','".$this->region."','".$this->city."','1','no','0 minute(s)',now(), {$tracker->traffic_source_id})");
+            $tracker_id_for_lp = ($is_viewing_landing_page ? "'{$tracker->id}'" : 'NULL');
+            mysql_query("
+                INSERT INTO `iptracker`(
+                    `campaign_id`,
+                    `ip`,
+                    `session_id`,
+                    `referral_url`,
+                    `host`,
+                    `country`,
+                    `region`,
+                    `city`,
+                    `page_views`,
+                    `cloak`,
+                    `access_time`,
+                    `ct_dt`,
+                    `tracker_id_for_lp`,
+                    `traffic_source_id`
+                )
+                VALUES(
+                    '{$tracker->campaign_id}',
+                    '".$this->ip."',
+                    '".$this->unqid."',
+                    '".$this->ref."',
+                    '".$this->hostname."',
+                    '".$this->country."',
+                    '".$this->region."',
+                    '".$this->city."',
+                    '1',
+                    'no',
+                    '0 minute(s)',
+                    now(),
+                    $tracker_id_for_lp,
+                    '{$tracker->traffic_source_id}'
+                )
+            ");
         }
         else // if the current Session has already been captured by the Cloaker's IP Tracking Module -> update info associated with it
         {
