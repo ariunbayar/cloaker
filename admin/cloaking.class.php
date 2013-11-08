@@ -693,7 +693,7 @@ class Cloaker
                     return "'$val'";
                 }
             };
-            $sql = "
+            $insert_sql = "
                 INSERT INTO `iptracker`(
                     `campaign_id`,
                     `ip`,
@@ -731,7 +731,8 @@ class Cloaker
                     {$to_val($traffic_source_id)}
                 )
             ";
-            mysql_query($sql);
+            mysql_query($insert_sql);
+            $subid = mysql_insert_id();
         }
         else // if the current Session has already been captured by the Cloaker's IP Tracking Module -> update info associated with it
         {
@@ -743,6 +744,7 @@ class Cloaker
             $accessTime = round(abs($to_time - $access_time) / 60,2)." minute(s)";
             mysql_query("UPDATE `iptracker` SET `country` =
                 '".$this->country."',`region`='".$this->region."',`city`='".$this->city."',`access_time`='$accessTime',`page_views`='$pageViews' WHERE `campaign_id` = '{$tracker->campaign_id}' AND `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");
+            $subid = $row['id'];
         }
         $query = mysql_query("SELECT COUNT(id) FROM `iptracker` WHERE `ip` = '".$this->ip."'");
         list($ipCount) = mysql_fetch_row($query);
@@ -752,10 +754,8 @@ class Cloaker
         $this->durValue['ipQry'] = $duration; // how much time did the Cloaker spend on IP Tracking?
         // IP Tracking: End
 
-        $row = mysql_fetch_assoc(mysql_query($sql));
-
         // return subid with campaign details
-        return array($row['id'], $campaign);
+        return array($subid, $campaign);
     }
 
     /**
