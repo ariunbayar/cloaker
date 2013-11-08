@@ -652,23 +652,47 @@ class Cloaker
         // IP Tracking: Start
         $start = microtime(true);
         $access_time = time();
-        $sql = "SELECT * FROM `iptracker` WHERE `campaign_id` =
-            '{$tracker->campaign_id}' AND `session_id` = '".$this->unqid."'
-            AND `ip` = '".$this->ip."'";
+
+        $network_id = $tracker->network_id ?: null;
+        $traffic_source_id = $tracker->traffic_source_id ?: null;
+        if ($is_viewing_landing_page) {
+            $tracker_id_for_lp = $tracker->id;
+            $offer_id = null;
+        }else{
+            $tracker_id_for_lp = null;
+            $offer_id = $offer->id;
+        }
+        $to_filter = function ($field, $val) {
+            if ($val === null){
+                return "$field IS NULL";
+            }else{
+                return "$field = $val";
+            }
+        };
+
+        $filters = array(
+            "session_id = '{$this->unqid}'",
+            "ip = '{$this->ip}'",
+            "campaign_id = '{$tracker->campaign_id}'",
+            $to_filter('traffic_source_id', $traffic_source_id),
+            $to_filter('offer_id', $offer_id),
+            $to_filter('tracker_id_for_lp', $tracker_id_for_lp),
+        );
+        $sql = sprintf("SELECT * FROM `iptracker` WHERE %s", implode(' AND ', $filters));
+
         $query = mysql_query($sql);
         $count = mysql_num_rows($query);
 
         if ($count == 0) // if the current Session has not yet been captured by the Cloaker's IP Tracking Module -> insert it
         {
-            $network_id = $tracker->network_id ?: 'NULL';
-            if ($is_viewing_landing_page) {
-                $tracker_id_for_lp = "'{$tracker->id}'";
-                $offer_id = 'NULL';
-            }else{
-                $tracker_id_for_lp = 'NULL';
-                $offer_id = "'{$offer->id}'";
-            }
-            mysql_query("
+            $to_val = function ($val) {
+                if ($val === null){
+                    return 'NULL';
+                }else{
+                    return "'$val'";
+                }
+            };
+            $sql = "
                 INSERT INTO `iptracker`(
                     `campaign_id`,
                     `ip`,
@@ -700,12 +724,13 @@ class Cloaker
                     'no',
                     '0 minute(s)',
                     now(),
-                    $offer_id,
-                    $network_id,
-                    $tracker_id_for_lp,
-                    '{$tracker->traffic_source_id}'
+                    {$to_val($offer_id)},
+                    {$to_val($network_id)},
+                    {$to_val($tracker_id_for_lp)},
+                    {$to_val($traffic_source_id)}
                 )
-            ");
+            ";
+            mysql_query($sql);
         }
         else // if the current Session has already been captured by the Cloaker's IP Tracking Module -> update info associated with it
         {
