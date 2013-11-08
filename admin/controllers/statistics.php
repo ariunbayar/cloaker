@@ -30,7 +30,7 @@ function statistics_controller()
         'access_date_from',
         'access_date_to',
         'traffic_source_id',
-        'network',
+        'network_id',
         'offer_id',
     );
     $filters = array();
@@ -45,15 +45,16 @@ function statistics_controller()
     $viewData = $cloaker->getCampaignDetails($campaign_id);
 
     $options = to_select_options(TrafficSource::getByCampaignId($campaign_id));
-    $viewData['traffic_source_id'] = $options;
+    $viewData['traffic_sources'] = $options;
     $options = to_select_options(Network::getByCampaignId($campaign_id));
-    $viewData['network'] = $options;
-    $options = to_select_options(Offer::getByCampaignId($campaign_id));
-    $viewData['offer_id'] = $options;
+    $viewData['networks'] = $options;
+    $viewData['offers'] = Offer::getByCampaignId($campaign_id);
+
+    $per_page = 50;
 
     $viewData['page'] = (empty($_GET['page'])) ? 1 : (int)$_GET['page'];
-    $viewData['total_pages'] = $cloaker->countStatistics($filters);
-    $viewData['statistics'] = $cloaker->getStatistics($filters, $viewData['page']);
+    $viewData['total_pages'] = $cloaker->countStatistics($filters, $per_page);
+    $viewData['statistics'] = $cloaker->getStatistics($filters, $viewData['page'], $per_page);
 
     $viewData['errors'] = array();
 

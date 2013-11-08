@@ -13,13 +13,22 @@
         </select>
 
         <label>Traffic source:</label>
-        <?php echo select_tag('traffic_source_id', $data['traffic_source_id'], $data['filters']['traffic_source_id'], '---') ?>
+        <?php echo select_tag('traffic_source_id', $data['traffic_sources'], $data['filters']['traffic_source_id'], '---') ?>
 
         <label>Affiliate Network</label>
-        <?php echo select_tag('network', $data['network'], $data['filters']['network'], '---') ?>
+        <?php echo select_tag('network_id', $data['networks'], $data['filters']['network_id'], '---') ?>
 
-        <label>Offer</label>
-        <?php echo select_tag('offer_id', $data['offer_id'], $data['filters']['offer_id'], '---') ?>
+        <label>Affiliate Offer</label>
+        <select name="offer_id">
+            <option value=''>---</option>
+            <?php foreach ($data['offers'] as $offer){ ?>
+                <?php $is_selected = ($offer->id == $data['filters']['offer_id']) ?>
+                <option value="<?php echo $offer->id ?>" <?php if ($is_selected) echo 'selected="selected"' ?>
+                        class="network_<?php echo $offer->network_id ?: '' ?>">
+                    <?php echo htmlspecialchars($offer->name)?>
+                </option>
+            <?php } ?>
+        </select>
     </div>
 
     <div class="column"/>

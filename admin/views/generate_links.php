@@ -118,7 +118,7 @@
                     <tr>
                         <td>Affiliate Network (optional)</td>
                         <td>
-                            <?php  $affiliate_network_id = (isset($data['tracker']) ? $data['tracker']->network_id : null);?>
+                            <?php $affiliate_network_id = (isset($data['tracker']) ? $data['tracker']->network_id : null);?>
                             <?php echo select_tag('network_id', $data['network_options'], $affiliate_network_id, '-- not specified --') ?>
                         </td>
                     </tr>

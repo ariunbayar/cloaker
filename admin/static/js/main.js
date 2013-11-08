@@ -146,9 +146,13 @@ function statisticsFilter() {
             $("input[name=access_date_from]").datepicker("option", "maxDate", selectedDate);
         }
     });
-    $("#network").change(function(){
-        $("#offer_id").html("hello");
-    });
+    $("select[name=network_id]").change(function(){
+        console.log(this);
+        var network_id = $(this).val();
+        var shown_rows = $('select[name=offer_id] option.network_'+network_id).show();
+        var hidden_rows = $('select[name=offer_id] option').not(shown_rows).hide();
+        $('select[name=offer_id]').val('');
+    }).change();
 }
 
 
