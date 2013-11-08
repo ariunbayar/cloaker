@@ -14,7 +14,7 @@
             <tr class="hd">
                 <td>Sub ID</td>
                 <td></td>
-                <td>IP & Geolocation</td>
+                <td>Geolocation & IP</td>
                 <td>Landing Page</td>
                 <td>Referer</td>
                 <td>Offer url</td>
@@ -34,10 +34,10 @@
                     <?php } ?>
                 </td>
                 <td>
-                    <span style="color:#2f7ed8" title="Host: <?php echo $stats['host']; ?>">
-                        <?php echo $stats['ip']; ?>
-                    </span>
-                    & <?php echo $stats['country'].', '.$stats['region'].', '.$stats['city']; ?>
+                    <?php echo Geolocation_show($stats['country'],$stats['region'],$stats['city']); ?><br/>
+                    <abbr title="IP: <?php echo $stats['ip']; ?>">
+                        <?php echo $stats['host']; ?>
+                    </abbr>
                 </td>
                 <td>
                     <?php if ($stats['tracker_id_for_lp']){ ?>
@@ -46,9 +46,13 @@
                 </td>
                 <td><?php echo $stats['referral_url']; ?></td>
                 <td><?php if ($stats['cloak'] == "yes") {
-                            echo '$stats[cloaked_url]';
+                            if($stats['offer_id']){
+                                    echo Destination::getById(Offer::getById($stats['offer_id'])->cloaked_url)->url;
+                            }
                         } else {
-                            echo '$stats[cloaking_url]';
+                            if($stats['offer_id']){
+                                echo Destination::getById(Offer::getById($stats['offer_id'])->cloaking_url)-url;
+                            }
                         }?>
                 </td>
                 <td><?php echo $stats['page_views']; ?></td>
@@ -62,7 +66,7 @@
                         -
                     <?php } ?>
                 </td>
-                <td><span style="color:#2f7ed8" title="Access time: <?php echo $stats['access_time']; ?>"><?php echo $stats['ct_dt']; ?></span></td>
+                <td><abbr title="Access time: <?php echo $stats['access_time']; ?>"><?php echo $stats['ct_dt']; ?></abbr></td>
             </tr>
             <?php endforeach; ?>
             </tbody>
