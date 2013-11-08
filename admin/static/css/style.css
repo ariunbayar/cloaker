@@ -101,3 +101,4 @@ textarea.code{
 }
 
 .dollar-icon{ color:#35794B; text-shadow: 1px 1px 0 rgba(0,0,0,.15)}
+abbr{ cursor: help; border-bottom: 1px dotted #999;}

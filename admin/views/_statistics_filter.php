@@ -19,7 +19,7 @@
         <?php echo select_tag('network', $data['network'], $data['filters']['network'], '---') ?>
 
         <label>Offer</label>
-        <?php echo select_tag('offer', $data['offer'], $data['filters']['offer'], '---') ?>
+        <?php echo select_tag('offer_id', $data['offer_id'], $data['filters']['offer_id'], '---') ?>
 
     </div>
 

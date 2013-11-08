@@ -69,6 +69,28 @@ function View($name, $data = '')
 }
 
 
+function Geolocation_show($country, $region, $city){
+    if (strlen($city) < 2) {
+        $city = "";
+    } else {
+        $city .= ", ";
+    }
+    if (strlen($region) < 2) {
+        $region = "";
+    } else {
+        $region .= ", ";
+    }
+    if (strlen($country) < 2) {
+        $country = "";
+    }
+    $geolocation = $city.$region.$country;
+    if (strlen($geolocation) == 0) {
+        $geolocation = "";
+    }
+    return $geolocation;
+}
+
+
 function select_tag($name, $options, $selected = '', $empty_value = false,
                     $attrs = array())
 {
