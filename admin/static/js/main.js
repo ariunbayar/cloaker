@@ -147,11 +147,13 @@ function statisticsFilter() {
         }
     });
     $("select[name=network_id]").change(function(){
-        console.log(this);
         var network_id = $(this).val();
         var shown_rows = $('select[name=offer_id] option.network_'+network_id).show();
         var hidden_rows = $('select[name=offer_id] option').not(shown_rows).hide();
-        $('select[name=offer_id]').val('');
+        $('select[name=offer_id] option[value=]').show();
+        if ($('select[name=offer_id] :selected').attr('class') != 'network_'+network_id){
+            $('select[name=offer_id]').val('');
+        }
     }).change();
 }
 
