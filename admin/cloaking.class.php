@@ -440,12 +440,12 @@ class Cloaker
      * @param int $limit How many records are shown per page?
      * @return int
      */
-    function countStatistics($values, $limit = 50)
+    function countStatistics($values)
     {
         $filter_str = $this->buildFilters($values);
         $count_query = "SELECT COUNT(id) FROM iptracker WHERE $filter_str";
         list($num_records) = mysql_fetch_row(mysql_query($count_query));
-        return ceil($num_records / $limit);
+        return $num_records;
     }
 
     /**

@@ -20,6 +20,11 @@
                         <input type="submit" value="GO">
                     </form>
                 </td>
+                <td>
+                    <abbr title="This is a converted click">
+                        <i class="fa fa-dollar fa-lg dollar-icon"></i>
+                    </abbr>
+                </td>
                 <td>Options</td>
             </tr>
             </thead>
@@ -34,6 +39,9 @@
                 <td><?php echo $campaign['cloak_status']; ?></td>
                 <td><?php list($cloaked, $non_cloaked) = $campaign['page_views'] ?>
                     <?php echo $cloaked." cloaked, ".$non_cloaked." non-cloaked" ?>
+                </td>
+                <td>
+                    <?php echo $campaign['num_converted_stat']; ?>
                 </td>
                 <td>
                     <a href="<?php echo ADMIN_URL; ?>manage/<?php echo $campaign['id']; ?>/">Manage</a>

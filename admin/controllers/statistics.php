@@ -55,7 +55,8 @@ function statistics_controller()
     $per_page = 50;
 
     $viewData['page'] = (empty($_GET['page'])) ? 1 : (int)$_GET['page'];
-    $viewData['total_pages'] = $cloaker->countStatistics($filters, $per_page);
+    $num_statistics = $cloaker->countStatistics($filters);
+    $viewData['total_pages'] = ceil($num_statistics / $per_page);
     $viewData['statistics'] = $cloaker->getStatistics($filters, $viewData['page'], $per_page);
 
     $viewData['errors'] = array();
