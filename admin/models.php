@@ -142,6 +142,7 @@ class Tracker extends Model
         'is_landing_page',
         'landing_page_url',
         'created_at',
+        'cpc',
     );
 
     /**

@@ -1,0 +1,1 @@
+ALTER TABLE  `tracker` ADD  `cpc` DECIMAL( 10, 4 ) NULL DEFAULT NULL;

@@ -193,6 +193,7 @@
                     <td>Affiliate network</td>
                     <td>Offer (payout) (url)</td>
                     <td>Advertising URL</td>
+                    <td>Cost Per Click</td>
                     <td>Created at</td>
                     <td>Options</td>
                 </tr>
@@ -241,6 +242,7 @@
                         <?php echo anchor_tag($tracker->getAdURL()) ?>
                         <a href="<?php echo ADMIN_URL.'regenerate_url/'.$tracker->id.'/' ?>" class="btn">Regenerate Shortcode</a>
                     </td>
+                    <td><?php echo $tracker->cpc ?></td>
                     <td><?php echo $tracker->created_at ?></td>
                     <td>
                         <?php $url = ADMIN_URL."edit_tracker/{$tracker->id}/" ?>
