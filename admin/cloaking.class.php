@@ -746,18 +746,19 @@ class Cloaker
         {
             $row = mysql_fetch_assoc($query);
             if ($is_viewing_landing_page) {
-                $pageViews = $row['page_views']+1;
-                $offerClick = $row['click'];
+                $num_page_views = $row['page_views']+1;
+                $num_click = $row['click'];
                 $offer_id = NULL;
             }else{
-                $pageViews = $row['page_views'];
-                $offerClick = $row['click']+1;
+                $num_page_views = $row['page_views'];
+                $num_click = $row['click']+1;
             }
+            $id = $row['id'];
             $createDate = $row['ct_dt'];
             $this->cloak = $row['cloak'];
             $to_time=strtotime($createDate);
             $accessTime = round(abs($to_time - $access_time) / 60,2)." minute(s)";
-            mysql_query("UPDATE `iptracker` SET `country` = '".$this->country."',`region`='".$this->region."',`city`='".$this->city."',`access_time`='$accessTime',`page_views`='$pageViews',`click`='$offerClick' WHERE `campaign_id` = '{$tracker->campaign_id}' AND `offer_id` = '$offer_id' AND `ip` = '".$this->ip."' AND `session_id` = '".$this->unqid."'");
+            mysql_query("UPDATE `iptracker` SET `country` = '".$this->country."',`region`='".$this->region."',`city`='".$this->city."',`access_time`='$accessTime',`page_views`='$num_page_views',`click`='$num_click' WHERE `id` = '$id'");
             $subid = $row['id'];
         }
         $query = mysql_query("SELECT COUNT(id) FROM `iptracker` WHERE `ip` = '".$this->ip."'");
