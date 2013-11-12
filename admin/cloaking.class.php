@@ -665,7 +665,7 @@ class Cloaker
             $offer_id = null;
             $page_view = 1;
             $click = 0;
-        }else{
+        } else {
             if ($tracker->is_landing_page == 1) {
                 $tracker_id_for_lp = null;
                 $offer_id = $offer->id;
@@ -681,7 +681,7 @@ class Cloaker
         $to_filter = function ($field, $val) {
             if ($val === null){
                 return "$field IS NULL";
-            }else{
+            } else {
                 return "$field = $val";
             }
         };

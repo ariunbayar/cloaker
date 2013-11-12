@@ -6,35 +6,26 @@
         <h2 class="boxtitle">Campaigns</h2>
         <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table" id="campaign_list">
             <thead>
+            Filter from
+            <form method="get" class="date_range">
+                <input type="text" name="date_from" value="<?php echo $data['filters']['date_from'] ?>"/>
+                to <input type="text" name="date_to" value="<?php echo $data['filters']['date_to'] ?>"/>
+                <input type="submit" value="GO">
+            </form>
             <tr class='hd'>
-                <td rowspan='2'>ID</td>
-                <td rowspan='2'>Name</td>
-                <td rowspan='2'>Date Created</td>
-                <td rowspan='2'>Last Modified</td>
-                <td rowspan='2'>Cloaking</td>
-                <td colspan='3'>
-                    <center>
-                        <form method="get" class="date_range">
-                            <input type="text" name="date_from" value="<?php echo $data['filters']['date_from'] ?>"/>
-                            to <input type="text" name="date_to" value="<?php echo $data['filters']['date_to'] ?>"/>
-                            <input type="submit" value="GO">
-                        </form>
-                    </center>
-                </td>
-                <td rowspan='2'>Options</td>
-            </tr>
-            <tr class="hd">
-                <td>
-                    # Page Views
-                </td>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Date Created</td>
+                <td>Last Modified</td>
+                <td>Cloaking</td>
+                <td># Page Views</td>
                 <td>
                     <abbr title="This is a converted click">
                         <i class="fa fa-dollar fa-lg dollar-icon"></i>
                     </abbr>
                 </td>
-                <td>
-                        # Click
-                </td>
+                <td># Click</td>
+                <td>Options</td>
             </tr>
             </thead>
 

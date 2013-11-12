@@ -20,9 +20,12 @@ function register_subid_controller()
                 }
                 $viewData['errors'][] = $sub_id_error;
                 $viewData['wrong_sub_ids'] = $wrong_sub_id;
+            } else {
+                $viewData['wrong_sub_ids'] = array();
             }
         } else {
             $viewData['errors'][] = 'Please insert Sub ID';
+            $viewData['wrong_sub_ids'] = array();
         }
     } else {
         $viewData['wrong_sub_ids'] = array();
