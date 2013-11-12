@@ -760,7 +760,8 @@ class Cloaker
                 $offer_id = NULL;
             }else{
                 if ($tracker->is_landing_page == 1) {
-                    $lp_click = mysql_fetch_row(mysql_query("SELECT click FROM iptracker WHERE tracker_id_for_lp = '$tracker->id'"));
+                    $filter = "tracker_id_for_lp = '$tracker->id' AND referral_url = '$this->ref'";
+                    $lp_click = mysql_fetch_row(mysql_query("SELECT click FROM iptracker WHERE ".$filter));
                     $lp_offers_click = $lp_click[0]+1;
                     $num_page_views = $row['page_views'];
                     $num_click = $row['click']+1;
