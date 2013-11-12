@@ -664,10 +664,17 @@ class Cloaker
             $page_view = 1;
             $click = 0;
         }else{
-            $tracker_id_for_lp = null;
-            $offer_id = $offer->id;
-            $page_view = 0;
-            $click = 1;
+            if ($tracker->is_landing_page == 1) {
+                $tracker_id_for_lp = null;
+                $offer_id = $offer->id;
+                $page_view = 0;
+                $click = 1;
+            } else {
+                $tracker_id_for_lp = null;
+                $offer_id = $offer->id;
+                $page_view = 1;
+                $click = 1;
+            }
         }
         $to_filter = function ($field, $val) {
             if ($val === null){
@@ -750,8 +757,13 @@ class Cloaker
                 $num_click = $row['click'];
                 $offer_id = NULL;
             }else{
-                $num_page_views = $row['page_views'];
-                $num_click = $row['click']+1;
+                if ($tracker->is_landing_page == 1) {
+                    $num_page_views = $row['page_views'];
+                    $num_click = $row['click']+1;
+                } else {
+                    $num_page_views = $row['page_views']+1;
+                    $num_click = $row['click']+1;
+                }
             }
             $id = $row['id'];
             $createDate = $row['ct_dt'];
