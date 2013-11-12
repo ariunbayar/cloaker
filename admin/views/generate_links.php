@@ -123,6 +123,13 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Cost Per Click (optional)</td>
+                        <td>
+                            <?php $cost_per_click = (isset($data['tracker']) ? $data['tracker']->cpc : null);?>
+                            <input type="text" name="cost_per_click" value="<?php echo $cost_per_click ?>"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Affiliate Offers:</td>
                         <td>
                             <span class="direct_linking_setup">

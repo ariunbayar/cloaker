@@ -28,6 +28,7 @@ function generate_links()
             $tracker->landing_page_url = $_POST['landing_page_url'];
         }
         $tracker->network_id = $_POST['network_id'];
+        $tracker->cpc = $_POST['cost_per_click'];
         $tracker->save();
 
         foreach ($_POST['offer_ids'] as $offer_id) {
@@ -70,6 +71,7 @@ function edit_tracker_controller()
             $tracker->landing_page_url = $_POST['landing_page_url'];
         }
         $tracker->network_id = $_POST['network_id'];
+        $tracker->cpc = $_POST['cost_per_click'];
         $tracker->save();
 
         if (!TrackerOffer::deleteByTrackerId($tracker->id)) {
