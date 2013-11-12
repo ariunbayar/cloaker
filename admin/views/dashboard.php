@@ -6,27 +6,35 @@
         <h2 class="boxtitle">Campaigns</h2>
         <table width="100%" cellspacing="0" cellpadding="4" border="0" class="table" id="campaign_list">
             <thead>
+            <tr class='hd'>
+                <td rowspan='2'>ID</td>
+                <td rowspan='2'>Name</td>
+                <td rowspan='2'>Date Created</td>
+                <td rowspan='2'>Last Modified</td>
+                <td rowspan='2'>Cloaking</td>
+                <td colspan='3'>
+                    <center>
+                        <form method="get" class="date_range">
+                            <input type="text" name="date_from" value="<?php echo $data['filters']['date_from'] ?>"/>
+                            to <input type="text" name="date_to" value="<?php echo $data['filters']['date_to'] ?>"/>
+                            <input type="submit" value="GO">
+                        </form>
+                    </center>
+                </td>
+                <td rowspan='2'>Options</td>
+            </tr>
             <tr class="hd">
-                <td>ID</td>
-                <td>Name</td>
-                <td>Date Created</td>
-                <td>Last Modified</td>
-                <td>Cloaking</td>
                 <td>
-                    <form method="get" class="date_range">
-                        # page views for
-                         <input type="text" name="date_from" value="<?php echo $data['filters']['date_from'] ?>"/>
-                        to <input type="text" name="date_to" value="<?php echo $data['filters']['date_to'] ?>"/>
-                        <input type="submit" value="GO">
-                    </form>
+                    # Page Views
                 </td>
                 <td>
                     <abbr title="This is a converted click">
                         <i class="fa fa-dollar fa-lg dollar-icon"></i>
                     </abbr>
                 </td>
-                <td># click</td>
-                <td>Options</td>
+                <td>
+                        # Click
+                </td>
             </tr>
             </thead>
 
