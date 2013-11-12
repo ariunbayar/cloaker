@@ -252,9 +252,6 @@
                     <td><?php echo $tracker->cpc ?></td>
                     <td><?php echo $tracker->created_at ?></td>
                     <td>
-                        <?php $url = ADMIN_URL."edit_tracker/{$tracker->id}/" ?>
-                        <a href="<?php echo $url ?>">Edit</a>
-                        &nbsp;&nbsp;&nbsp;
                         <?php $url = ADMIN_URL."delete_tracker/{$tracker->id}/" ?>
                         <a href="<?php echo $url ?>" onclick="return confirm('Are you sure to delete this tracking setup?')">Delete</a>
                     </td>

@@ -61,9 +61,6 @@
                     <td><?php echo $network->id ?></td>
                     <td><?php echo $network->name ?></td>
                     <td>
-                         <a href="<?php echo ADMIN_URL.'edit_network/'.$data['campaign']->id.'/?network_id='.$network->id ?>">
-                            Edit
-                        </a>&nbsp;&nbsp;&nbsp; 
                         <a href="<?php echo ADMIN_URL.'delete_network/'.$data['campaign']->id.'/?network_id='.$network->id ?>" 
                         onclick="return confirm('Are you sure to delete this network?');">
                             Delete

@@ -30,7 +30,6 @@ function save_network_controller()
     $network->name = $_POST['name'];
     $network->campaign_id = $_GET['id'];
     $network->save();
-
     header('Location: '.ADMIN_URL."/network/{$_GET['id']}/");
     exit;
 }
@@ -43,7 +42,6 @@ function delete_network_controller()
         $viewData['errors'][] = 'Network could not be deleted, because '. 
             'the following MySQL Error occurred: <br> <br>'.mysql_error();
     }
-
     header('Location: '.ADMIN_URL."/network/{$_GET['id']}/");
     exit;
 }

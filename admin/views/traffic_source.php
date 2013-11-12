@@ -60,9 +60,6 @@
                 <td><?php echo $traffic->id ?></td>
                 <td><?php echo $traffic->name ?></td>
                 <td>
-                    <a href="<?php echo ADMIN_URL.'edit_traffic_source/'.$data['campaign']->id.'/?ts_id='.$traffic->id ?>">
-                        Edit
-                    </a>&nbsp;&nbsp;&nbsp;
                     <a href="<?php echo ADMIN_URL.'delete_traffic_source/'.$data['campaign']->id.'/?ts_id='.$traffic->id ?>"
                         onclick="return confirm('Are you sure to delete this traffic source?');">
                         Delete

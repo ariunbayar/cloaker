@@ -113,7 +113,8 @@ class Model
     {
         $class = get_called_class();
         $id = mysql_real_escape_string($id);
-        $query = "DELETE FROM %s WHERE id = '%s'";
+        //$query = "DELETE FROM %s WHERE id = '%s'";
+        $query = "UPDATE %s SET  `is_hidden` = 1 WHERE `id` = '%s'";
         $sql = sprintf($query, $class::$_table, $id);
         $result = mysql_query($sql);
         return $result;
@@ -231,13 +232,13 @@ class Network extends Model
         'id',
         'name',
         'campaign_id',
+        'is_hidden',
     );
 
     static public function getByCampaignId($user_id)
     {
         $user_id = mysql_real_escape_string($user_id);
-
-        $query = "SELECT * FROM %s WHERE campaign_id = '%s' ORDER BY id ASC";
+        $query = "SELECT * FROM %s WHERE campaign_id = '%s' AND is_hidden = 0 ORDER BY id ASC";
         $sql = sprintf($query, self::$_table, $user_id);
         return self::hydrate($sql);
     }
@@ -251,6 +252,7 @@ class TrafficSource extends Model
         'id',
         'name',
         'campaign_id',
+        'is_hidden',
     );
 
     /**
@@ -260,7 +262,7 @@ class TrafficSource extends Model
     static public function getByCampaignId($campaign_id)
     {
         $campaign_id = mysql_real_escape_string($campaign_id);
-        $query = "SELECT * FROM %s WHERE campaign_id = '%s' ORDER BY id ASC";
+        $query = "SELECT * FROM %s WHERE campaign_id = '%s' AND is_hidden = 0 ORDER BY id ASC";
         $sql = sprintf($query, self::$_table, $campaign_id);
         return self::hydrate($sql);
     }
@@ -311,7 +313,7 @@ class Campaign extends Model
         'geoloc_status',
         'geoloc_mismatch_status',
         'ua_strings',
-        'ua_status'
+        'ua_status',
     );
 
     static public function getByUserId($user_id)
@@ -354,6 +356,7 @@ class Offer extends Model
         'cloaking_url',
         'payout',
         'campaign_id',
+        'is_hidden',
     );
 
     /**
@@ -363,7 +366,7 @@ class Offer extends Model
     static public function getByCampaignId($campaign_id)
     {
         $campaign_id = mysql_real_escape_string($campaign_id);
-        $query = "SELECT * FROM %s WHERE campaign_id = '%s' ORDER BY id ASC";
+        $query = "SELECT * FROM %s WHERE campaign_id = '%s' AND is_hidden = 0 ORDER BY id ASC";
         $sql = sprintf($query, self::$_table, $campaign_id);
         return self::hydrate($sql);
     }

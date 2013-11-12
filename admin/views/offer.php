@@ -86,8 +86,6 @@
                     $<?php echo $offer->payout ?>
                 </td>
                 <td>
-                    <a href="<?php echo sprintf($data['edit_url'], $offer->id) ?>">Edit</a>
-                    &nbsp;&nbsp;&nbsp;
                     <a href="<?php echo sprintf($data['delete_url'], $offer->id) ?>"
                        onclick="return confirm('Are you sure to delete this affiliate offer?');">
                         Delete
