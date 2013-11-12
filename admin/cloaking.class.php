@@ -67,7 +67,7 @@ class Cloaker
             while ($row = mysql_fetch_assoc($query))
             {
                 $data[$row['id']] = $row;
-                $data[$row['id']]['page_views'] = array(0, 0);
+                $data[$row['id']]['page_views'] = array(0, 0, 0, 0);
             }
 
             return $data;
@@ -111,6 +111,7 @@ class Cloaker
             SELECT
                 t.campaign_id,
                 t.click,
+                SUM(IF(t.is_converted=1, 1, 0)) as num_of_converted_clicks,
                 SUM(IF(t.cloak='yes', t.page_views, 0)) as cloaked_page_views,
                 SUM(IF(t.cloak='no', t.page_views, 0)) as non_cloaked_page_views
             FROM iptracker as t
@@ -124,6 +125,7 @@ class Cloaker
             $campaigns[$row['campaign_id']]['page_views'] = array(
                 $row['cloaked_page_views'],
                 $row['non_cloaked_page_views'],
+                $row['num_of_converted_clicks'],
                 $row['click'],
             );
         }
@@ -442,12 +444,12 @@ class Cloaker
      * @param int $limit How many records are shown per page?
      * @return int
      */
-    function countStatistics($values)
+    function countStatistics($values, $limit = 50)
     {
         $filter_str = $this->buildFilters($values);
         $count_query = "SELECT COUNT(id) FROM iptracker WHERE $filter_str";
         list($num_records) = mysql_fetch_row(mysql_query($count_query));
-        return $num_records;
+        return ceil($num_records / $limit);
     }
 
     /**

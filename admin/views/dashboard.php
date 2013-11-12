@@ -38,14 +38,14 @@
                 <td><?php echo $campaign['ct_dt']; ?></td>
                 <td><?php echo $campaign['md_dt']; ?></td>
                 <td><?php echo $campaign['cloak_status']; ?></td>
-                <td><?php list($cloaked, $non_cloaked) = $campaign['page_views'] ?>
+                <?php list($cloaked, $non_cloaked, $converted_clicks, $click) = $campaign['page_views']; ?>
+                <td>
                     <?php echo $cloaked." cloaked, ".$non_cloaked." non-cloaked" ?>
                 </td>
                 <td>
-                    <?php echo $campaign['num_converted_stat']; ?>
+                    <?php echo $converted_clicks ?>
                 </td>
                 <td>
-                    <?php list($click) = $campaign['page_views'] ?>
                     <?php echo $click ?>
                 </td>
                 <td>
