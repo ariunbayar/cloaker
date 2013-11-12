@@ -42,11 +42,11 @@
                     <?php echo $cloaked." cloaked, ".$non_cloaked." non-cloaked" ?>
                 </td>
                 <td>
-                    <?php list($click) = $campaign['page_views'] ?>
-                    <?php echo $click ?>
+                    <?php echo $campaign['num_converted_stat']; ?>
                 </td>
                 <td>
-                    <?php echo $campaign['num_converted_stat']; ?>
+                    <?php list($click) = $campaign['page_views'] ?>
+                    <?php echo $click ?>
                 </td>
                 <td>
                     <a href="<?php echo ADMIN_URL; ?>manage/<?php echo $campaign['id']; ?>/">Manage</a>
