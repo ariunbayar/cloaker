@@ -73,10 +73,10 @@
         </div>
     </div>
     <?php endif; ?>
-
+    <?php require dirname(__FILE__).'/_flash_message.php' ?>
+    <?php echo $flash_message ?>
 
     <?php echo $main_content ?>
-
 </div>
 
 <?php $main_content = ob_get_clean() ?>
