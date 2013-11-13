@@ -110,7 +110,7 @@ class Cloaker
         $sql = "
             SELECT
                 t.campaign_id,
-                t.click,
+                SUM(t.click) as click,
                 SUM(IF(t.is_converted=1, 1, 0)) as num_of_converted_clicks,
                 SUM(IF(t.cloak='yes', t.page_views, 0)) as cloaked_page_views,
                 SUM(IF(t.cloak='no', t.page_views, 0)) as non_cloaked_page_views
@@ -760,12 +760,8 @@ class Cloaker
                 $offer_id = NULL;
             }else{
                 if ($tracker->is_landing_page == 1) {
-                    $filter = "tracker_id_for_lp = '$tracker->id' AND referral_url = '$this->ref'";
-                    $lp_click = mysql_fetch_row(mysql_query("SELECT click FROM iptracker WHERE ".$filter));
-                    $lp_offers_click = $lp_click[0]+1;
                     $num_page_views = $row['page_views'];
                     $num_click = $row['click']+1;
-                    mysql_query("UPDATE `iptracker` SET `click`='$lp_offers_click' WHERE `tracker_id_for_lp` = '$tracker->id'");
                 } else {
                     $num_page_views = $row['page_views']+1;
                     $num_click = $row['click']+1;
