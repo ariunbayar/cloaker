@@ -44,8 +44,9 @@
     <div class="scont">
         <div class="box">
             <div class="tl"><div class="tr"></div></div>
-            <h2 class="boxtitle">Error</h2>
-            <p><?php echo Flash::get() ?></p>
+            <?php list($label, $msg) = Flash::get() ?>
+            <h2 class="boxtitle"><?php echo $label ?></h2>
+            <p><?php echo $msg ?></p>
             <div class="bl"><div class="br"></div></div>
         </div>
     </div>

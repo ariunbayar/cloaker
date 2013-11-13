@@ -4,9 +4,10 @@
  */
 class Flash
 {
-    static public function set($message)
+    static public function set($label, $message)
     {
         $_SESSION['flash_message'] = $message;
+        $_SESSION['label'] = $label;
     }
 
     static public function exists()
@@ -18,8 +19,10 @@ class Flash
     {
         if (self::exists()){
             $msg = $_SESSION['flash_message'];
+            $label = $_SESSION['label'];
             unset($_SESSION['flash_message']);
-            return $msg;
+            unset($_SESSION['label']);
+            return array($label, $msg);
         }else{
             return '';
         }

@@ -43,7 +43,7 @@ function delete_traffic_source_controller()
 {
     if (!TrafficSource::deleteById($_GET['ts_id']))
     {
-        Flash::set('Traffic source could not be deleted, because the '.
+        Flash::set('Error', 'Traffic source could not be deleted, because the '.
             'following MySQL Error occurred: <br> <br>'.mysql_error());
     };
 

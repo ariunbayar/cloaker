@@ -81,7 +81,7 @@ function add_campaign_controller()
 
 
         if ($errors){
-            Flash::set('Campaign could not be added, because the following '.
+            Flash::set('Error', 'Campaign could not be added, because the following '.
                        'MySQL Error occurred: <br> <br>'.
                        implode('<br/>', $errors));
         }
@@ -153,9 +153,9 @@ function manage_campaign_controller()
         }
 
         if ($errors){
-            Flash::set('Campaign could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error());
+            Flash::set('Error', 'Campaign could not be updated, because the following MySQL Error occurred: <br> <br>'.mysql_error());
         }else{
-            Flash::set('Campaign was updated successfully!'.
+            Flash::set('Success', 'Campaign was updated successfully!'.
                        '<br/>TODO Change this to success message, not error');
         }
 
@@ -179,7 +179,7 @@ function delete_campaign_controller()
 
     if (!$cloaker->deleteCampaign(mysql_real_escape_string($_GET['id'])))
     {
-        Flash::set('Campaign could not be added, because the following '.
+        Flash::set('Error', 'Campaign could not be added, because the following '.
                    'MySQL Error occurred: <br> <br>'.mysql_error());
     }
     header('Location: '.ADMIN_URL);

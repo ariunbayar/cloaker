@@ -61,6 +61,18 @@
         </div>
     </div>
     <?php endif; ?>
+    <?php if(!empty($data['warning'])): ?>
+    <div class="scont">
+        <div class="box">
+            <div class="tl"><div class="tr"></div></div>
+            <h2 class="boxtitle">Warning</h2>
+            <?php foreach($data['warning'] as $message): ?>
+            <p><?php echo $message; ?></p>
+            <?php endforeach; ?>
+            <div class="bl"><div class="br"></div></div>
+        </div>
+    </div>
+    <?php endif; ?>
 
 
     <?php echo $main_content ?>

@@ -64,7 +64,7 @@ function statistics_controller()
     list($viewData['total_page_views'], $max_days_reached) =
         $cloaker->getTotalPageViews($filters, 60);
     if ($max_days_reached){
-        $viewData['errors'][] =
+        $viewData['warning'][] =
             'Regular and Cloaked views chart is limited to '.
             '60 days to avoid degraded performance.';
     }
@@ -73,7 +73,7 @@ function statistics_controller()
     list($viewData['page_views_by_geolocation'], $max_days_reached) =
         $cloaker->getPageViewsByGeolocation($viewData['geolocation'], $filters, 60);
     if ($max_days_reached){
-        $viewData['errors'][] =
+        $viewData['warning'][] =
             'Page views by Geolocation chart is limited to '.
             '60 days to avoid degraded performance.';
     }

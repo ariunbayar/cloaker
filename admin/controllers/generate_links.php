@@ -116,7 +116,7 @@ function regenerateUrl()
     $tracker = Tracker::getById($_GET['id']);
     $tracker->shortcode = generateShortCode();
     if (!$tracker->save()) {
-        Flash::set('Campaign URL could not be updated, because the '.
+        Flash::set('Error', 'Campaign URL could not be updated, because the '.
                    'following MySQL Error occurred: <br> <br>'.mysql_error());
     }
 
@@ -139,7 +139,7 @@ function deleteTracker()
                     'following MySQL Error occurred: <br> <br>'.mysql_error();
     }
     if ($errors) {
-        Flash::set(implode('<br/>', $errors));
+        Flash::set('Error', implode('<br/>', $errors));
     }
 
     header("Location: ".ADMIN_URL."/generate_links/{$tracker->campaign_id}/");

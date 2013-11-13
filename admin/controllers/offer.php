@@ -90,7 +90,7 @@ function delete_offer_controller()
     }
 
     if ($errors) {
-        Flash::set(implode('<br/>', $errors));
+        Flash::set('Error', implode('<br/>', $errors));
     }
 
     header('Location: '.ADMIN_URL."/offer/{$_GET['id']}/");

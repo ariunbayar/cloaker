@@ -48,7 +48,7 @@ function _run_migration()
                         $has_error = true;
                         $error =  $file."\n"."Warning: This SQL has error! Please run manual.".
                             "\n".mysql_error()."\n".$query."\n";
-                        Flash::set($error);
+                        Flash::set('Error', $error);
                         break;
                     }
                 }
@@ -73,7 +73,7 @@ function _run_migration()
             $sql = "DROP TABLE $tmp_table";
             mysql_query($sql);
         }
-        Flash::set('Migration has run successfully!<br/>'
+        Flash::set('Success', 'Migration has run successfully!<br/>'
                    .'TODO: Show this message as success');
     }
 }
